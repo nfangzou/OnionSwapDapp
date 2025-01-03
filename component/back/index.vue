@@ -5,7 +5,7 @@
 				<image src="../../static/logo.png" mode=""></image>
 			</view>
 			<view class="listTab">
-				<view class="tabOne" :style="{color: tabCurrent == index?'#fff':''}" v-for="(item, index) in tabData" :key="index" @tap="clickTap(index, item.path)">
+				<view class="tabOne" :style="{color: type == index?'#fff':''}" v-for="(item, index) in tabData" :key="index" @tap="clickTap(item.path)">
 					{{item.text}}
 				</view>
 			</view>
@@ -68,8 +68,7 @@
 		},
 		props:['text','type','classType','subheading'],
 		methods: {
-			clickTap(val, pathVal) {
-				this.tabCurrent = this.type;
+			clickTap(pathVal) {
 				uni.navigateTo({
 				   url: pathVal
 				})
