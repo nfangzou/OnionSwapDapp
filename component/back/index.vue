@@ -12,7 +12,8 @@
 		</view>
 		<view class="subheading" v-if="subheading">
 			<view class="backe" style="border: 2rpx solid gray;">
-				<text>{{text | plusXing}}</text>
+				<text v-if="text">{{text | plusXing}}</text>
+				<text v-else @tap="clickConnect">连接钱包</text>
 			</view>
 			<view class="backe" style="margin-left: 30rpx;" @tap="sendMsg">
 				<text>{{_i18n.locale == 'zh-CN'?'中文':'English'}}</text>
@@ -72,6 +73,9 @@
 				uni.navigateTo({
 				   url: pathVal
 				})
+			},
+			clickConnect() {
+				this.$emit('connectWallet');
 			},
 			sendMsg() {
 				this.$emit('getMsg');
