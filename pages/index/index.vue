@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<back ref="child" text="" :text="myAddress" :type="0" @connectWallet="connectWallet" :classType="true" subheading="true" @getMsg="getMsg">
+		<back ref="child" text="" :text="myAddress" :type="0" :classType="true" subheading="true" @getMsg="getMsg">
 		</back>
 		<view class="centerBox">
 			<view class="loadIcon">
@@ -14,7 +14,7 @@
 							<image class="slectIcon" src="../../static/bottomIcon.png" mode=""></image>
 						</view>
 					</view>
-					<view class="coinMax" @tap="toCoinNum = tbcBalance">
+					<view class="coinMax" @tap="fromCoinNum = fromCur.balance">
 						MAX
 					</view>
 				</view>
@@ -37,6 +37,9 @@
 							<text>{{toCur.name?toCur.name:'选择币种'}}</text>
 							<image class="slectIcon" src="../../static/bottomIcon.png" mode=""></image>
 						</view>
+					</view>
+					<view class="coinMax" @tap="toCoinNum = toCur.balance">
+						MAX
 					</view>
 				</view>
 				<view class="inputToBox">
@@ -81,6 +84,7 @@
 	import back from "@/component/back/index.vue";
 	import selectCoin from "@/component/selectCoin/index.vue";
 	import bignumberJS from "bignumber.js"
+	import {mapState,mapMutations,mapGetters} from 'vuex'
 	import wLoading from "@/component/w-loading/w-loading.vue";
 	export default {
 		components: {
@@ -98,7 +102,6 @@
 				selfSlip: '',
 				toCoinNum: '',
 				fromCoinNum: '',
-
 
 				fromCur: {
 					name: 'TBC',
@@ -124,15 +127,25 @@
 				goType: 'from'
 			}
 		},
+		computed: {
+			...mapGetters(['getWallet','getCoin'])
+		},
+		watch: {
+			getWallet(val, oldVal){
+				this.Init();
+			}
+		},
 		onLoad() {
-			
+			this.Init();
 		},
 		methods: {
-			connectWallet() {
-				let _this = this;
-				this.Init(() => {
-					this.getCoinBalance(this.fromCur)
-				});
+			Init() {
+				if (uni.getStorageSync('walletAddress') == undefined || uni.getStorageSync('walletAddress') == '') {
+					console.log("Please connect wallet!")
+				} else {
+					this.myAddress = uni.getStorageSync('walletAddress');
+					this.getCoinBalance(this.fromCur,'from')
+				}
 			},
 			clickSlip(val) {
 				this.slipCrrent = val;
@@ -161,8 +174,10 @@
 			backInfo(e) {
 				if (this.goType == 'from') {
 					this.fromCur = e;
+					this.getCoinBalance(e,'from')
 				} else {
 					this.toCur = e;
+					this.getCoinBalance(e,'to')
 				}
 				this.$refs.popup.close();
 			},
@@ -170,16 +185,50 @@
 				this.goType = type;
 				this.$refs.popup.open();
 			},
-			async getCoinBalance(coinInfo) {
+			getCoinBalance(coinInfo, type) {
 				if (coinInfo.name == 'TBC') {
-					let wert = await window.Turing.getBalance();
-					this.fromCur.balance = wert.tbc;
+					var nowTbc = 0;
+					uni.request({
+						url: this.urlApi + 'address/'+this.myAddress+'/get/balance',
+						method: 'GET',
+						header: {
+							"Content-Type": "application/json; charset=UTF-8"
+						},
+						data: {
+						},
+						success: (res) => {
+							if(res.statusCode == 200) {
+								if(type == 'from') {
+									this.fromCur.balance = res.data.data.balance/1000000;
+								} else{
+									this.toCur.balance = res.data.data.balance/1000000;
+								}
+							}
+						}
+					});
+				} else{
+					uni.request({
+						url: this.urlApi + 'ft/balance/address/'+this.myAddress+/contract/+coinInfo.address,
+						method: 'GET',
+						header: {
+							"Content-Type": "application/json; charset=UTF-8"
+						},
+						data: {
+						},
+						success: (res) => {
+							if(res.statusCode == 200) {
+								if(type == 'from') {
+									this.fromCur.balance = res.data.ftBalance/1000000;
+								} else{
+									this.toCur.balance = res.data.ftBalance/1000000;
+								}
+							}
+						}
+					});
 				}
 			},
 			loadClick() {
-				this.getLPComputer();
-				this.getTotalSupply();
-				this.getLPContent();
+				this.Init();
 				let _this = this;
 				_this.$refs.loading.open();
 				setTimeout(() => {
@@ -201,24 +250,7 @@
 					})
 					return ;
 				}
-				if (this.fromCur.name == 'TBC') {
-					const params = [{
-						flag: "POOLNFT_SWAP_TO_TOKEN", // 
-						nft_contract_address: this.toCur.address,
-						address: this.myAddress,
-						tbc_amount: JSON.parse(this.fromCoinNum)
-					}];
-					console.log(params)
-					const { txid, rawtx } = await window.Turing.sendTransaction(params);
-				} else if(this.toCur.name == 'TBC') {
-					const params = [{
-						flag: "POOLNFT_SWAP_TO_TBC",
-						nft_contract_address: this.fromCur.address,
-						address: this.myAddress,
-						ft_amount: JSON.parse(this.fromCoinNum)
-					}];
-					const { txid, rawtx } = await window.Turing.sendTransaction(params);
-				}
+				
 			},
 			inputNum(e) {
 				this.slipData.forEach((item, index) => {
@@ -254,20 +286,6 @@
 					return parseInt(num)
 				} else {
 					return Number(num)
-				}
-			},
-			async Init(callback) {
-				if (typeof window.Turing === "undefined") {
-					uni.showToast({
-						title: '请安装Turing Wallet',
-						icon: "none"
-					})
-				} else {
-					await window.Turing.connect();
-					let wert = await window.Turing.getAddress();
-					this.myAddress = wert.tbcAddress;
-					console.log(this.myAddress)
-					callback();
 				}
 			}
 		}

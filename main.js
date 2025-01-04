@@ -3,9 +3,11 @@ import App from './App'
 import lang from "./lang/index.js"
 import VueI18n from 'vue-i18n'
 
-
+import store from './store'
 Vue.use(VueI18n)
+const urlApi = "https://tbcdev.org/v1/tbc/main/";
 
+Vue.prototype.urlApi = urlApi;
 // #ifndef VUE3
 import Vue from 'vue'
 import './uni.promisify.adaptor'
@@ -19,6 +21,7 @@ const i18n = new VueI18n({
 });
 
 const app = new Vue({
+	store,
 	i18n,
   ...App
 })

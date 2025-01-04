@@ -12,7 +12,7 @@
 		</view>
 		<view class="subheading" v-if="subheading">
 			<view class="backe" style="border: 2rpx solid gray;">
-				<text v-if="text">{{text | plusXing}}</text>
+				<text v-if="getWallet">{{getWallet | plusXing}}</text>
 				<text v-else @tap="clickConnect">连接钱包</text>
 			</view>
 			<view class="backe" style="margin-left: 30rpx;" @tap="sendMsg">
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+	import {mapState,mapMutations,mapGetters} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -64,6 +65,9 @@
 			 return str.substring(0, 6) + xing + str.substring(str.length - 4);
 			}
 		},
+		computed: {
+			...mapGetters(['getWallet','getCoin'])
+		},
 		created() {
 			console.log(this.type)
 		},
@@ -74,8 +78,13 @@
 				   url: pathVal
 				})
 			},
-			clickConnect() {
-				this.$emit('connectWallet');
+			async clickConnect() {
+				await window.Turing.connect();
+				let wert = await window.Turing.getAddress();
+				this.myAddress = wert.tbcAddress;
+				this.$store.commit('setWallet', wert.tbcAddress);
+				uni.setStorageSync('walletAddress',wert.tbcAddress);
+				console.log(this.myAddress)
 			},
 			sendMsg() {
 				this.$emit('getMsg');

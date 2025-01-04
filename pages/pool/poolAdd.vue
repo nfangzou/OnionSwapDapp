@@ -1,10 +1,11 @@
 <template>
 	<view class="content">
-		<back ref="child" text="" :text="myAddress" :type="1" @connectWallet="connectWallet" :classType="true" subheading="true" @getMsg="getMsg">
+		<back ref="child" text="" :text="myAddress" :type="1" @connectWallet="connectWallet" :classType="true"
+			subheading="true" @getMsg="getMsg">
 		</back>
 		<view class="centerBox">
 			<view class="poolTitle">
-				<view class="back">
+				<view class="back" @tap="backGo">
 					<image src="../../static/back1.png" mode=""></image>
 				</view>
 				<view class="title">
@@ -13,7 +14,8 @@
 			</view>
 			<view class="tipMsg" v-if="poolType==3">
 				<view class="text">
-					Tip: When you add liquidity,you will receive pool tokens representing your position.These tokens automatically earn fees proportional to you share of the pool,and can be redeemed at any time.
+					Tip: When you add liquidity,you will receive pool tokens representing your position.These tokens
+					automatically earn fees proportional to you share of the pool,and can be redeemed at any time.
 				</view>
 			</view>
 			<view class="loadIcon">
@@ -36,11 +38,11 @@
 						余额：{{fromCur.balance}}
 					</view>
 					<view class="inputBody">
-						<input v-model="fromCoinNum" @input="showChange" type="text" />
+						<input v-model="fromCoinNum" type="text" />
 					</view>
 				</view>
 				<view class="centerIcon">
-					<view class="changebox" @tap="changeIcon()">
+					<view class="changebox">
 						<image src="../../static/icon2.png" mode=""></image>
 					</view>
 				</view>
@@ -57,7 +59,7 @@
 						余额：{{toCur.balance}}
 					</view>
 					<view class="inputBody">
-						<input v-model="toCoinNum" @input="showTwoChange" type="text" />
+						<input v-model="toCoinNum" type="text" />
 					</view>
 				</view>
 				<view class="clientText" v-if="poolType==1">
@@ -75,13 +77,13 @@
 					<view class="title">
 						Initial prices and pool share
 					</view>
-					<view class="shareList" >
+					<view class="shareList">
 						<view class="item">
 							<view class="num">
 								1
 							</view>
 							<view class="text">
-								TBC per qyz
+								{{fromCur.name}} per {{toCur.name}}
 							</view>
 						</view>
 						<view class="item">
@@ -89,20 +91,20 @@
 								1
 							</view>
 							<view class="text">
-								TBC per qyz
+								{{toCur.name}} per {{fromCur.name}}
 							</view>
 						</view>
 						<view class="item">
 							<view class="num">
-								1
+								100%
 							</view>
 							<view class="text">
-								TBC per qyz
+								池份
 							</view>
 						</view>
 					</view>
 				</view>
-				<view class="shareBtn" v-if="poolType==3">
+				<view class="shareBtn" @tap="clickSupply" v-if="poolType==3">
 					<view class="text">
 						Supply
 					</view>
@@ -121,6 +123,11 @@
 	import back from "@/component/back/index.vue";
 	import selectCoin from "@/component/selectCoin/index.vue";
 	import bignumberJS from "bignumber.js"
+	import {
+		mapState,
+		mapMutations,
+		mapGetters
+	} from 'vuex'
 	import wLoading from "@/component/w-loading/w-loading.vue";
 	export default {
 		components: {
@@ -172,21 +179,44 @@
 				activeCole: 'rgba(0,0,0,0.5)',
 				tbcBalance: 0,
 				goType: 'from',
-				poolType:1
+				poolType: 1
+			}
+		},
+		computed: {
+			...mapGetters(['getWallet', 'getCoin'])
+		},
+		watch: {
+			getWallet(val, oldVal) {
+				this.Init();
 			}
 		},
 		onLoad() {
-			
+			this.Init();
 		},
 		methods: {
-			connectWallet() {
-				let _this = this;
-				this.Init(() => {
-					this.getCoinBalance(this.fromCur)
-				});
+			Init() {
+				if (uni.getStorageSync('walletAddress') == undefined || uni.getStorageSync('walletAddress') == '') {
+					console.log("Please connect wallet!")
+				} else {
+					this.myAddress = uni.getStorageSync('walletAddress');
+				}
 			},
 			clickSlip(val) {
 				this.slipCrrent = val;
+			},
+			getPoolList() {
+				uni.request({
+					url: this.urlApi + '/pool/nft/info/contract/id/'+this.toCur.address,
+					method: 'GET',
+					header: {
+						"Content-Type": "application/json; charset=UTF-8"
+					},
+					data: {
+					},
+					success: (res) => {
+						console.log(res)
+					}
+				});
 			},
 			slideChange(e) {},
 			changeIcon() {
@@ -209,23 +239,41 @@
 			closePup(e) {
 				this.$refs.popup.close();
 			},
+			async clickSupply() {
+				const params = [{
+					flag: "POOLNFT_MINT",
+					ft_contract_address: this.toCur.address,
+				}];
+				const {txid,rawtx} = await window.Turing.sendTransaction(params);
+				const paramsEnd = [{
+					flag: "POOLNFT_INIT",
+					nft_contract_address: txid,
+					address: this.myAddress,
+					tbc_amount: JSON.parse(this.fromCoinNum),
+					ft_amount: JSON.parse(this.toCoinNum)
+				}];
+				const {txidEnd,rawtxEnd} = await window.Turing.sendTransaction(paramsEnd);
+				uni.showToast({
+					title: '添加成功',
+					icon: "none"
+				})
+			},
 			backInfo(e) {
 				if (this.goType == 'from') {
-					this.fromCur.name = e;
+					this.fromCur = e;
 				} else {
-					this.toCur.name = e;
+					this.toCur = e;
 				}
 				this.$refs.popup.close();
-				console.log(this.fromCur.name)
-				console.log(this.toCur.name)
-				if(this.fromCur.name && this.toCur.name){
-					this.poolType=2;
+				this.getPoolList();
+				if (this.fromCur.name && this.toCur.name) {
+					this.poolType = 2;
 				}
 			},
 			showPupCoin(type) {
 				this.goType = type;
 				this.$refs.popup.open();
-				
+
 			},
 			async getCoinBalance(coinInfo) {
 				if (coinInfo.name == 'TBC') {
@@ -243,33 +291,8 @@
 					_this.$refs.loading.close();
 				}, 1000);
 			},
-			
-			getLPComputer() {
-				this.LPContract.getReserves().then((res, err) => {
-					this.wbnbLpNum = this.mobileFilter1(res[1]);
-					this.DawkoinLpNum = this.mobileFilter1(res[0]);
-				});
-			},
-			getTotalSupply() {
-				this.LPContract.totalSupply().then((res, err) => {
-					this.getTotalSupplyNum = this.mobileFilter1(res);
-				});
-			},
-			showChange(e) {
-				if (e.detail.value == 0) {
-					return;
-				}
-				let nowValue = new bignumberJS(parseFloat(e.detail.value)).shiftedBy(18);
-				let newNum = this.wbnbLpNum * nowValue / this.DawkoinLpNum;
-				this.fromCoinNum = new bignumberJS(newNum).shiftedBy(-18).toNumber();
-			},
-			showTwoChange(e) {
-				if (e.detail.value == 0) {
-					return;
-				}
-				let nowValue = new bignumberJS(parseFloat(e.detail.value)).shiftedBy(18);
-				let newNum = this.DawkoinLpNum * nowValue / this.wbnbLpNum;
-				this.toCoinNum = new bignumberJS(newNum).shiftedBy(-18).toNumber();
+			backGo() {
+				uni.navigateBack();
 			},
 			mobileFilter1(val) {
 				let inNumber = val.toString();
@@ -278,20 +301,6 @@
 					return parseInt(num)
 				} else {
 					return Number(num)
-				}
-			},
-			async Init(callback) {
-				if (typeof window.Turing === "undefined") {
-					uni.showToast({
-						title: '请安装Turing Wallet',
-						icon: "none"
-					})
-				} else {
-					await window.Turing.connect();
-					let wert = await window.Turing.getAddress();
-					this.myAddress = wert.tbcAddress;
-					console.log(this.myAddress)
-					callback();
 				}
 			}
 		}
@@ -307,6 +316,7 @@
 		position: relative;
 		background-color: #000;
 		padding-bottom: 30upx;
+
 		.backTitle {
 			margin: 38rpx 44rpx;
 
@@ -529,59 +539,71 @@
 		width: 60rpx;
 		height: 60rpx;
 	}
-	.poolTitle{
+
+	.poolTitle {
 		position: relative;
 		text-align: center;
 		margin-bottom: 30upx;
-		.back{
+
+		.back {
 			position: absolute;
 			left: 0;
 			top: 0;
-			image{
+
+			image {
 				width: 40upx;
 				height: 40upx;
 			}
 		}
-		.title{
+
+		.title {
 			color: #fff;
 		}
 	}
-	.clientText{
+
+	.clientText {
 		color: #fff;
 		text-align: center;
 		font-size: 24upx;
 		margin-top: 20upx;
 	}
-	.client{
-		.samll{
+
+	.client {
+		.samll {
 			color: #fff;
 			text-align: center;
 			font-size: 24upx;
 			margin-top: 20upx;
 		}
-		.text{
+
+		.text {
 			color: #00DEA1;
 			text-align: center;
 			font-size: 24upx;
 			margin-top: 20upx;
 		}
 	}
-	.tipMsg{
+
+	.tipMsg {
 		background-color: #00dea1;
 		padding: 15upx;
 		border-radius: 15upx;
 		margin-bottom: 20upx;
-		.text{
+
+		.text {
 			font-size: 24upx;
 		}
 	}
-	.sharePool{
+
+	.sharePool {
 		margin-top: 30upx;
-		.title{
+
+		.title {
 			font-size: 26upx;
 			color: #fff;
 		}
-		.shareList{
+
+		.shareList {
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -589,7 +611,8 @@
 			padding: 30upx 0;
 			border-radius: 15upx;
 			margin-top: 20upx;
-			.item{
+
+			.item {
 				width: 33.3%;
 				color: #fff;
 				text-align: center;
@@ -597,12 +620,14 @@
 			}
 		}
 	}
-	.shareBtn{
+
+	.shareBtn {
 		background-color: #00dea1;
 		padding: 30upx;
 		margin-top: 40upx;
 		border-radius: 50upx;
-		.text{
+
+		.text {
 			font-size: 30upx;
 			color: #fff;
 			text-align: center;

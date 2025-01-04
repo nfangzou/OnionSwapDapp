@@ -86,11 +86,7 @@
 
 <script>
 	import back from "@/component/back/index.vue";
-	import abi from "../../abi/abi.json";
-	import abiTwo from "../../abi/abiTwo.json";
-	import toAbi from "../../abi/toAbi.json";
-	import coinAbi from "../../abi/coinAbi.json";
-	import newCoinAbi from "../../abi/newCoinAbi.json";
+	import {mapState,mapMutations,mapGetters} from 'vuex'
 	import bignumberJS from "bignumber.js"
 	import wLoading from "@/component/w-loading/w-loading.vue";
 	export default {
@@ -100,7 +96,6 @@
 		data() {
 			return {
 				myAddress: '',
-				tabData: ['添加LP','移除LP','移除分红LP'],
 				tabIndex: 0,
 				wbnbBalanceNum: 0,
 				DawkoinBalanceNum: 0,
@@ -121,27 +116,25 @@
 				userLpCount: 0
 			}
 		},
+		computed: {
+			...mapGetters(['getWallet','getCoin'])
+		},
+		watch: {
+			getWallet(val, oldVal){
+				this.Init();
+			}
+		},
 		onLoad() {
-			let _this = this;
-			_this.Init(() => {
-				let provider = new _this.ethers.providers.Web3Provider(window.ethereum);
-				_this.contract = new _this.ethers.Contract(_this.contractAddress, abi, provider.getSigner());
-				_this.wbnbContract = new _this.ethers.Contract(_this.wbnbContractAddress, coinAbi, provider.getSigner());
-				_this.DawkoinbContract = new _this.ethers.Contract(_this.DawkoinContractAddress, coinAbi, provider.getSigner());
-				_this.LPContract = new _this.ethers.Contract(_this.lpContractAddress, newCoinAbi, provider.getSigner());
-				_this.twoContract = new _this.ethers.Contract(_this.twoContractAddress, toAbi, provider.getSigner());
-				_this.getWBNBAllowance();
-				_this.getDawkoinAllowance();
-				_this.getWbnbBalance();
-				_this.getDawkoinBalance();
-				_this.getLPContent();
-				_this.getLPComputer();
-				_this.getMyLpCount();
-				_this.getTotalSupply();
-				_this.getLPAllowance();
-			});
+			this.Init();
 		},
 		methods: {
+			Init() {
+				if (uni.getStorageSync('walletAddress') == undefined || uni.getStorageSync('walletAddress') == '') {
+					console.log("Please connect wallet!")
+				} else {
+					this.myAddress = uni.getStorageSync('walletAddress');
+				}
+			},
 			url(pathVal){
 				uni.navigateTo({
 				   url: pathVal
@@ -185,65 +178,6 @@
 					})
 				}
 			},
-			getLPAllowance() {
-				this.LPContract.allowance(this.myAddress, this.contractAddress).then(res => {
-					let amount = this.mobileFilter1(res);
-					if (parseInt(amount) <= parseInt(0)) {
-						this.ApproveLP = false;
-					} else {
-						this.ApproveLP = true;
-					}
-				}).catch(err => {
-					console.log(err)
-					uni.showToast({
-						title: err,
-						icon: "none"
-					})
-				})
-			},
-			async clickApoveLP() {
-				this.$refs.loading.open();
-				let addroveData = await this.LPContract.approve(this.contractAddress, this.lamount).catch(
-					err => {
-						uni.showToast({
-							title: '授权失败',
-							icon: "none"
-						})
-					})
-				if (addroveData) {
-					try {
-						await addroveData.wait();
-						this.$refs.loading.close();
-						uni.showToast({
-							title: '授权成功',
-							icon: "none"
-						})
-						this.getLPAllowance();
-					} catch (e) {
-						this.$refs.loading.close();
-						uni.showToast({
-							title: '授权失败',
-							icon: "none"
-						})
-					}
-				}
-			},
-			getMyLpCount() {
-				this.twoContract.getMyLp(this.myAddress).then((res, err) => {
-					this.userLpCount = this.mobileFilter1(res);
-				});
-			},
-			getLPComputer() {
-				this.LPContract.getReserves().then((res, err) => {
-					this.wbnbLpNum = this.mobileFilter1(res[1]);
-					this.DawkoinLpNum = this.mobileFilter1(res[0]);
-				});
-			},
-			getTotalSupply() {
-				this.LPContract.totalSupply().then((res, err) => {
-					this.getTotalSupplyNum = this.mobileFilter1(res);
-				});
-			},
 			showChange(e) {
 				if(e.detail.value == 0) {
 					return ;
@@ -260,192 +194,6 @@
 				let newNum = this.DawkoinLpNum*nowValue/this.wbnbLpNum;
 				this.toCoinNum = new bignumberJS(newNum).shiftedBy(-18).toNumber();
 			},
-			getWBNBAllowance() {
-				this.wbnbContract.allowance(this.myAddress, this.contractAddress).then(res => {
-					let amount = this.mobileFilter1(res);
-					if (parseInt(amount) <= parseInt(0)) {
-						this.ApproveWbnb = false;
-					} else {
-						this.ApproveWbnb = true;
-					}
-				}).catch(err => {
-					console.log(err)
-					uni.showToast({
-						title: err,
-						icon: "none"
-					})
-				})
-			},
-			getDawkoinAllowance() {
-				this.DawkoinbContract.allowance(this.myAddress, this.contractAddress).then(res => {
-					let amount = this.mobileFilter1(res);
-					if (parseInt(amount) <= parseInt(0)) {
-						this.ApproveDawkoin = false;
-					} else {
-						this.ApproveDawkoin = true;
-					}
-				}).catch(err => {
-					console.log(err)
-					uni.showToast({
-						title: err,
-						icon: "none"
-					})
-				})
-			},
-			async clickApoveWbnb() {
-				this.$refs.loading.open();
-				let addroveData = await this.wbnbContract.approve(this.contractAddress, this.lamount).catch(
-					err => {
-						uni.showToast({
-							title: '授权失败',
-							icon: "none"
-						})
-					})
-				if (addroveData) {
-					try {
-						await addroveData.wait();
-						this.$refs.loading.close();
-						uni.showToast({
-							title: '授权成功',
-							icon: "none"
-						})
-						this.getWBNBAllowance();
-					} catch (e) {
-						this.$refs.loading.close();
-						uni.showToast({
-							title: '授权失败',
-							icon: "none"
-						})
-					}
-				}
-			},
-			async clickApoveDawkoin() {
-				this.$refs.loading.open();
-				let addroveData = await this.DawkoinbContract.approve(this.contractAddress, this.lamount).catch(
-					err => {
-						uni.showToast({
-							title: '授权失败',
-							icon: "none"
-						})
-					})
-				if (addroveData) {
-					try {
-						await addroveData.wait();
-						this.$refs.loading.close();
-						uni.showToast({
-							title: '授权成功',
-							icon: "none"
-						})
-						this.getDawkoinAllowance();
-					} catch (e) {
-						this.$refs.loading.close();
-						uni.showToast({
-							title: '授权失败',
-							icon: "none"
-						})
-					}
-				}
-			},
-			async inClick() {
-				this.$refs.loading.open();
-				let slipNewNum = this.slipCrrent == 3?this.selfSlip:this.slipData[this.slipCrrent];
-				let newToCoinNum = new bignumberJS(this.toCoinNum).shiftedBy(18).toFixed(0).toString();
-				let newFromCoinNum = new bignumberJS(this.fromCoinNum).shiftedBy(18).toFixed(0).toString();
-				let minToNum = new bignumberJS(this.toCoinNum * (1 - slipNewNum/100)).shiftedBy(18).toFixed(0).toString();
-				let minFromNum = new bignumberJS(this.fromCoinNum * (1 - slipNewNum/100)).shiftedBy(18).toFixed(0).toString();
-				let res=await this.contract.addLp(newToCoinNum, newFromCoinNum, minToNum, minFromNum).catch(err=>{
-					this.$refs.loading.close();
-					let errJson = JSON.parse(JSON.stringify(err));
-					console.log(errJson)
-					uni.showToast({
-						title: errJson.reason,
-						icon: "none"
-					})
-				})
-				if(res){
-					await res.wait();
-					this.$refs.loading.close();
-					uni.showToast({
-						title: "成功",
-						icon: "none"
-					})
-				}
-			},
-			async closeLP() {
-				this.$refs.loading.open();
-				let slipNewNumClose = this.slipCrrent == 3?this.selfSlip:this.slipData[this.slipCrrent];
-				let removeLpAmount = new bignumberJS(this.lpNum*(this.sliderValue/100)).shiftedBy(18).toFixed(0).toString();
-				let newToLpCoinNum = new bignumberJS((this.wbnbLpNum*this.lpNum*(this.sliderValue/100) / this.getTotalSupplyNum) * (1 - slipNewNumClose/100)).shiftedBy(18).toFixed(0).toString();
-				let newFromLpCoinNum = new bignumberJS((this.DawkoinLpNum*this.lpNum*(this.sliderValue/100) / this.getTotalSupplyNum) * (1 - slipNewNumClose/100)).shiftedBy(18).toFixed(0).toString();
-				let res=await this.contract.removeLp(removeLpAmount, newFromLpCoinNum, newToLpCoinNum).catch(err=>{
-					this.$refs.loading.close();
-					let errJson = JSON.parse(JSON.stringify(err));
-					console.log(errJson)
-					uni.showToast({
-						title: errJson.reason,
-						icon: "none"
-					})
-				})
-				if(res){
-					await res.wait();
-					this.$refs.loading.close();
-					this.getLPComputer();
-					this.getTotalSupply();
-					this.getLPContent();
-					uni.showToast({
-						title: "成功",
-						icon: "none"
-					})
-				}
-			},
-			async closeTwoLP() {
-				this.$refs.loading.open();
-				let slipNewNumClose = this.slipCrrent == 3?this.selfSlip:this.slipData[this.slipCrrent];
-				let removeLpAmount = new bignumberJS(this.userLpCount*(this.sliderValue/100)).shiftedBy(18).toFixed(0).toString();
-				let newToLpCoinNum = new bignumberJS((this.wbnbLpNum*this.userLpCount*(this.sliderValue/100) / this.getTotalSupplyNum) * (1 - slipNewNumClose/100)).shiftedBy(18).toFixed(0).toString();
-				let newFromLpCoinNum = new bignumberJS((this.DawkoinLpNum*this.userLpCount*(this.sliderValue/100) / this.getTotalSupplyNum) * (1 - slipNewNumClose/100)).shiftedBy(18).toFixed(0).toString();
-				console.log(removeLpAmount)
-				console.log(newToLpCoinNum)
-				console.log(newFromLpCoinNum)
-				let res=await this.twoContract.removeLp(removeLpAmount, newFromLpCoinNum, newToLpCoinNum).catch(err=>{
-					this.$refs.loading.close();
-					let errJson = JSON.parse(JSON.stringify(err));
-					console.log(errJson)
-					uni.showToast({
-						title: errJson.reason,
-						icon: "none"
-					})
-				})
-				if(res){
-					await res.wait();
-					this.$refs.loading.close();
-					this.getLPComputer();
-					this.getTotalSupply();
-					this.getMyLpCount();
-					uni.showToast({
-						title: "成功",
-						icon: "none"
-					})
-				}
-			},
-			clickBack() {
-				uni.navigateBack();
-			},
-			getLPContent() {
-				this.LPContract.balanceOf(this.myAddress).then((res, err) => {
-					this.lpNum = this.mobileFilter1(res);
-				});
-			},
-			getDawkoinBalance() {
-				this.DawkoinbContract.balanceOf(this.myAddress).then((res, err) => {
-					this.DawkoinBalanceNum = this.mobileFilter1(res);
-				});
-			},
-			getWbnbBalance() {
-				this.wbnbContract.balanceOf(this.myAddress).then((res, err) => {
-					this.wbnbBalanceNum = this.mobileFilter1(res);
-				});
-			},
 			mobileFilter1(val){
 				let inNumber = val.toString();
 				let num=this.ethers.utils.formatUnits(inNumber);
@@ -453,17 +201,6 @@
 					return parseInt(num)
 				}else{
 					return Number(num)
-				}
-			},
-			async Init(callback) {
-				if (typeof window.ethereum === "undefined") {
-					console.log("请安装MetaMask")
-				} else {
-					let wert = new this.ethers.providers.Web3Provider(window.ethereum);
-					const accounts = await wert.send("eth_requestAccounts", []);
-					this.myAddress = accounts[0];
-					// this.myAddress = "0xa52266688BC1Cbec1836DaEB3f848ef6B5634D02";
-					callback();
 				}
 			}
 		}
