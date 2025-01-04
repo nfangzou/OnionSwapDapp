@@ -64,17 +64,7 @@
 				</view>
 				<view class="btnGo">
 					<view class="btn" @tap="inClick">
-						添加
-					</view>
-				</view>
-				<view class="btnGo">
-					<view class="btn" @tap="inAddImn">
-						创建集合
-					</view>
-				</view>
-				<view class="btnGo">
-					<view class="btn" @tap="inAddCoin">
-						创建代币
+						兑换
 					</view>
 				</view>
 			</view>
@@ -108,16 +98,6 @@
 				selfSlip: '',
 				toCoinNum: '',
 				fromCoinNum: '',
-				lpNum: 0,
-				ApproveWbnb: false,
-				ApproveDawkoin: false,
-				lamount: "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-				sliderValue: 0,
-				getTotalSupplyNum: 0,
-				DawkoinLpNum: 0,
-				wbnbLpNum: 0,
-				ApproveLP: false,
-				userLpCount: 0,
 
 
 				fromCur: {
@@ -180,9 +160,9 @@
 			},
 			backInfo(e) {
 				if (this.goType == 'from') {
-					this.fromCur.name = e;
+					this.fromCur = e;
 				} else {
-					this.toCur.name = e;
+					this.toCur = e;
 				}
 				this.$refs.popup.close();
 			},
@@ -206,55 +186,36 @@
 					_this.$refs.loading.close();
 				}, 1000);
 			},
-			async inAddImn() {
-				const dataInfo = {
-					collectionName: "TC",
-					description: "test",
-					supply: 1000000000,
-					file: "234234234"
-				};
-				console.log(JSON.stringify(dataInfo))
-				const params = [{
-					flag: "COLLECTION_CREATE",
-					collection_data: JSON.stringify(dataInfo)
-				}];
-				const { txid, rawtx } = await window.Turing.sendTransaction(params);
-				console.log(txid)
-				console.log(rawtx)
-			},
-			async inAddCoin() {
-				const dataInfo = {
-					"nftName": 'QYZ',
-					"symbol": 'coin_qyz',
-					"description": 'test',
-					"attributes": '10',
-					"file": ''
-				};
-				console.log(JSON.stringify(dataInfo))
-				const params = [{
-					flag: 'NFT_CREATE',
-					nft_data: JSON.stringify(dataInfo),
-					collection_id: "1"
-				}];
-				const { txid, rawtx } = await window.Turing.sendTransaction(params);
-				console.log(txid)
-				console.log(rawtx)
-			},
 			async inClick() {
+				if(this.myAddress == '') {
+					uni.showToast({
+						title: '请连接钱包',
+						icon: "none"
+					})
+					return ;
+				}
+				if(this.toCur.address == '') {
+					uni.showToast({
+						title: '请选择代币',
+						icon: "none"
+					})
+					return ;
+				}
 				if (this.fromCur.name == 'TBC') {
 					const params = [{
-						flag: "POOLNFT_SWAP_TO_TOKEN",
-						nft_contract_address: "",
-						address: "",
-						ft_amount: this.fromCoinNum
+						flag: "POOLNFT_SWAP_TO_TOKEN", // 
+						nft_contract_address: this.toCur.address,
+						address: this.myAddress,
+						tbc_amount: JSON.parse(this.fromCoinNum)
 					}];
+					console.log(params)
 					const { txid, rawtx } = await window.Turing.sendTransaction(params);
 				} else if(this.toCur.name == 'TBC') {
 					const params = [{
 						flag: "POOLNFT_SWAP_TO_TBC",
-						nft_contract_address: "",
-						address: "",
-						ft_amount: this.fromCoinNum
+						nft_contract_address: this.fromCur.address,
+						address: this.myAddress,
+						ft_amount: JSON.parse(this.fromCoinNum)
 					}];
 					const { txid, rawtx } = await window.Turing.sendTransaction(params);
 				}
@@ -275,30 +236,8 @@
 					})
 				}
 			},
-
-			getMyLpCount() {
-				this.twoContract.getMyLp(this.myAddress).then((res, err) => {
-					this.userLpCount = this.mobileFilter1(res);
-				});
-			},
-			getLPComputer() {
-				this.LPContract.getReserves().then((res, err) => {
-					this.wbnbLpNum = this.mobileFilter1(res[1]);
-					this.DawkoinLpNum = this.mobileFilter1(res[0]);
-				});
-			},
-			getTotalSupply() {
-				this.LPContract.totalSupply().then((res, err) => {
-					this.getTotalSupplyNum = this.mobileFilter1(res);
-				});
-			},
 			showChange(e) {
-				if (e.detail.value == 0) {
-					return;
-				}
-				let nowValue = new bignumberJS(parseFloat(e.detail.value)).shiftedBy(18);
-				let newNum = this.wbnbLpNum * nowValue / this.DawkoinLpNum;
-				this.fromCoinNum = new bignumberJS(newNum).shiftedBy(-18).toNumber();
+				console.log(e)
 			},
 			showTwoChange(e) {
 				if (e.detail.value == 0) {

@@ -20,36 +20,14 @@
 				Token
 			</view>
 			<view class="list">
-				<view class="listOne" @tap="clickNowCoin('Btc')">
+				<view class="listOne" v-for="(item, index) in tokenList" :key="index" @tap="clickNowCoin(item)">
 					<image src="../../static/tel.png" mode=""></image>
 					<view class="coinName">
 						<view class="topCoin">
-							Btc
+							{{item.name}}
 						</view>
 						<view class="bottomCoin">
-							Tbc Coin
-						</view>
-					</view>
-				</view>
-				<view class="listOne" @tap="clickNowCoin('TBC')">
-					<image src="../../static/tel.png" mode=""></image>
-					<view class="coinName">
-						<view class="topCoin">
-							TBC
-						</view>
-						<view class="bottomCoin">
-							Tbc Coin
-						</view>
-					</view>
-				</view>
-				<view class="listOne" @tap="clickNowCoin('USDT')">
-					<image src="../../static/tel.png" mode=""></image>
-					<view class="coinName">
-						<view class="topCoin">
-							USDT
-						</view>
-						<view class="bottomCoin">
-							Tbc Coin
+							{{item.symbol}}
 						</view>
 					</view>
 				</view>
@@ -65,7 +43,35 @@
 		},
 		data() {
 			return {
-				
+				tokenList: [
+					{
+						name: 'TBC',
+						symbol: 'test_coin',
+						address: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+						chainId: 1,
+						decimals: 18,
+						balance: '',
+						logoURI: 'https://raw.githubusercontent.com/Sexy-J/JieSwap/main/src/assets/img/bnb.png',
+					},
+					{
+						name: 'QYZ',
+						symbol: 'test_coin',
+						address: '57d4a323dc923c680a3b38b78c217d592f75962b888a0c5b301e586fd0479d94',
+						chainId: 1,
+						decimals: 18,
+						balance: '',
+						logoURI: 'https://raw.githubusercontent.com/Sexy-J/JieSwap/main/src/assets/img/bnb.png',
+					},
+					{
+						name: 'YM',
+						symbol: 'test_coin',
+						address: '1333e38f8c4bb05a96f823f14feefe30d3b34b82d0f66a5e4fcb31761dadf14d',
+						chainId: 1,
+						decimals: 18,
+						balance: '',
+						logoURI: 'https://raw.githubusercontent.com/Sexy-J/JieSwap/main/src/assets/img/bnb.png',
+					},
+				]
 			};
 		},
 		methods: {
