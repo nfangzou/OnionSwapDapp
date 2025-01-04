@@ -13,6 +13,12 @@
 			}
 		},
 		{
+			"path": "pages/pool/poolAdd",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
 			"path": "pages/stake/stake",
 			"style": {
 				"navigationStyle": "custom"

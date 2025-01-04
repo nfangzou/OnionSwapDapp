@@ -1,59 +1,71 @@
 <template>
 	<view class="content">
-		<back ref="child" :text="myAddress" :type="1" :classType="true" subheading="true" @getMsg="getMsg"></back>
-		<view class="positions">
-			<view class="left">
-				<view class="item">
-					ALL Pools
-				</view>
-				<view class="item" @click="positions">
-					My Positions
-				</view>
-			</view>
-			<view class="right">
-				<view class="item" @click="url('/pages/pool/poolAdd')">
-					Import/Create pool
-				</view>
-				<view class="item">
-					Add Liquidity
-				</view>
-			</view>
-		</view>
-		
+		<back ref="child" text="" :text="myAddress" :type="1" :classType="true" subheading="true" @getMsg="getMsg"></back>
 		<view class="centerBox">
+			<view class="poolTitle">
+				<view class="back">
+					<image src="../../static/back1.png" mode=""></image>
+				</view>
+				<view class="title">
+					import V2 Pool
+				</view>
+			</view>
 			<view class="loadIcon">
 				<image @tap="loadClick" src="../../static/load.png" mode=""></image>
 			</view>
-			<view class="outLP">
-				<view class="titleBox">
-					<view class="one" style="margin-bottom: 10rpx;">
-						流动性
+			<view class="lpBox">
+				<view class="coinBox">
+					<view class="coinNameBox">
+						<view class="coinSmall">
+							<text>WBNB</text>
+							<image class="slectIcon" src="../../static/bottomIcon.png" mode=""></image>
+						</view>
 					</view>
-					<view class="two">
-						{{Math.floor(lpNum*10000)/10000}} $
-					</view>
-				</view>
-				<view class="infoBox">
-					<view class="top1" style="display: flex;justify-content: left;">
-						<text style="margin-right: 40rpx;">撤出份额</text>
-						<text style="font-weight: bold;">{{sliderValue}} %</text>
-					</view>
-					<uv-slider v-model="sliderValue" @input="slideChange" step="5" backgroundColor="rgba(255, 255, 255, 0.4)" min="0" max="100"></uv-slider>
-				</view>
-				<view class="infoBox">
-					<view class="top1">
-						<text>WBNB</text>
-						<text>{{(wbnbLpNum*lpNum*(sliderValue/100) / getTotalSupplyNum).toFixed(6)}}</text>
-					</view>
-					<view class="top1">
-						<text>CPX</text>
-						<text>{{(DawkoinLpNum*lpNum*(sliderValue/100) / getTotalSupplyNum).toFixed(6)}}</text>
+					<view class="coinMax" @tap="toCoinNum = wbnbBalanceNum">
+						MAX
 					</view>
 				</view>
-				<view class="endingBox">
-					流动池中的份额：{{Math.floor(lpNum/getTotalSupplyNum*1000000)/10000}}%
+				<view class="inputToBox">
+					<view class="blanceTitle">
+						余额：{{wbnbBalanceNum}}
+					</view>
+					<view class="inputBody">
+						<input v-model="toCoinNum" @input="showChange" type="text" />
+					</view>
 				</view>
-				<view class="SlippageBox2">
+				<view class="centerIcon">
+					<view class="changebox">
+						<image src="../../static/icon2.png" mode=""></image>
+					</view>
+				</view>
+				<view class="coinBox">
+					<view class="coinNameBox">
+						<view class="coinSmall">
+							<text>CPX</text>
+							<image class="slectIcon" src="../../static/bottomIcon.png" mode=""></image>
+						</view>
+					</view>
+				</view>
+				<view class="inputToBox">
+					<view class="blanceTitle">
+						余额：{{DawkoinBalanceNum}}
+					</view>
+					<view class="inputBody">
+						<input v-model="fromCoinNum" @input="showTwoChange" type="text" />
+					</view>
+				</view>
+				<view class="clientText" v-if="poolType==1">
+					Select a token to find your v2 liquidity
+				</view>
+				<view class="client" v-if="poolType==2">
+					<view class="samll">
+						No pool found
+					</view>
+					<view class="text">
+						Create pool
+					</view>
+				</view>
+				<view class="SlippageBox" v-if="poolType==3">
 					<view class="boxTitle">
 						设置滑点
 					</view>
@@ -66,20 +78,24 @@
 						</view>
 					</view>
 				</view>
-				<view class="btnGo2">
-					<view class="btn" v-if="!ApproveLP" @tap="clickApoveLP">
-						授权LP代币
+				<view class="" v-if="poolType==3">
+					<view class="btnGoAppove" v-if="!ApproveWbnb || !ApproveDawkoin">
+						<view class="btn" style="margin-right: 20rpx;" @tap="clickApoveWbnb" v-if="!ApproveWbnb">
+							授权WBNB
+						</view>
+						<view class="btn" @tap="clickApoveDawkoin" v-if="!ApproveDawkoin">
+							授权CPX
+						</view>
 					</view>
-					<view class="btn" @tap="closeLP" v-else>
-						移除
+					<view class="btnGo" v-else>
+						<view class="btn" @tap="inClick">
+							添加
+						</view>
 					</view>
 				</view>
 			</view>
 		</view>
-		<uni-popup ref="popup" type="center" background-color="#fff">
-			打开弹窗
-		</uni-popup>
-
+		
 		<w-loading text="" mask="true" click="false" ref="loading"></w-loading>
 	</view>
 </template>
@@ -118,7 +134,8 @@
 				DawkoinLpNum: 0,
 				wbnbLpNum: 0,
 				ApproveLP: false,
-				userLpCount: 0
+				userLpCount: 0,
+				poolType:1
 			}
 		},
 		onLoad() {
@@ -142,14 +159,6 @@
 			});
 		},
 		methods: {
-			url(pathVal){
-				uni.navigateTo({
-				   url: pathVal
-				})
-			},
-			positions(){
-				this.$refs.popup.open('center')
-			},
 			clickTab(val) {
 				this.tabIndex = val;
 			},
@@ -473,7 +482,6 @@
 <style lang="less" scoped>
 	.content {
 		width: 100%;
-		box-sizing: border-box;
 		height: 1700rpx;
 		min-height: 100vh;
 		box-sizing: border-box;
@@ -487,6 +495,7 @@
 			}
 		}
 		.centerBox{
+			max-width: 750rpx;
 			margin: 40rpx 30rpx 0 30rpx;
 			border: 2rpx solid #e5e5e5;
 			border-radius: 20rpx;
@@ -757,52 +766,41 @@
 		width: 60rpx;
 		height: 60rpx;
 	}
-	.positions{
-		box-sizing: border-box;
-		margin: 0 30upx;
-		border-radius: 30upx;
-		// border: 2upx solid #fff;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		color: #fff;
-		.left{
-			width: 50%;
-			display: flex;
-			align-items: center;
-			box-sizing: border-box;
-			.item{
-				display: flex;
-				align-items: center;
-				font-size: 24upx;
-				color: #000;
-				padding: 15upx;
-				background-color: #fff;
-				border-radius: 30upx;
-				margin-right: 30upx;
-			}
-			.item:nth-child{
-				margin-right: 0upx;
+	.poolTitle{
+		position: relative;
+		text-align: center;
+		margin-bottom: 30upx;
+		.back{
+			position: absolute;
+			left: 0;
+			top: 0;
+			image{
+				width: 40upx;
+				height: 40upx;
 			}
 		}
-		.right{
-			width: 50%;
-			display: flex;
-			align-items: center;
-			justify-content: end;
-			.item{
-				display: flex;
-				align-items: center;
-				font-size: 24upx;
-				color: #000;
-				padding: 15upx;
-				background-color: #fff;
-				border-radius: 30upx;
-				margin-left: 30upx;
-			}
-			.item:nth-child{
-				margin-left: 0upx;
-			}
+		.title{
+			color: #fff;
+		}
+	}
+	.clientText{
+		color: #fff;
+		text-align: center;
+		font-size: 24upx;
+		margin-top: 20upx;
+	}
+	.client{
+		.samll{
+			color: #fff;
+			text-align: center;
+			font-size: 24upx;
+			margin-top: 20upx;
+		}
+		.text{
+			color: #00DEA1;
+			text-align: center;
+			font-size: 24upx;
+			margin-top: 20upx;
 		}
 	}
 </style>
