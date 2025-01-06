@@ -19,7 +19,28 @@
 				</view>
 			</view>
 		</view>
-		
+		<view class="poolBodyList">
+			<view class="">
+				ft_a_name: QYZ
+			</view>
+			<view class="">
+				ft_a_balance: {{poolData.ft_a_balance/1000000}}
+			</view>
+			<view class="">
+				tbc_balance: {{poolData.tbc_balance/1000000}}
+			</view>
+			<view class="">
+				ft_lp_balance: {{poolData.ft_lp_balance/1000000}}
+			</view>
+			<view class="btnList">
+				<view class="btn" @tap="addPool">
+					加池子
+				</view>
+				<view class="btn" @tap="reducePool">
+					撤池子
+				</view>
+			</view>
+		</view>
 		<view class="centerBox">
 			<view class="loadIcon">
 				<image @tap="loadClick" src="../../static/load.png" mode=""></image>
@@ -113,7 +134,8 @@
 				DawkoinLpNum: 0,
 				wbnbLpNum: 0,
 				ApproveLP: false,
-				userLpCount: 0
+				userLpCount: 0,
+				poolData: []
 			}
 		},
 		computed: {
@@ -133,12 +155,66 @@
 					console.log("Please connect wallet!")
 				} else {
 					this.myAddress = uni.getStorageSync('walletAddress');
+					this.getPoolInfo();
 				}
 			},
 			url(pathVal){
 				uni.navigateTo({
 				   url: pathVal
 				})
+			},
+			async addPool() {
+				const params = [{
+					flag: "POOLNFT_LP_INCREASE",
+					nft_contract_address: "07546166e456bd4a04ab11962c0ba0362277694a7cc7a12d5800276df2f1f31b",
+					address: this.myAddress,
+					tbc_amount: 1,
+				}];
+				const { txid, rawtx } = await window.Turing.sendTransaction(params);
+				if(txid) {
+					uni.showToast({
+						title: '添加成功',
+						icon: "none"
+					})
+				}
+				console.log(txid)
+				console.log(rawtx)
+				this.getPoolInfo()
+			},
+			async reducePool() {
+				const params = [{
+					flag: "POOLNFT_LP_CONSUME",
+					nft_contract_address: "07546166e456bd4a04ab11962c0ba0362277694a7cc7a12d5800276df2f1f31b",
+					address: this.myAddress,
+					ft_amount: 5.5,
+				}];
+				const { txid, rawtx } = await window.Turing.sendTransaction(params);
+				if(txid) {
+					uni.showToast({
+						title: '添加成功',
+						icon: "none"
+					})
+				}
+				console.log(txid)
+				console.log(rawtx)
+				this.getPoolInfo()
+			},
+			getPoolInfo() {
+				uni.request({
+					url: this.urlApi + 'ft/pool/nft/info/contract/id/07546166e456bd4a04ab11962c0ba0362277694a7cc7a12d5800276df2f1f31b',
+					method: 'GET',
+					header: {
+						"Content-Type": "application/json; charset=UTF-8"
+					},
+					data: {
+					},
+					success: (res) => {
+						console.log(res)
+						if(res.statusCode == 200) {
+							this.poolData = res.data;
+						}
+					}
+				});
 			},
 			positions(){
 				this.$refs.popup.open('center')
@@ -221,6 +297,24 @@
 			image{
 				width: 60rpx;
 				height: 54rpx;
+			}
+		}
+		.poolBodyList{
+			margin: 40rpx 30rpx 20rpx 30rpx;
+			padding: 10rpx;
+			border: 2rpx solid #fff;
+			border-radius: 20rpx;
+			color: #fff;
+			.btnList{
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+				margin-top: 20rpx;
+				.btn{
+					padding: 20rpx;
+					border: 2rpx solid #fff;
+					border-radius: 20rpx;
+				}
 			}
 		}
 		.centerBox{

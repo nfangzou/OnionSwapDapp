@@ -83,6 +83,7 @@
 <script>
 	import back from "@/component/back/index.vue";
 	import selectCoin from "@/component/selectCoin/index.vue";
+	import swal from 'sweetalert';
 	import bignumberJS from "bignumber.js"
 	import {mapState,mapMutations,mapGetters} from 'vuex'
 	import wLoading from "@/component/w-loading/w-loading.vue";

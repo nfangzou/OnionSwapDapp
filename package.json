@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "aes-js": "^3.1.2",
+    "sweetalert": "^2.1.2",
     "tbc-contract": "^1.1.1",
     "tbc-lib-js": "^1.0.20",
     "ts-loader": "^9.5.1",

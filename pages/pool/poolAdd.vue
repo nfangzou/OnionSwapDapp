@@ -29,7 +29,7 @@
 							<image class="slectIcon" src="../../static/bottomIcon.png" mode=""></image>
 						</view>
 					</view>
-					<view class="coinMax" @tap="toCoinNum = tbcBalance">
+					<view class="coinMax" @tap="fromCoinNum = fromCur.balance">
 						MAX
 					</view>
 				</view>
@@ -104,14 +104,30 @@
 						</view>
 					</view>
 				</view>
-				<view class="shareBtn" @tap="clickSupply" v-if="poolType==3">
+				<view class="shareBtn" @tap="clickShowSupply" v-if="poolType==3">
 					<view class="text">
 						Supply
 					</view>
 				</view>
 			</view>
 		</view>
-
+		<uni-popup ref="popup2" type="center" :mask-background-color="activeCole" :mask-click="true">
+			<view class="maskRe">
+				<view class="title">
+					<view class="left">
+					</view>
+					<view class="center">
+						您正在建立一个池
+					</view>
+					<view class="right" @tap="closePup2">
+						<image src="../../static/OKEX.png" mode=""></image>
+					</view>
+				</view>
+				<view class="tokenList">
+					
+				</view>
+			</view>
+		</uni-popup>
 		<uni-popup ref="popup" type="center" :mask-background-color="activeCole" :mask-click="true">
 			<select-coin @clickClose="closePup" @clickBackInfo="backInfo"></select-coin>
 		</uni-popup>
@@ -121,6 +137,7 @@
 
 <script>
 	import back from "@/component/back/index.vue";
+	import swal from 'sweetalert';
 	import selectCoin from "@/component/selectCoin/index.vue";
 	import bignumberJS from "bignumber.js"
 	import {
@@ -160,7 +177,7 @@
 				fromCur: {
 					name: 'TBC',
 					symbol: 'test_coin',
-					address: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+					address: '',
 					chainId: 56,
 					decimals: 18,
 					balance: '',
@@ -199,14 +216,16 @@
 					console.log("Please connect wallet!")
 				} else {
 					this.myAddress = uni.getStorageSync('walletAddress');
+					this.getPoolInfo();
+					this.getCoinBalance(this.fromCur,'from')
 				}
 			},
 			clickSlip(val) {
 				this.slipCrrent = val;
 			},
-			getPoolList() {
+			getPoolInfo() {
 				uni.request({
-					url: this.urlApi + '/pool/nft/info/contract/id/'+this.toCur.address,
+					url: this.urlApi + 'ft/pool/nft/info/contract/id/07546166e456bd4a04ab11962c0ba0362277694a7cc7a12d5800276df2f1f31b',
 					method: 'GET',
 					header: {
 						"Content-Type": "application/json; charset=UTF-8"
@@ -215,6 +234,9 @@
 					},
 					success: (res) => {
 						console.log(res)
+						if(res.statusCode == 200) {
+							
+						}
 					}
 				});
 			},
@@ -239,12 +261,21 @@
 			closePup(e) {
 				this.$refs.popup.close();
 			},
+			closePup2() {
+				this.$refs.popup2.close();
+			},
+			clickShowSupply() {
+				this.$refs.popup2.open();
+			},
 			async clickSupply() {
 				const params = [{
 					flag: "POOLNFT_MINT",
 					ft_contract_address: this.toCur.address,
 				}];
 				const {txid,rawtx} = await window.Turing.sendTransaction(params);
+				console.log(txid)
+				uni.setStorageSync('poolID',txid);
+				uni.setStorageSync('poolTokenName',this.toCur.name);
 				const paramsEnd = [{
 					flag: "POOLNFT_INIT",
 					nft_contract_address: txid,
@@ -253,19 +284,20 @@
 					ft_amount: JSON.parse(this.toCoinNum)
 				}];
 				const {txidEnd,rawtxEnd} = await window.Turing.sendTransaction(paramsEnd);
-				uni.showToast({
+				swal({
 					title: '添加成功',
-					icon: "none"
+					icon: "success",
 				})
 			},
 			backInfo(e) {
 				if (this.goType == 'from') {
 					this.fromCur = e;
+					this.getCoinBalance(e,'from')
 				} else {
 					this.toCur = e;
+					this.getCoinBalance(e,'to')
 				}
 				this.$refs.popup.close();
-				this.getPoolList();
 				if (this.fromCur.name && this.toCur.name) {
 					this.poolType = 2;
 				}
@@ -275,10 +307,46 @@
 				this.$refs.popup.open();
 
 			},
-			async getCoinBalance(coinInfo) {
+			getCoinBalance(coinInfo, type) {
 				if (coinInfo.name == 'TBC') {
-					let wert = await window.Turing.getBalance();
-					this.fromCur.balance = wert.tbc;
+					var nowTbc = 0;
+					uni.request({
+						url: this.urlApi + 'address/'+this.myAddress+'/get/balance',
+						method: 'GET',
+						header: {
+							"Content-Type": "application/json; charset=UTF-8"
+						},
+						data: {
+						},
+						success: (res) => {
+							if(res.statusCode == 200) {
+								if(type == 'from') {
+									this.fromCur.balance = res.data.data.balance/1000000;
+								} else{
+									this.toCur.balance = res.data.data.balance/1000000;
+								}
+							}
+						}
+					});
+				} else{
+					uni.request({
+						url: this.urlApi + 'ft/balance/address/'+this.myAddress+/contract/+coinInfo.address,
+						method: 'GET',
+						header: {
+							"Content-Type": "application/json; charset=UTF-8"
+						},
+						data: {
+						},
+						success: (res) => {
+							if(res.statusCode == 200) {
+								if(type == 'from') {
+									this.fromCur.balance = res.data.ftBalance/1000000;
+								} else{
+									this.toCur.balance = res.data.ftBalance/1000000;
+								}
+							}
+						}
+					});
 				}
 			},
 			loadClick() {
@@ -532,7 +600,35 @@
 
 		}
 	}
-
+	
+	.maskRe {
+		width: 550rpx;
+		height: 600rpx;
+		padding: 20rpx;
+		border-radius: 20rpx;
+		border: 2rpx solid #fff;
+		background-color: gray;
+		.title{
+			display: flex;
+			justify-content: space-between;
+			.left{
+				width: 50rpx;
+			}
+			.center{
+				color: #fff;
+			}
+			.right{
+				image{
+					width: 50rpx;
+					height: 50rpx;
+				}
+			}
+		}
+		.tokenList{
+			margin-top: 40rpx;
+			
+		}
+	}
 	.slideStyle {
 		background-image: url('../../static/logo.png');
 		background-size: 100% 100%;
