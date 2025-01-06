@@ -3,18 +3,13 @@
 		<back ref="child" text="" :text="myAddress" :type="1" @connectWallet="connectWallet" :classType="true"
 			subheading="true" @getMsg="getMsg">
 		</back>
-		<view class="tip">
-			<view class="text">
-				Tip: When you add liquidity,you will receive pool tokens representing your position.These tokens automatically earn fees proportional to you share of the pool,and can be redeemed at any time.
-			</view>
-		</view>
 		<view class="centerBox">
 			<view class="poolTitle">
 				<view class="back" @tap="backGo">
 					<image src="../../static/back1.png" mode=""></image>
 				</view>
 				<view class="title">
-					Add liquidity
+					import V2 Pool
 				</view>
 			</view>
 			<view class="tipMsg" v-if="poolType==3">
@@ -65,6 +60,17 @@
 					</view>
 					<view class="inputBody">
 						<input v-model="toCoinNum" type="text" />
+					</view>
+				</view>
+				<view class="clientText" v-if="poolType==1">
+					Select a token to find your v2 liquidity
+				</view>
+				<view class="client" v-if="poolType==2">
+					<view class="samll">
+						No pool found
+					</view>
+					<view class="text" @click="poolType=3">
+						Create pool
 					</view>
 				</view>
 				<view class="sharePool" v-if="poolType==3">
@@ -293,7 +299,7 @@
 				}
 				this.$refs.popup.close();
 				if (this.fromCur.name && this.toCur.name) {
-					this.poolType = 3;
+					this.poolType = 2;
 				}
 			},
 			showPupCoin(type) {
@@ -721,16 +727,6 @@
 			font-size: 30upx;
 			color: #fff;
 			text-align: center;
-		}
-	}
-	.tip{
-		background-color: rgb(247 220 222);
-		margin: 30upx;
-		padding: 15upx;
-		border-radius: 15upx;
-		.text{
-			font-size: 28upx;
-			color:rgb(234 53 53);
 		}
 	}
 </style>

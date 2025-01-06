@@ -19,6 +19,18 @@
 			}
 		},
 		{
+			"path": "pages/pool/poolCreate",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/pool/poolManage",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
 			"path": "pages/stake/stake",
 			"style": {
 				"navigationStyle": "custom"

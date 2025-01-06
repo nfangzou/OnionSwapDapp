@@ -3,45 +3,133 @@
 		<back ref="child" :text="myAddress" :type="1" :classType="true" subheading="true" @getMsg="getMsg"></back>
 		<view class="positions">
 			<view class="left">
-				<view class="item">
+				<view class="item" :class="poolType==1?'poolHovers':''" @click="poolType=1">
 					ALL Pools
 				</view>
-				<view class="item" @click="positions">
+				<view class="item" :class="poolType==2?'poolHovers':''" @click="poolType=2">
 					My Positions
 				</view>
 			</view>
+		</view>
+		<view class="positions" v-if="poolType==2">
 			<view class="right">
-				<view class="item" @click="url('/pages/pool/poolAdd')">
+				<view class="item" @click="url('/pages/pool/poolCreate')">
 					Import/Create pool
 				</view>
-				<view class="item">
+				<view class="item" @click="url('/pages/pool/poolAdd')">
 					Add Liquidity
 				</view>
 			</view>
 		</view>
-		<view class="poolBodyList">
-			<view class="">
-				ft_a_name: QYZ
-			</view>
-			<view class="">
-				ft_a_balance: {{poolData.ft_a_balance/1000000}}
-			</view>
-			<view class="">
-				tbc_balance: {{poolData.tbc_balance/1000000}}
-			</view>
-			<view class="">
-				ft_lp_balance: {{poolData.ft_lp_balance/1000000}}
-			</view>
-			<view class="btnList">
-				<view class="btn" @tap="addPool">
-					加池子
-				</view>
-				<view class="btn" @tap="reducePool">
-					撤池子
+		<view class="allPoll" v-if="poolType==1">
+			<view class="poolBodyList">
+				<view class="item">
+					<view class="navBody">
+						<view class="logoPool">
+							<view class="img">
+								<image src="/static/tel.png" mode=""></image>
+							</view>
+							<view class="img">
+								<image src="/static/tel.png" mode=""></image>
+							</view>
+						</view>
+						<view class="text">
+							TBC/QYZ(ft_a_name: QYZ)
+						</view>
+					</view>
+					<view class="poolName">
+						<view class="left">
+							ft_a_balance
+						</view>
+						<view class="right">
+							{{poolData.ft_a_balance/1000000}}
+						</view>
+					</view>
+					<view class="poolName">
+						<view class="left">
+							ft_a_balance
+						</view>
+						<view class="right">
+							{{poolData.tbc_balance/1000000}}
+						</view>
+					</view>
+					<view class="poolName">
+						<view class="left">
+							ft_a_balance
+						</view>
+						<view class="right">
+							{{poolData.ft_lp_balance/1000000}}
+						</view>
+					</view>
+					<view class="btnList">
+						<view class="btn">
+							View
+						</view>
+						<!-- <view class="btn" @tap="addPool">
+							加池子
+						</view>
+						<view class="btn" @tap="reducePool">
+							撤池子
+						</view> -->
+					</view>
 				</view>
 			</view>
 		</view>
-		<view class="centerBox">
+		<view class="allPoll" v-if="poolType==2">
+			<view class="poolBodyList">
+				<view class="item">
+					<view class="navBody">
+						<view class="logoPool">
+							<view class="img">
+								<image src="/static/tel.png" mode=""></image>
+							</view>
+							<view class="img">
+								<image src="/static/tel.png" mode=""></image>
+							</view>
+						</view>
+						<view class="text">
+							TBC/QYZ(ft_a_name: QYZ)
+						</view>
+					</view>
+					<view class="poolName">
+						<view class="left">
+							ft_a_balance
+						</view>
+						<view class="right">
+							{{poolData.ft_a_balance/1000000}}
+						</view>
+					</view>
+					<view class="poolName">
+						<view class="left">
+							ft_a_balance
+						</view>
+						<view class="right">
+							{{poolData.tbc_balance/1000000}}
+						</view>
+					</view>
+					<view class="poolName">
+						<view class="left">
+							ft_a_balance
+						</view>
+						<view class="right">
+							{{poolData.ft_lp_balance/1000000}}
+						</view>
+					</view>
+					<view class="btnList" @click="url('/pages/pool/poolManage')">
+						<view class="btn">
+							Manage
+						</view>
+						<!-- <view class="btn" @tap="addPool">
+							加池子
+						</view>
+						<view class="btn" @tap="reducePool">
+							撤池子
+						</view> -->
+					</view>
+				</view>
+			</view>
+		</view>
+		<!-- <view class="centerBox">
 			<view class="loadIcon">
 				<image @tap="loadClick" src="../../static/load.png" mode=""></image>
 			</view>
@@ -96,7 +184,7 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		<uni-popup ref="popup" type="center" background-color="#fff">
 			打开弹窗
 		</uni-popup>
@@ -135,7 +223,8 @@
 				wbnbLpNum: 0,
 				ApproveLP: false,
 				userLpCount: 0,
-				poolData: []
+				poolData: [],
+				poolType:1
 			}
 		},
 		computed: {
@@ -291,7 +380,7 @@
 		min-height: 100vh;
 		box-sizing: border-box;
 		position: relative;
-		background-color: #000;
+		background-color: rgba(242, 229, 213);
 		.backTitle{
 			margin: 38rpx 44rpx;
 			image{
@@ -301,19 +390,58 @@
 		}
 		.poolBodyList{
 			margin: 40rpx 30rpx 20rpx 30rpx;
-			padding: 10rpx;
 			border: 2rpx solid #fff;
 			border-radius: 20rpx;
 			color: #fff;
-			.btnList{
-				display: flex;
-				justify-content: space-around;
-				align-items: center;
-				margin-top: 20rpx;
-				.btn{
-					padding: 20rpx;
-					border: 2rpx solid #fff;
-					border-radius: 20rpx;
+			overflow: hidden;
+			background-color: #fff;
+			.item{
+				.navBody{
+					padding: 15upx;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					margin-bottom: 10upx;
+					.logoPool{
+						display: flex;
+						align-items: center;
+						.img{
+							width: 70upx;
+							height: 70upx;
+							image{
+								width: 100%;
+								height: 100%;
+							}
+						}
+					}
+					.text{
+						color: #000;
+						font-size: 24upx;
+					}
+				}
+				.poolName{
+					padding: 0 15upx;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					margin-bottom: 20upx;
+					.left{
+						color: #666;
+					}
+					.right{
+						color:#db9e56;
+					}
+				}
+				.btnList{
+					display: flex;
+					justify-content: space-around;
+					align-items: center;
+					margin-top: 20rpx;
+					background-color: #db9e56;
+					.btn{
+						padding: 20rpx;
+						border-radius: 20rpx;
+					}
 				}
 			}
 		}
@@ -615,24 +743,29 @@
 			.item:nth-child{
 				margin-right: 0upx;
 			}
+			.poolHovers{
+				background-color: #db9e56;
+				color: #fff;
+			}
 		}
 		.right{
-			width: 50%;
+			margin-top: 30upx;
+			width: 100%;
 			display: flex;
 			align-items: center;
-			justify-content: end;
+			justify-content: space-between;
+			box-sizing: border-box;
 			.item{
+				box-sizing: border-box;
+				width: 50%;
+				margin: 0 20upx;
 				display: flex;
 				align-items: center;
 				font-size: 24upx;
 				color: #000;
-				padding: 15upx;
+				padding: 30upx;
 				background-color: #fff;
-				border-radius: 30upx;
-				margin-left: 30upx;
-			}
-			.item:nth-child{
-				margin-left: 0upx;
+				border-radius: 15upx;
 			}
 		}
 	}
