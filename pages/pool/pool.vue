@@ -197,6 +197,7 @@
 	import back from "@/component/back/index.vue";
 	import {mapState,mapMutations,mapGetters} from 'vuex'
 	import bignumberJS from "bignumber.js"
+	import swal from 'sweetalert';
 	import wLoading from "@/component/w-loading/w-loading.vue";
 	export default {
 		components:{

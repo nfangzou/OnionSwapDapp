@@ -124,7 +124,39 @@
 					</view>
 				</view>
 				<view class="tokenList">
-					
+					<view class="coinListTitle">
+						<view class="left">
+							{{fromCur.name}} / {{toCur.name}}
+						</view>
+						<view class="right">
+							<image src="/static/tel.png" mode=""></image>
+							<image src="/static/OKEX.png" mode=""></image>
+						</view>
+					</view>
+					<view class="listOne">
+						<text class="oneLeft">{{fromCur.name}} 已存入</text>
+						<text class="oneRight">{{fromCoinNum}}</text>
+					</view>
+					<view class="listOne">
+						<text class="oneLeft">{{toCur.name}} 已存入</text>
+						<text class="oneRight">{{toCoinNum}}</text>
+					</view>
+					<view class="listOne">
+						<text class="oneLeft">费率</text>
+						<view class="oneRight">
+							<view>1 {{fromCur.name}} = 1 {{toCur.name}}</view>
+							<view>1 {{toCur.name}} = 1 {{fromCur.name}}</view>
+						</view>
+					</view>
+					<view class="listOne">
+						<text class="oneLeft">池份</text>
+						<text class="oneRight">100%</text>
+					</view>
+					<view class="btnBootom">
+						<view class="btn" @tap="clickSupply">
+							建立池与供应
+						</view>
+					</view>
 				</view>
 			</view>
 		</uni-popup>
@@ -603,11 +635,10 @@
 	
 	.maskRe {
 		width: 550rpx;
-		height: 600rpx;
 		padding: 20rpx;
 		border-radius: 20rpx;
-		border: 2rpx solid #fff;
-		background-color: gray;
+		border: 2rpx solid #000;
+		background-color: #fff;
 		.title{
 			display: flex;
 			justify-content: space-between;
@@ -615,7 +646,7 @@
 				width: 50rpx;
 			}
 			.center{
-				color: #fff;
+				color: #000;
 			}
 			.right{
 				image{
@@ -626,7 +657,50 @@
 		}
 		.tokenList{
 			margin-top: 40rpx;
-			
+			padding: 20rpx;
+			.coinListTitle{
+				display: flex;
+				justify-content: space-between;
+				border-bottom: 2px solid #e5e5e5;
+				padding: 20rpx 0;
+				.left{
+					font-size: 30rpx;
+					color: #000;
+				}
+				.right{
+					image{
+						width: 60rpx;
+						height: 60rpx;
+						margin-right: 5rpx;
+						border-radius: 50%;
+					}
+				}
+			}
+			.listOne{
+				margin-top: 20rpx;
+				display: flex;
+				justify-content: space-between;
+				.oneLeft{
+					color: gray;
+				}
+				.oneRight{
+					color: #00dea1;
+				}
+			}
+			.btnBootom{
+				display: flex;
+				justify-content: center;
+				margin-top: 50rpx;
+				.btn{
+					width: 100%;
+					height: 100rpx;
+					line-height: 100rpx;
+					text-align: center;
+					background-color: #00dea1;
+					border-radius: 30rpx;
+					color: #fff;
+				}
+			}
 		}
 	}
 	.slideStyle {

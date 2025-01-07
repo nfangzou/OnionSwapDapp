@@ -19,7 +19,7 @@
 				<text v-else @tap="clickConnect">连接钱包</text>
 			</view>
 			<view class="backe" style="margin-left: 30rpx;" @tap="sendMsg">
-				<text>{{_i18n.locale == 'zh-CN'?'中文':'English'}}</text>
+				<text>语言</text>
 			</view>
 		</view>
 		
@@ -27,13 +27,33 @@
 			<view class="insureBoxTwo">
 				<view class="closeStyle">
 					<view class="leftText">
-						Choose wallet
+						OnionSwap
 					</view>
 				</view>
 				<view class="btnList">
 					<view class="iconListTwo" v-for="(item, index) in tabData" :key="index" @tap="clickTap(item.path)">
 						<image class="iconImg" src="../../static/tel.png" mode=""></image>
 						<text>{{item.text}}</text>
+					</view>
+				</view>
+			</view>
+		</uni-popup>
+		<uni-popup ref="popup" type="right" :mask-click="true">
+			<view class="insureBoxOne">
+				<view class="closeStyle1">
+					<view class="leftText">
+						切换语言
+					</view>
+					<view class="rightIcon" @tap="colse1">
+						<image src="../../static/close.png" mode=""></image>
+					</view>
+				</view>
+				<view class="btnList1" style="margin-top: 0;">
+					<view class="iconList" @tap="changeLang('zh-CN', 0)">
+						<text>中文</text>
+					</view>
+					<view class="iconList" @tap="changeLang('en-US', 1)">
+						<text>English</text>
 					</view>
 				</view>
 			</view>
@@ -47,6 +67,7 @@
 		data() {
 			return {
 				vip:1,
+				index: 0,
 				tabData: [{
 						text: 'Swap',
 						path: "/pages/index/index",
@@ -88,7 +109,7 @@
 			...mapGetters(['getWallet','getCoin'])
 		},
 		created() {
-			console.log(this.type)
+			this.index = uni.getStorageSync("indexVal") === '' || uni.getStorageSync("indexVal") == undefined?1:uni.getStorageSync("indexVal");
 		},
 		props:['text','type','classType','subheading'],
 		methods: {
@@ -107,10 +128,19 @@
 				this.myAddress = wert.tbcAddress;
 				this.$store.commit('setWallet', wert.tbcAddress);
 				uni.setStorageSync('walletAddress',wert.tbcAddress);
-				console.log(this.myAddress)
+			},
+			changeLang(lang, indexA) {
+				this.index = indexA;
+				uni.setStorageSync("language",lang);
+				uni.setStorageSync("indexVal",this.index);
+				this._i18n.locale = lang;
+				this.$refs.popup.close();
 			},
 			sendMsg() {
-				this.$emit('getMsg');
+				this.$refs.popup.open();
+			},
+			colse1() {
+				this.$refs.popup.close();
 			}
 		}
 	}
@@ -206,6 +236,58 @@
 				font-family: PingFangSC-Semibold, PingFang SC;
 				font-weight: 400;
 				color: #000;
+			}
+		}
+		
+		.insureBoxOne{
+			width: 659upx;
+			border-radius: 20rpx;
+			background-color: #161616;
+			padding: 40rpx;
+			margin-top: 160rpx;
+			.closeStyle1{
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 50rpx;
+				.leftText{
+					font-size: 32rpx;
+					font-family: Microsoft YaHei, Microsoft YaHei;
+					font-weight: bold;
+					color: #ffffff;
+				}
+				.rightIcon{
+					width: 40rpx;
+					height: 40rpx;
+					image{
+						width: 100%;
+						height: 100%;
+					}
+				}
+			}
+			.btnList1{
+				.marginB{
+					margin-bottom: 50rpx;
+				}
+				.iconList{
+					display: flex;
+					align-items: center;
+					border: 2rpx solid rgba(255, 255, 255, .1);
+					padding: 20rpx 40rpx;
+					border-radius: 10rpx;
+					margin-bottom: 30rpx;
+					image{
+						width: 50rpx;
+						height: 50rpx;
+						margin-right: 20rpx;
+					}
+					text{
+						font-size: 32rpx;
+						font-family: Microsoft YaHei, Microsoft YaHei;
+						font-weight: bold;
+						color: #ffffff;
+					}
+				}
 			}
 		}
 	}
@@ -309,7 +391,57 @@
 				color: #000;
 			}
 		}
-		
+		.insureBoxOne{
+			width: 380upx;
+			border-radius: 20rpx;
+			background-color: #161616;
+			padding: 40rpx;
+			margin-top: 120rpx;
+			.closeStyle1{
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 50rpx;
+				.leftText{
+					font-size: 32rpx;
+					font-family: Microsoft YaHei, Microsoft YaHei;
+					font-weight: bold;
+					color: #ffffff;
+				}
+				.rightIcon{
+					width: 40rpx;
+					height: 40rpx;
+					image{
+						width: 100%;
+						height: 100%;
+					}
+				}
+			}
+			.btnList1{
+				.marginB{
+					margin-bottom: 30rpx;
+				}
+				.iconList{
+					display: flex;
+					align-items: center;
+					border: 2rpx solid rgba(255, 255, 255, .1);
+					padding: 20rpx 40rpx;
+					border-radius: 10rpx;
+					margin-bottom: 20rpx;
+					image{
+						width: 20rpx;
+						height: 20rpx;
+						margin-right: 20rpx;
+					}
+					text{
+						font-size: 32rpx;
+						font-family: Microsoft YaHei, Microsoft YaHei;
+						font-weight: bold;
+						color: #ffffff;
+					}
+				}
+			}
+		}
 		.insureBoxTwo{
 			width: 400upx;
 			height: 100%;
