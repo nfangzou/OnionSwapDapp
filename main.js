@@ -2,11 +2,13 @@ import App from './App'
 
 import lang from "./lang/index.js"
 import VueI18n from 'vue-i18n'
+import test from './abi/tbc_swaphelp.js'
 
 import store from './store'
 Vue.use(VueI18n)
 const urlApi = "https://tbcdev.org/v1/tbc/main/";
 
+Vue.prototype.test = test;
 Vue.prototype.urlApi = urlApi;
 // #ifndef VUE3
 import Vue from 'vue'

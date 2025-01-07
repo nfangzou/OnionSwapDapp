@@ -62,15 +62,9 @@
 						</view>
 					</view>
 					<view class="btnList">
-						<view class="btn">
+						<view class="btn" @click="urlPool('/pages/pool/poolManage','all')">
 							View
 						</view>
-						<!-- <view class="btn" @tap="addPool">
-							加池子
-						</view>
-						<view class="btn" @tap="reducePool">
-							撤池子
-						</view> -->
 					</view>
 				</view>
 			</view>
@@ -115,16 +109,10 @@
 							{{poolData.ft_lp_balance/1000000}}
 						</view>
 					</view>
-					<view class="btnList" @click="url('/pages/pool/poolManage')">
+					<view class="btnList" @click="urlPool('/pages/pool/poolManage','my')">
 						<view class="btn">
 							Manage
 						</view>
-						<!-- <view class="btn" @tap="addPool">
-							加池子
-						</view>
-						<view class="btn" @tap="reducePool">
-							撤池子
-						</view> -->
 					</view>
 				</view>
 			</view>
@@ -246,12 +234,22 @@
 				} else {
 					this.myAddress = uni.getStorageSync('walletAddress');
 					this.getPoolInfo();
+					// this.getenfe();
 				}
 			},
 			url(pathVal){
 				uni.navigateTo({
 				   url: pathVal
 				})
+			},
+			async getenfe() {
+				let ewfe = await this.test("07546166e456bd4a04ab11962c0ba0362277694a7cc7a12d5800276df2f1f31b","1FEy8bVr64u42cFaKH7uAkXzgirDuFvBr7");
+				console.log(ewfe)
+			},
+			urlPool(pathVal, type) {
+				// uni.navigateTo({
+				//    url: pathVal+'?type='+type+'&contractID='+
+				// })
 			},
 			async addPool() {
 				const params = [{
