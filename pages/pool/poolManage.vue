@@ -19,7 +19,7 @@
 						<image src="/static/tel.png" mode=""></image>
 					</view>
 					<view class="coinNmaeD">
-						{{'TBC/'+coinsName}}
+						{{'TBC/'+pooInfoArr.contractName}}
 					</view>
 				</view>
 				<view class="infoRight">
@@ -28,7 +28,7 @@
 							池子ID：
 						</view>
 						<view class="bottom">
-							{{contractID}}
+							{{pooInfoArr.poolContract}}
 						</view>
 					</view>
 				</view>
@@ -38,7 +38,7 @@
 					概述
 				</view>
 				<view class="smallTitle">
-					我的流动价值：{{poolData.ft_lp_balance/Math.pow(10, coinDecimal)}}
+					我的流动价值：{{pooInfoArr.ft_lp_balance/Math.pow(10, pooInfoArr.ftDecimal)}}
 				</view>
 				<view class="boxInfo">
 					<view class="infoCoinNum" style="margin-bottom: 20rpx;">
@@ -47,16 +47,16 @@
 							<text>TBC</text>
 						</view>
 						<view class="numRight">
-							{{poolData.tbc_balance/Math.pow(10, coinDecimal)}}
+							{{pooInfoArr.tbc_balance/Math.pow(10, 6)}}
 						</view>
 					</view>
 					<view class="infoCoinNum">
 						<view class="numLeft">
 							<image src="/static/tel.png" mode=""></image>
-							<text>{{coinsName}}</text>
+							<text>{{pooInfoArr.contractName}}</text>
 						</view>
 						<view class="numRight">
-							{{poolData.ft_a_balance/Math.pow(10, coinDecimal)}}
+							{{pooInfoArr.ft_a_balance/Math.pow(10, pooInfoArr.ftDecimal)}}
 						</view>
 					</view>
 				</view>
@@ -128,9 +128,7 @@
 				myAddress: '',
 				pageType: '',
 				contractID: '',
-				coinsName: '',
-				poolData: [],
-				coinDecimal: 0
+				pooInfoArr: []
 			}
 		},
 		computed: {
@@ -143,11 +141,8 @@
 		},
 		onLoad(option) {
 			this.Init();
-			this.pageType = option.type;
-			this.contractID = option.contractID;
-			this.coinsName = option.coinsName;
-			this.coinDecimal = option.Decimal;
-			this.getPoolInfo(option.contractID);
+			this.pageType = option.pageType;
+			this.pooInfoArr = JSON.parse(decodeURIComponent(option.poolInfo));
 		},
 		methods: {
 			Init() {
@@ -157,36 +152,21 @@
 					this.myAddress = uni.getStorageSync('walletAddress');
 				}
 			},
-			clickGo(pageType) {
-				if(pageType == 'add') {
+			clickGo(Type) {
+				if(Type == 'add') {
 					uni.navigateTo({
-					   url: './poolAdd'+'?poolContract='+this.contractID+'&coinDecimal='+this.coinDecimal
+					   url: './poolAdd'+'?poolContract='+this.pooInfoArr.poolContract+'&coinDecimal='+this.pooInfoArr.ftDecimal
 					})
 				} else{
+					let newRemoveInfo = encodeURIComponent(JSON.stringify(this.pooInfoArr))
 					uni.navigateTo({
-					   url: './poolRemove'+'?poolContract='+this.contractID+'&coinDecimal='+this.coinDecimal
+					   url: './poolRemove'+'?poolInfo='+newRemoveInfo
 					})
 				}
 				
 			},
 			backGo() {
 				uni.navigateBack();
-			},
-			getPoolInfo(ID) {
-				uni.request({
-					url: this.urlApi + 'ft/pool/nft/info/contract/id/'+ID,
-					method: 'GET',
-					header: {
-						"Content-Type": "application/json; charset=UTF-8"
-					},
-					data: {
-					},
-					success: (res) => {
-						if(res.statusCode == 200) {
-							this.poolData = res.data;
-						}
-					}
-				});
 			}
 		}
 	}
