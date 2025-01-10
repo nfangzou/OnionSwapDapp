@@ -483,6 +483,7 @@
 			position: relative;
 			padding-bottom: 30upx;
 			background-color: #F5F9FF;
+			padding-top: 120upx;
 			.backTitle {
 				margin: 38rpx 44rpx;
 		
@@ -897,7 +898,7 @@
 			box-sizing: border-box;
 			position: relative;
 			padding-bottom: 30upx;
-		
+			padding-top: 120upx;
 			.backTitle {
 				margin: 38rpx 44rpx;
 		

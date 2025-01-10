@@ -423,7 +423,8 @@
 				box-sizing: border-box;
 				position: relative;
 				padding-bottom: 50upx;
-			
+				padding-top: 120upx;
+				background-color: #F5F9FF;
 				.backTitle {
 					margin: 38rpx 44rpx;
 			
@@ -822,7 +823,8 @@
 				box-sizing: border-box;
 				position: relative;
 				padding-bottom: 30upx;
-			
+				padding-top: 120upx;
+				background-color: #F5F9FF;
 				.backTitle {
 					margin: 38rpx 44rpx;
 			

@@ -407,6 +407,7 @@
 		.content {
 			width: 100%;
 			height: auto;
+			padding-top: 120upx;
 			// min-height: 100vh;
 			box-sizing: border-box;
 			position: relative;
@@ -515,8 +516,10 @@
 				display: flex;
 				justify-content: space-between;
 				background-image: url('/static/BannerBG.png');
-				background-size: 100% 100%;
+				background-size: 120% 100%;
+				background-position-x: -90upx;
 				align-items: center;
+				border-radius: 30upx;
 				.leftBox{
 					.topText{
 						font-family: Noto Sans SC, Noto Sans SC;
@@ -629,6 +632,7 @@
 			min-height: 100vh;
 			box-sizing: border-box;
 			position: relative;
+			padding-top: 120upx;
 			.backTitle{
 				margin: 38rpx 44rpx;
 				image{
@@ -779,6 +783,7 @@
 					align-items: center;
 					justify-content: space-between;
 					box-sizing: border-box;
+					margin-bottom: 20upx;
 					.item{
 						box-sizing: border-box;
 						width: 50%;

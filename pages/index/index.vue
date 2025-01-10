@@ -525,6 +525,7 @@
 			box-sizing: border-box;
 			position: relative;
 			padding-bottom: 50upx;
+			padding-top: 120upx;
 			.backTitle {
 				margin: 38rpx 44rpx;
 				image {
@@ -855,6 +856,7 @@
 			min-height: 100vh;
 			box-sizing: border-box;
 			position: relative;
+			padding-top: 120upx;
 			.backTitle {
 				margin: 38rpx 44rpx;
 		

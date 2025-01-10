@@ -181,6 +181,7 @@
 			box-sizing: border-box;
 			position: relative;
 			padding-bottom: 50upx;
+			padding-top: 120upx;
 			.centerBox {
 				width: 70%;
 				margin: 40rpx auto;
@@ -326,6 +327,7 @@
 			box-sizing: border-box;
 			position: relative;
 			padding-bottom: 30upx;
+			padding-top: 120upx;
 			.centerBox {
 				max-width: 750rpx;
 				border-radius: 20rpx;
