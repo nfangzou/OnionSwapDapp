@@ -3,11 +3,11 @@
 		<back ref="child" text="" :text="myAddress" :type="1" @connectWallet="connectWallet" :classType="true"
 			subheading="true" @getMsg="getMsg">
 		</back>
-		<!-- <view class="tip">
+		<view class="tip">
 			<view class="text">
-				Tip: When you add liquidity,you will receive pool tokens representing your position.These tokens automatically earn fees proportional to you share of the pool,and can be redeemed at any time.
+				提示：刪除池代幣會按照當前匯率將您的頭寸轉換回底層代幣，與您在池中的份額成比例。應計費用包含在您收到的金額中。
 			</view>
-		</view> -->
+		</view>
 		<view class="centerBox">
 			<view class="poolTitle">
 				<view class="back" @tap="backGo">
@@ -23,10 +23,7 @@
 			<view class="outLP">
 				<view class="titleBox">
 					<view class="one" style="margin-bottom: 10rpx;">
-						流动性
-					</view>
-					<view class="two">
-						{{Math.floor(lpNum*10000)/10000}} $
+						移除金额
 					</view>
 				</view>
 				<view class="infoBox">
@@ -36,18 +33,18 @@
 					</view>
 					<uv-slider v-model="sliderValue" @input="slideChange" step="5" backgroundColor="rgba(255, 255, 255, 0.4)" min="0" max="100"></uv-slider>
 				</view>
-				<view class="infoBox">
+				<view class="infoBox" style="background: linear-gradient( 90deg, #8D60FF 0%, #AF6EFF 100%);">
 					<view class="top1">
 						<text>WBNB</text>
-						<text>{{(wbnbLpNum*lpNum*(sliderValue/100) / getTotalSupplyNum).toFixed(6)}}</text>
+						<text>0</text>
 					</view>
 					<view class="top1">
 						<text>CPX</text>
-						<text>{{(DawkoinLpNum*lpNum*(sliderValue/100) / getTotalSupplyNum).toFixed(6)}}</text>
+						<text>0</text>
 					</view>
 				</view>
 				<view class="endingBox">
-					流动池中的份额：{{Math.floor(lpNum/getTotalSupplyNum*1000000)/10000}}%
+					流动池中的份额：
 				</view>
 				<view class="SlippageBox2">
 					<view class="boxTitle">
@@ -58,15 +55,12 @@
 							{{item}}%
 						</view>
 						<view class="list2" :class="slipCrrent == 3?'listActive':'listNoActive'">
-							<input v-model="selfSlip" @input="inputNum" placeholder="自定义" type="text" /><text style="margin-right: 20rpx;">%</text>
+							<input v-model="selfSlip" @input="inputNum" placeholder-style="color:rgba(138, 63, 252, .5)" placeholder="自定义" type="text" /><text style="margin-right: 20rpx;">%</text>
 						</view>
 					</view>
 				</view>
 				<view class="btnGo2">
-					<view class="btn" v-if="!ApproveLP" @tap="clickApoveLP">
-						授权LP代币
-					</view>
-					<view class="btn" @tap="closeLP" v-else>
+					<view class="btn" @tap="closeLP">
 						移除
 					</view>
 				</view>
@@ -156,14 +150,11 @@
 				selfSlip: '',
 				toCoinNum: '',
 				fromCoinNum: '',
-				lpNum: 0,
 				ApproveWbnb: false,
 				ApproveDawkoin: false,
 				lamount: "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
 				sliderValue: 0,
 				getTotalSupplyNum: 0,
-				DawkoinLpNum: 0,
-				wbnbLpNum: 0,
 				ApproveLP: false,
 				userLpCount: 0,
 
@@ -250,6 +241,23 @@
 						this.getCoinInfoData(this.toCur);
 					}
 				});
+			},
+			async closeLP() {
+				const params = [{
+					flag: "POOLNFT_LP_CONSUME",
+					nft_contract_address: "07546166e456bd4a04ab11962c0ba0362277694a7cc7a12d5800276df2f1f31b",
+					address: this.myAddress,
+					ft_amount: 5.5,
+				}];
+				const { txid, rawtx } = await window.Turing.sendTransaction(params);
+				if(txid) {
+					uni.showToast({
+						title: '添加成功',
+						icon: "none"
+					})
+				}
+				console.log(txid)
+				console.log(rawtx)
 			},
 			slideChange(e) {},
 			changeIcon() {
@@ -627,10 +635,10 @@
 						height: 90rpx;
 						line-height: 90rpx;
 						text-align: center;
-						color: #000;
+						color: #fff;
 						font-size: 34rpx;
 						font-weight: bold;
-						background-color: #00DEA1;
+						background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
 						border-radius: 60rpx;
 					}
 				}
@@ -643,25 +651,26 @@
 						height: 90rpx;
 						line-height: 90rpx;
 						text-align: center;
-						color: #000;
+						color: #fff;
 						font-weight: bold;
 						font-size: 34rpx;
-						background-color: #00DEA1;
+						background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
 						border-radius: 60rpx;
 					}
 				}
 			}
 			.outLP{
 				margin-top: 27rpx;
+				padding: 28rpx;
 				.titleBox{
-					color: #fff;
+					color: #161616;
 					font-weight: bold;
 					font-size: 36rpx;
 				}
 				.infoBox{
 					margin-top: 30rpx;
 					padding: 25rpx 16rpx;
-					background-color: rgba(0, 222, 161, .4);
+					background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
 					border-radius: 10rpx;
 					.top1{
 						display: flex;
@@ -674,7 +683,7 @@
 				}
 				.endingBox{
 					margin: 34rpx 0;
-					color: #fff;
+					color: #161616;
 					font-size: 30rpx;
 				}
 				.SlippageBox2{
@@ -698,12 +707,12 @@
 							font-weight: bold;
 						}
 						.listActive{
-							background-color: rgba(0, 222, 161, 1);
-							color: #000;
+							background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
+							color: #fff;
 						}
 						.listNoActive{
-							background-color: rgba(0, 222, 161, .4);
-							color: rgba(255, 255, 255, .4);
+							background: rgba(130,51,214,0.1);
+							color: rgba(138, 63, 252, .5);
 						}
 						.list2{
 							width: 140rpx;
@@ -732,10 +741,10 @@
 						height: 90rpx;
 						line-height: 90rpx;
 						text-align: center;
-						color: #000;
+						color: #fff;
 						font-size: 36rpx;
 						font-weight: bold;
-						background-color: rgba(0, 222, 161, 1);
+						background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
 						border-radius: 50rpx;
 					}
 				}
@@ -797,7 +806,7 @@
 					color: gray;
 				}
 				.oneRight{
-					color: #00dea1;
+					color: #6929C4;
 				}
 			}
 			.btnBootom{

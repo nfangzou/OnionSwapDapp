@@ -359,6 +359,8 @@
 			},
 			loadClick() {
 				this.Init();
+				this.getCoinBalance(this.fromCur,'from')
+				this.getCoinBalance(this.toCur,'to')
 				let _this = this;
 				_this.$refs.loading.open();
 				setTimeout(() => {
@@ -383,9 +385,10 @@
 						console.log(res)
 						this.$refs.loading.close();
 						if(res.data.success) {
+							let transferNum = this.toCur.name == 'TBC'?res.data.msg/Math.pow(10,6):res.data.msg/Math.pow(10,this.SelectCoinInfoData.ftDecimal);
 							swal({
 								title: '转换成功',
-								text: this.fromCoinNum+' '+this.fromCur.name+' 兑换 '+this.toCoinNum+' '+this.toCur.name,
+								text: this.fromCoinNum+' '+this.fromCur.name+' 兑换 '+transferNum+' '+this.toCur.name,
 								icon: "success"
 							})
 							this.$refs.popup2.close();
@@ -791,7 +794,7 @@
 						color: #000;
 					}
 					.oneRight{
-						color: #00dea1;
+						color: #6929C4;
 						font-size: 40rpx;
 						font-weight: bold;
 						margin-top: 20rpx;

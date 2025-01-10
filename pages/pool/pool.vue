@@ -260,23 +260,6 @@
 				   url: pathVal+'?type='+type+'&contractID='+valData+'&coinsName='+coinsName+'&Decimal='+Decimal
 				})
 			},
-			async reducePool() {
-				const params = [{
-					flag: "POOLNFT_LP_CONSUME",
-					nft_contract_address: "07546166e456bd4a04ab11962c0ba0362277694a7cc7a12d5800276df2f1f31b",
-					address: this.myAddress,
-					ft_amount: 5.5,
-				}];
-				const { txid, rawtx } = await window.Turing.sendTransaction(params);
-				if(txid) {
-					uni.showToast({
-						title: '添加成功',
-						icon: "none"
-					})
-				}
-				console.log(txid)
-				console.log(rawtx)
-			},
 			getNowPool(IDVal) {
 				let newAllPool = [];
 				uni.request({
