@@ -35,16 +35,16 @@
 				</view>
 				<view class="infoBox" style="background: linear-gradient( 90deg, #8D60FF 0%, #AF6EFF 100%);">
 					<view class="top1">
-						<text>WBNB</text>
-						<text>0</text>
+						<text>TBC</text>
+						<text>{{tbcMoveNum}}</text>
 					</view>
 					<view class="top1">
-						<text>CPX</text>
-						<text>0</text>
+						<text>{{poolInfo.contractName}}</text>
+						<text>{{ftMoveNum}}</text>
 					</view>
 				</view>
 				<view class="endingBox">
-					流动池中的份额：
+					流动池中的份额：{{poolInfo.ft_lp_balance/Math.pow(10,poolInfo.ftDecimal)}}
 				</view>
 				<view class="btnGo2">
 					<view class="btn" @tap="closeLP">
@@ -66,28 +66,18 @@
 					</view>
 				</view>
 				<view class="tokenList">
-					<view class="coinListTitle">
-						<view class="left">
-							{{fromCur.name}} / {{toCur.name}}
-						</view>
-						<view class="right">
-							<image src="/static/TBC.png" mode=""></image>
-							<image src="/static/OKEX.png" mode=""></image>
-						</view>
+					<view class="listOne">
+						<text class="oneLeft">TBC </text>
+						<text class="oneRight">{{tbcMoveNum}}</text>
 					</view>
 					<view class="listOne">
-						<text class="oneLeft">{{fromCur.name}} 已存入</text>
-						<text class="oneRight">{{fromCoinNum}}</text>
+						<text class="oneLeft">{{poolInfo.contractName}} </text>
+						<text class="oneRight">{{ftMoveNum}}</text>
 					</view>
 					<view class="listOne">
-						<text class="oneLeft">{{toCur.name}} 已存入</text>
-						<text class="oneRight">{{toCoinNum}}</text>
-					</view>
-					<view class="listOne">
-						<text class="oneLeft">费率</text>
+						<text class="oneLeft">TBC/{{poolInfo.contractName}}</text>
 						<view class="oneRight">
-							<view>1 {{fromCur.name}} = 1 {{toCur.name}}</view>
-							<view>1 {{toCur.name}} = 1 {{fromCur.name}}</view>
+							<view>1 {{poolInfo.ft_lp_balance/Math.pow(10,poolInfo.ftDecimal)}}</view>
 						</view>
 					</view>
 					<view class="listOne">
@@ -128,39 +118,12 @@
 		data() {
 			return {
 				myAddress: '',
-				tabIndex: 0,
-				DawkoinBalanceNum: 0,
-				slipData: ['0.1', '0.5', '1.0'],
-				slipCrrent: 0,
 				selfSlip: '',
-				toCoinNum: '',
-				fromCoinNum: '',
 				sliderValue: 0,
-
-				fromCur: {
-					name: 'TBC',
-					symbol: 'test_coin',
-					address: '',
-					chainId: 56,
-					decimals: 18,
-					balance: '',
-					logoURI: 'https://raw.githubusercontent.com/Sexy-J/JieSwap/main/src/assets/img/bnb.png',
-				},
-				toInput: '',
-				toCur: {
-					balance: '',
-					name: '',
-					symbol: '',
-					address: '',
-					chainId: '',
-					decimals: '',
-					logoURI: '',
-				},
 				activeCole: 'rgba(0,0,0,0.5)',
-				tbcBalance: 0,
-				goType: 'from',
-				poolType: 1,
-				nowPoolAddress: []
+				poolInfo: [],
+				tbcMoveNum: 0,
+				ftMoveNum: 0
 			}
 		},
 		computed: {
@@ -173,7 +136,6 @@
 		},
 		onLoad(option) {
 			this.poolInfo = JSON.parse(decodeURIComponent(option.poolInfo));
-			console.log(this.poolInfo)
 			this.Init();
 		},
 		methods: {
@@ -182,50 +144,30 @@
 					console.log("Please connect wallet!")
 				} else {
 					this.myAddress = uni.getStorageSync('walletAddress');
-					this.getCoinBalance(this.fromCur,'from')
 				}
 			},
-			clickSlip(val) {
-				this.slipCrrent = val;
-			},
-			async getPoolInCoin(id) {
-				const poolUse = new poolNFT({txidOrParams: id, network:this.network});
-				 await poolUse.initfromContractId();
-				this.getUrlCoinList(poolUse.ft_a_contractTxid);
-			},
-			getUrlCoinList(coinAddress) {
-				let tokenUrlList = [];
-				uni.request({
-					url: this.urlApi + 'ft/info/contract/id/'+coinAddress,
-					method: 'GET',
-					header: {
-						"Content-Type": "application/json; charset=UTF-8"
-					},
-					data: {
-					},
-					success: (res) => {
-						tokenUrlList.push({
-							name: res.data.ftName,
-							symbol: res.data.ftSymbol,
-							address: res.data.ftContractId,
-							chainId: 0,
-							decimals: res.data.ftDecimal,
-							balance: 0,
-							logoURI: res.data.ftIconUrl,
-						})
-						this.toCur = tokenUrlList[0];
-						this.poolType = 3;
-						this.getCoinInfoData(this.toCur);
-					}
-				});
-			},
 			closeLP() {
+				if(this.ftMoveNum == 0) {
+					swal({
+						title: 'error',
+						text: '请选择撤出份额',
+						icon: "error"
+					})
+					return;
+				}
 				this.$refs.popup2.open();
 			},
-			slideChange(e) {},
-		
-			closePup(e) {
-				this.$refs.popup.close();
+			slideChange(e) {
+				this.tbcMoveNum = (this.poolInfo.tbc_balance*this.poolInfo.ft_lp_balance*(e/100) / this.poolInfo.ft_lp_balance)/Math.pow(10,6);
+				this.ftMoveNum = (this.poolInfo.ft_a_balance*this.poolInfo.ft_lp_balance*(e/100) / this.poolInfo.ft_lp_balance)/Math.pow(10,this.poolInfo.ftDecimal);
+				console.log(e)
+				if( 10 < e && e < 100 ) {
+					this.ftMoveNum = Math.floor(this.ftMoveNum/2);
+				}
+				if(e == 100) {
+					this.ftMoveNum = this.poolInfo.ft_a_balance/Math.pow(10,this.poolInfo.ftDecimal);
+				}
+				console.log(this.ftMoveNum)
 			},
 			closePup2() {
 				this.$refs.popup2.close();
@@ -235,117 +177,22 @@
 				try {
 					const params = [{
 						flag: "POOLNFT_LP_CONSUME",
-						nft_contract_address: "07546166e456bd4a04ab11962c0ba0362277694a7cc7a12d5800276df2f1f31b",
+						nft_contract_address: this.poolInfo.poolContract,
 						address: this.myAddress,
-						ft_amount: 5.5,
+						ft_amount: this.ftMoveNum,
 					}];
 					const { txid, rawtx } = await window.Turing.sendTransaction(params);
 					if(txid) {
-						this.$refs.loading.open();
+						this.$refs.loading.close();
+						this.$refs.popup2.close();
 						swal({
 							title: '移除成功',
 							icon: "success",
 						})
 					}
 					console.log(txid)
-					console.log(rawtx)
 				} catch (error) {
 					console.log(error)
-				}
-			},
-			unloadCoinID() {
-				uni.request({
-					url: this.localApi+'newPool',
-					method: 'POST',
-					header: {
-						"Content-Type": "application/json; charset=UTF-8"
-					},
-					data: {
-						coinContract1: this.toCur.address,
-						poolContract: this.nowPoolAddress.poolContract,
-						coinName1: this.toCur.name,
-						userAddress: this.myAddress,
-						coinDecimal: this.toCur.decimals
-					},
-					success: (res) => {
-						if(res.data.success) {
-							this.$refs.popup2.close();
-							this.$refs.loading.close();
-							swal({
-								title: '添加成功',
-								icon: "success",
-							})
-						}
-					}
-				});
-			},
-			getCoinInfoData(val) {
-				uni.request({
-					url: this.localApi+'getCoinInfo',
-					method: 'POST',
-					header: {
-						"Content-Type": "application/json; charset=UTF-8"
-					},
-					data: {
-						coinContract: val.address 
-					},
-					success: (res) => {
-						if(res.data.success) {
-							this.nowPoolAddress = res.data;
-						} else{
-							swal({
-								title: res.data.msg,
-								icon: "error",
-							})
-						}
-					}
-				});
-			},
-			showPupCoin(type) {
-				this.goType = type;
-				this.$refs.popup.open();
-
-			},
-			getCoinBalance(coinInfo, type) {
-				if (coinInfo.name == 'TBC') {
-					var nowTbc = 0;
-					uni.request({
-						url: this.urlApi + 'address/'+this.myAddress+'/get/balance',
-						method: 'GET',
-						header: {
-							"Content-Type": "application/json; charset=UTF-8"
-						},
-						data: {
-						},
-						success: (res) => {
-							if(res.statusCode == 200) {
-								if(type == 'from') {
-									this.fromCur.balance = res.data.data.balance/1000000;
-								} else{
-									this.toCur.balance = res.data.data.balance/1000000;
-								}
-							}
-						}
-					});
-				} else{
-					uni.request({
-						url: this.urlApi + 'ft/balance/address/'+this.myAddress+/contract/+coinInfo.address,
-						method: 'GET',
-						header: {
-							"Content-Type": "application/json; charset=UTF-8"
-						},
-						data: {
-						},
-						success: (res) => {
-							if(res.statusCode == 200) {
-								if(type == 'from') {
-									this.fromCur.balance = res.data.ftBalance/1000000;
-								} else{
-									this.toCur.balance = res.data.ftBalance/1000000;
-								}
-							}
-						}
-					});
 				}
 			},
 			loadClick() {
