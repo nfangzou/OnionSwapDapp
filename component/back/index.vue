@@ -330,7 +330,7 @@
 			width: 100%;
 			box-sizing: border-box;
 			background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
-			z-index: 7;
+			z-index: 99;
 			position: fixed;
 			top: 0;
 			left: 0;
