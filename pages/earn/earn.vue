@@ -34,5 +34,6 @@
 		min-height: 100vh;
 		box-sizing: border-box;
 		position: relative;
+		padding-top: 120upx;
 	}
 </style>
