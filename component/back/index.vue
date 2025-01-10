@@ -1,11 +1,9 @@
 <template>
 	<view class="goBacke" :class="classType?'goBackeBg':'goBackeBg2'">
 		<view class="headLeft">
-			<view class="appStyleIcon staus1">
-				<image @tap="clickLeftShow" src="/static/nav.png" mode=""></image>
-			</view>
 			<view class="logoHead">
 				<image src="../../static/logo.png" mode=""></image>
+				<text>Onion</text>
 			</view>
 			<view class="listTab staus2">
 				<view class="tabOne" :style="{color: type == index?'#fff':''}" v-for="(item, index) in tabData" :key="index" @tap="clickTap(item.path)">
@@ -18,27 +16,37 @@
 				<text v-if="getWallet">{{getWallet | plusXing}}</text>
 				<text v-else @tap="clickConnect">连接钱包</text>
 			</view>
-			<view class="backe" style="margin-left: 30rpx;" @tap="sendMsg">
-				<text>语言</text>
+			<view class="appStyleIcon staus1">
+				<image @tap="clickLeftShow" src="/static/nav.png" mode=""></image>
 			</view>
 		</view>
 		
-		<uni-popup ref="popup2" type="left" :mask-click="true">
+		<uni-popup ref="popup2" type="right" :mask-click="true">
 			<view class="insureBoxTwo">
 				<view class="closeStyle">
 					<view class="leftText">
 						OnionSwap
 					</view>
+					<view class="rightIcon" @tap="closePup2">
+						<image src="/static/close2.png" mode=""></image>
+					</view>
 				</view>
 				<view class="btnList">
-					<view class="iconListTwo" v-for="(item, index) in tabData" :key="index" @tap="clickTap(item.path)">
-						<image class="iconImg" src="../../static/tel.png" mode=""></image>
+					<view class="iconListTwo" v-for="(item, index) in tabData" :key="index+'a'" @tap="clickTap(item.path)">
+						<image class="iconImg" :src="'../../static/tabIcon'+(index+1)+'.png'" mode=""></image>
 						<text>{{item.text}}</text>
+					</view>
+					<view class="iconListTwo" style="border: none;">
+						<image class="iconImg" src="../../static/tabIcon6.png" mode=""></image>
+						<text>语言</text>
+					</view>
+					<view class="iconListTwo2" v-for="(item, index) in langList" :key="index" @tap="changeLang(item.val, index)">
+						<text>{{item.name}}</text>
 					</view>
 				</view>
 			</view>
 		</uni-popup>
-		<uni-popup ref="popup" type="right" :mask-click="true">
+		<uni-popup ref="popup" type="left" :mask-click="true">
 			<view class="insureBoxOne">
 				<view class="closeStyle1">
 					<view class="leftText">
@@ -68,6 +76,10 @@
 			return {
 				vip:1,
 				index: 0,
+				langList: [
+					{name: '繁体中文',val: 'zh-CN'},
+					{name: 'English',val: 'en-US'},
+				],
 				tabData: [{
 						text: 'Swap',
 						path: "/pages/index/index",
@@ -122,6 +134,9 @@
 			clickLeftShow() {
 				this.$refs.popup2.open();
 			},
+			closePup2() {
+				this.$refs.popup2.close();
+			},
 			async clickConnect() {
 				await window.Turing.connect();
 				let wert = await window.Turing.getAddress();
@@ -134,7 +149,7 @@
 				uni.setStorageSync("language",lang);
 				uni.setStorageSync("indexVal",this.index);
 				this._i18n.locale = lang;
-				this.$refs.popup.close();
+				this.$refs.popup2.close();
 			},
 			sendMsg() {
 				this.$refs.popup.open();
@@ -157,6 +172,7 @@
 			box-sizing: border-box;
 			z-index: 7;
 			position: relative;
+			background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
 			.headLeft{
 				display: flex;
 				align-items: center;
@@ -170,9 +186,7 @@
 						height: 100%;
 					}
 				}
-				.staus1{
-					display: none !important;
-				}
+				
 				.listTab{
 					display: flex;
 					justify-content: space-between;
@@ -183,26 +197,7 @@
 				}
 			}
 			
-			.backe{
-				display: flex;
-				align-items: center;
-				padding: 20rpx;
-				border: 2rpx solid #fff;
-				text{
-					font-size: 32rpx;
-					font-family: Microsoft YaHei;
-					font-weight: 400;
-				}
-			}
-			.text{
-				display: flex;
-				justify-content: center;
-				margin-left: -40upx;
-				width: 100%;
-				font-size: 42upx;
-				font-family: SimHei;
-				font-weight: 400;
-			}
+			
 			.subheading{
 				font-size: 28upx;
 				font-family: PingFangSC-Semibold, PingFang SC;
@@ -210,6 +205,22 @@
 				color: #fff;
 				display: flex;
 				align-items: center;
+				.backe{
+					display: flex;
+					align-items: center;
+					padding: 20rpx;
+					background: rgba(255,255,255,0.16);
+					border-radius: 50rpx 50rpx 50rpx 50rpx;
+					margin-right: 20rpx;
+					text{
+						font-size: 32rpx;
+						font-family: Microsoft YaHei;
+						font-weight: 400;
+					}
+				}
+				.staus1{
+					display: none !important;
+				}
 				image{
 					width: 55rpx;
 					height: 48rpx;
@@ -296,24 +307,23 @@
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			padding: 24upx 34rpx;
+			padding: 24upx;
 			width: 100%;
 			box-sizing: border-box;
+			background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
 			z-index: 7;
 			position: relative;
 			.headLeft{
 				display: flex;
 				align-items: center;
-				width: 80%;
 				.logoHead{
-					width: 83rpx;
-					height: 83rpx;
 					margin-left: 20rpx;
 					display: flex;
 					align-items: center;
 					image{
-						width: 100%;
-						height: 100%;
+						width: 83rpx;
+						height: 83rpx;
+						margin-right: 10rpx;
 					}
 				}
 				
@@ -336,26 +346,7 @@
 				}
 			}
 			
-			.backe{
-				display: flex;
-				align-items: center;
-				padding: 10rpx;
-				border: 2rpx solid #fff;
-				text{
-					font-size: 32rpx;
-					font-family: Microsoft YaHei;
-					font-weight: 400;
-				}
-			}
-			.text{
-				display: flex;
-				justify-content: center;
-				margin-left: -40upx;
-				width: 100%;
-				font-size: 42upx;
-				font-family: SimHei;
-				font-weight: 400;
-			}
+			
 			.subheading{
 				font-size: 28upx;
 				font-family: PingFangSC-Semibold, PingFang SC;
@@ -363,6 +354,17 @@
 				color: #fff;
 				display: flex;
 				align-items: center;
+				.backe{
+					padding: 10rpx 30rpx;
+					background: rgba(255,255,255,0.16);
+					border-radius: 50rpx 50rpx 50rpx 50rpx;
+					margin-right: 20rpx;
+					text{
+						font-size: 32rpx;
+						font-family: Microsoft YaHei;
+						font-weight: 400;
+					}
+				}
 				image{
 					width: 55rpx;
 					height: 48rpx;
@@ -447,7 +449,7 @@
 			height: 100%;
 			padding: 42rpx 0;
 			border-radius: 20rpx;
-			background-color: #161616;
+			background-color: #fff;
 			padding: 40rpx 40rpx 80rpx 40rpx;
 			.closeStyle{
 				display: flex;
@@ -457,7 +459,7 @@
 					font-size: 32rpx;
 					font-family: Microsoft YaHei, Microsoft YaHei;
 					font-weight: bold;
-					color: #ffffff;
+					color: #000;
 				}
 				.rightIcon{
 					width: 50rpx;
@@ -474,19 +476,29 @@
 					display: flex;
 					align-items: center;
 					margin-top: 50rpx;
-					border: 2rpx solid rgba(255, 255, 255, .1);
+					border-bottom: 2rpx solid rgba(115, 40, 228, 0.2);
 					padding: 40rpx;
-					border-radius: 10rpx;
 					.iconImg{
-						width: 50rpx;
-						height: 50rpx;
+						width: 40rpx;
+						height: 40rpx;
 						margin-right: 20rpx;
 					}
 					text{
-						font-size: 32rpx;
-						font-family: Microsoft YaHei, Microsoft YaHei;
-						font-weight: bold;
-						color: #ffffff;
+						font-family: Noto Sans SC, Noto Sans SC;
+						font-weight: 500;
+						font-size: 33rpx;
+						color: #161616;
+					}
+				}
+				.iconListTwo2{
+					border-bottom: 2rpx solid rgba(115, 40, 228, 0.2);
+					padding:  40rpx 80rpx;
+					margin-left: 50rpx;
+					text{
+						font-family: Noto Sans SC, Noto Sans SC;
+						font-weight: 500;
+						font-size: 33rpx;
+						color: #161616;
 					}
 				}
 			}

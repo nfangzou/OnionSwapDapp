@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<back ref="child" text="" :text="myAddress" :type="4" :classType="true" subheading="true" @getMsg="getMsg"></back>
-		<view style="display: flex;justify-content: center;color: #fff;">
+		<view style="display: flex;justify-content: center;color: #000;margin-top: 100rpx;">
 			开发中....
 		</view>
 		
@@ -34,6 +34,5 @@
 		min-height: 100vh;
 		box-sizing: border-box;
 		position: relative;
-		background-color: #000;
 	}
 </style>

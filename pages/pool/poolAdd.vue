@@ -3,107 +3,110 @@
 		<back ref="child" text="" :text="myAddress" :type="1" @connectWallet="connectWallet" :classType="true"
 			subheading="true" @getMsg="getMsg">
 		</back>
-		<view class="tip">
+		<!-- <view class="tip">
 			<view class="text">
 				Tip: When you add liquidity,you will receive pool tokens representing your position.These tokens automatically earn fees proportional to you share of the pool,and can be redeemed at any time.
 			</view>
-		</view>
+		</view> -->
 		<view class="centerBox">
 			<view class="poolTitle">
 				<view class="back" @tap="backGo">
-					<image src="../../static/back1.png" mode=""></image>
+					<image src="../../static/Arrowleft.png" mode=""></image>
 				</view>
 				<view class="title">
 					Add liquidity
 				</view>
-			</view>
-			<view class="tipMsg" v-if="poolType==3">
-				<view class="text">
-					Tip: When you add liquidity,you will receive pool tokens representing your position.These tokens
-					automatically earn fees proportional to you share of the pool,and can be redeemed at any time.
+				<view class="rightN">
+					<image @tap="loadClick" src="../../static/load.png" mode=""></image>
 				</view>
 			</view>
-			<view class="loadIcon">
-				<image @tap="loadClick" src="../../static/load.png" mode=""></image>
-			</view>
-			<view class="lpBox">
-				<view class="coinBox">
-					<view class="coinNameBox">
-						<view class="coinSmall" @tap="showPupCoin('from')">
-							<text>{{fromCur.name?fromCur.name:'选择币种'}}</text>
-							<image class="slectIcon" src="../../static/bottomIcon.png" mode=""></image>
-						</view>
-					</view>
-					<view class="coinMax" @tap="fromCoinNum = fromCur.balance">
-						MAX
-					</view>
-				</view>
-				<view class="inputToBox">
-					<view class="blanceTitle">
-						余额：{{fromCur.balance}}
-					</view>
-					<view class="inputBody">
-						<input v-model="fromCoinNum" type="text" />
-					</view>
-				</view>
-				<view class="centerIcon">
-					<view class="changebox">
-						<image src="../../static/icon2.png" mode=""></image>
-					</view>
-				</view>
-				<view class="coinBox">
-					<view class="coinNameBox">
-						<view class="coinSmall" @tap="showPupCoin('to')">
-							<text>{{toCur.name?toCur.name:'选择币种'}}</text>
-							<image class="slectIcon" src="../../static/bottomIcon.png" mode=""></image>
-						</view>
-					</view>
-				</view>
-				<view class="inputToBox">
-					<view class="blanceTitle">
-						余额：{{toCur.balance}}
-					</view>
-					<view class="inputBody">
-						<input v-model="toCoinNum" type="text" />
-					</view>
-				</view>
-				<view class="sharePool" v-if="poolType==3">
-					<view class="title">
-						Initial prices and pool share
-					</view>
-					<view class="shareList">
-						<view class="item">
-							<view class="num">
-								1
-							</view>
-							<view class="text">
-								{{fromCur.name}} per {{toCur.name}}
-							</view>
-						</view>
-						<view class="item">
-							<view class="num">
-								1
-							</view>
-							<view class="text">
-								{{toCur.name}} per {{fromCur.name}}
-							</view>
-						</view>
-						<view class="item">
-							<view class="num">
-								100%
-							</view>
-							<view class="text">
-								池份
-							</view>
-						</view>
-					</view>
-				</view>
-				<view class="shareBtn" @tap="clickShowSupply" v-if="poolType==3">
+			<view class="bodyList">
+				<view class="tipMsg" v-if="poolType==3">
 					<view class="text">
-						Supply
+						Tip: When you add liquidity,you will receive pool tokens representing your position.These tokens
+						automatically earn fees proportional to you share of the pool,and can be redeemed at any time.
+					</view>
+				</view>
+				<view class="lpBox">
+					<view class="coinBox">
+						<view class="coinNameBox">
+							<view class="coinSmall">
+								<text>{{fromCur.name?fromCur.name:'选择币种'}}</text>
+								<image class="slectIcon" src="../../static/bottomIcon.png" mode=""></image>
+							</view>
+						</view>
+						<view class="coinMax" @tap="fromCoinNum = fromCur.balance">
+							MAX
+						</view>
+					</view>
+					<view class="inputToBox">
+						<view class="blanceTitle">
+							余额：{{fromCur.balance}}
+						</view>
+						<view class="inputBody">
+							<input v-model="fromCoinNum" type="text" />
+						</view>
+					</view>
+					<view class="centerIcon">
+						<view class="changebox">
+							<image src="../../static/icon3.png" mode=""></image>
+						</view>
+					</view>
+					<view class="coinBox">
+						<view class="coinNameBox">
+							<view class="coinSmall" @tap="showPupCoin('to')">
+								<text>{{toCur.name?toCur.name:'选择币种'}}</text>
+								<image class="slectIcon" src="../../static/bottomIcon.png" mode=""></image>
+							</view>
+						</view>
+					</view>
+					<view class="inputToBox">
+						<view class="blanceTitle">
+							余额：{{toCur.balance}}
+						</view>
+						<view class="inputBody">
+							<input v-model="toCoinNum" type="text" />
+						</view>
+					</view>
+					<view class="sharePool" v-if="poolType==3">
+						<view class="title">
+							Initial prices and pool share
+						</view>
+						<view class="shareList">
+							<view class="item">
+								<view class="num">
+									1
+								</view>
+								<view class="text">
+									{{fromCur.name}} per {{toCur.name}}
+								</view>
+							</view>
+							<view class="item">
+								<view class="num">
+									1
+								</view>
+								<view class="text">
+									{{toCur.name}} per {{fromCur.name}}
+								</view>
+							</view>
+							<view class="item">
+								<view class="num">
+									100%
+								</view>
+								<view class="text">
+									池份
+								</view>
+							</view>
+						</view>
+					</view>
+					<view class="shareBtn" @tap="clickShowSupply" v-if="poolType==3">
+						<view class="text">
+							Supply
+						</view>
 					</view>
 				</view>
 			</view>
+			
 		</view>
 		<uni-popup ref="popup2" type="center" :mask-background-color="activeCole" :mask-click="true">
 			<view class="maskRe">
@@ -114,7 +117,7 @@
 						您正在添加一个池
 					</view>
 					<view class="right" @tap="closePup2">
-						<image src="../../static/OKEX.png" mode=""></image>
+						<image src="../../static/close2.png" mode=""></image>
 					</view>
 				</view>
 				<view class="tokenList">
@@ -123,7 +126,7 @@
 							{{fromCur.name}} / {{toCur.name}}
 						</view>
 						<view class="right">
-							<image src="/static/tel.png" mode=""></image>
+							<image src="/static/TBC.png" mode=""></image>
 							<image src="/static/OKEX.png" mode=""></image>
 						</view>
 					</view>
@@ -148,7 +151,7 @@
 					</view>
 					<view class="btnBootom">
 						<view class="btn" @tap="clickSupply">
-							建立池与供应
+							添加池与供应
 						</view>
 					</view>
 				</view>
@@ -166,6 +169,7 @@
 	import swal from 'sweetalert';
 	import selectCoin from "@/component/selectCoin/index.vue";
 	import bignumberJS from "bignumber.js"
+	import { API, FT, poolNFT } from "tbc-contract";
 	import {
 		mapState,
 		mapMutations,
@@ -222,7 +226,8 @@
 				activeCole: 'rgba(0,0,0,0.5)',
 				tbcBalance: 0,
 				goType: 'from',
-				poolType: 1
+				poolType: 1,
+				nowPoolAddress: []
 			}
 		},
 		computed: {
@@ -233,7 +238,10 @@
 				this.Init();
 			}
 		},
-		onLoad() {
+		onLoad(option) {
+			if(option.poolContract != undefined) {
+				this.getPoolInCoin(option.poolContract);
+			}
 			this.Init();
 		},
 		methods: {
@@ -242,16 +250,21 @@
 					console.log("Please connect wallet!")
 				} else {
 					this.myAddress = uni.getStorageSync('walletAddress');
-					this.getPoolInfo();
 					this.getCoinBalance(this.fromCur,'from')
 				}
 			},
 			clickSlip(val) {
 				this.slipCrrent = val;
 			},
-			getPoolInfo() {
+			async getPoolInCoin(id) {
+				const poolUse = new poolNFT({txidOrParams: id, network:this.network});
+				 await poolUse.initfromContractId();
+				this.getUrlCoinList(poolUse.ft_a_contractTxid);
+			},
+			getUrlCoinList(coinAddress) {
+				let tokenUrlList = [];
 				uni.request({
-					url: this.urlApi + 'ft/pool/nft/info/contract/id/07546166e456bd4a04ab11962c0ba0362277694a7cc7a12d5800276df2f1f31b',
+					url: this.urlApi + 'ft/info/contract/id/'+coinAddress,
 					method: 'GET',
 					header: {
 						"Content-Type": "application/json; charset=UTF-8"
@@ -259,10 +272,18 @@
 					data: {
 					},
 					success: (res) => {
-						console.log(res)
-						if(res.statusCode == 200) {
-							
-						}
+						tokenUrlList.push({
+							name: res.data.ftName,
+							symbol: res.data.ftSymbol,
+							address: res.data.ftContractId,
+							chainId: 0,
+							decimals: res.data.ftDecimal,
+							balance: 0,
+							logoURI: res.data.ftIconUrl,
+						})
+						this.toCur = tokenUrlList[0];
+						this.poolType = 3;
+						this.getCoinInfoData(this.toCur);
 					}
 				});
 			},
@@ -291,29 +312,60 @@
 				this.$refs.popup2.close();
 			},
 			clickShowSupply() {
+				if(this.nowPoolAddress.length == 0) {
+					swal({
+						title: 'error',
+						text: '请先选择币种',
+						icon: "error"
+					})
+					return ;
+				}
 				this.$refs.popup2.open();
 			},
 			async clickSupply() {
-				const params = [{
-					flag: "POOLNFT_MINT",
-					ft_contract_address: this.toCur.address,
-				}];
-				const {txid,rawtx} = await window.Turing.sendTransaction(params);
-				console.log(txid)
-				uni.setStorageSync('poolID',txid);
-				uni.setStorageSync('poolTokenName',this.toCur.name);
-				const paramsEnd = [{
-					flag: "POOLNFT_INIT",
-					nft_contract_address: txid,
-					address: this.myAddress,
-					tbc_amount: JSON.parse(this.fromCoinNum),
-					ft_amount: JSON.parse(this.toCoinNum)
-				}];
-				const {txidEnd,rawtxEnd} = await window.Turing.sendTransaction(paramsEnd);
-				swal({
-					title: '添加成功',
-					icon: "success",
-				})
+				this.$refs.loading.open();
+				try {
+					const params = [{
+						flag: "POOLNFT_LP_INCREASE",
+						nft_contract_address: this.nowPoolAddress.poolContract,
+						address: this.myAddress,
+						tbc_amount: JSON.parse(this.fromCoinNum),
+					}];
+					const { txid, rawtx } = await window.Turing.sendTransaction(params);
+					console.log(txid)
+					console.log(rawtx)
+					if(txid) {
+						this.unloadCoinID();
+					}
+				} catch (error) {
+					console.log(error)
+				}
+			},
+			unloadCoinID() {
+				uni.request({
+					url: this.localApi+'newPool',
+					method: 'POST',
+					header: {
+						"Content-Type": "application/json; charset=UTF-8"
+					},
+					data: {
+						coinContract1: this.toCur.address,
+						poolContract: this.nowPoolAddress.poolContract,
+						coinName1: this.toCur.name,
+						userAddress: this.myAddress,
+						coinDecimal: this.toCur.decimals
+					},
+					success: (res) => {
+						if(res.data.success) {
+							this.$refs.popup2.close();
+							this.$refs.loading.close();
+							swal({
+								title: '添加成功',
+								icon: "success",
+							})
+						}
+					}
+				});
 			},
 			backInfo(e) {
 				if (this.goType == 'from') {
@@ -322,11 +374,34 @@
 				} else {
 					this.toCur = e;
 					this.getCoinBalance(e,'to')
+					this.getCoinInfoData(e);
 				}
 				this.$refs.popup.close();
 				if (this.fromCur.name && this.toCur.name) {
 					this.poolType = 3;
 				}
+			},
+			getCoinInfoData(val) {
+				uni.request({
+					url: this.localApi+'getCoinInfo',
+					method: 'POST',
+					header: {
+						"Content-Type": "application/json; charset=UTF-8"
+					},
+					data: {
+						coinContract: val.address 
+					},
+					success: (res) => {
+						if(res.data.success) {
+							this.nowPoolAddress = res.data;
+						} else{
+							swal({
+								title: res.data.msg,
+								icon: "error",
+							})
+						}
+					}
+				});
 			},
 			showPupCoin(type) {
 				this.goType = type;
@@ -376,9 +451,6 @@
 				}
 			},
 			loadClick() {
-				this.getLPComputer();
-				this.getTotalSupply();
-				this.getLPContent();
 				let _this = this;
 				_this.$refs.loading.open();
 				setTimeout(() => {
@@ -408,7 +480,6 @@
 		min-height: 100vh;
 		box-sizing: border-box;
 		position: relative;
-		background-color: #000;
 		padding-bottom: 30upx;
 
 		.backTitle {
@@ -425,15 +496,38 @@
 			margin: 40rpx 30rpx 0 30rpx;
 			border: 2rpx solid #e5e5e5;
 			border-radius: 20rpx;
-			padding: 30rpx;
-
-			.loadIcon {
+			.bodyList{
+				padding: 0 28rpx;
+			}
+			.poolTitle {
+				position: relative;
+				text-align: center;
+				margin-bottom: 30upx;
 				display: flex;
-				justify-content: right;
-
-				image {
-					width: 32rpx;
-					height: 32rpx;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 30upx;
+				padding: 0 28rpx;
+				height: 112rpx;
+				background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
+				border-radius: 30rpx 30rpx 0 0;
+				.back {
+					image {
+						width: 56upx;
+						height: 56upx;
+					}
+				}
+				.title {
+					color: #fff;
+				}
+				.rightN{
+					width: 56rpx;
+					display: flex;
+					justify-content: right;
+					image {
+						width: 32rpx;
+						height: 32rpx;
+					}
 				}
 			}
 
@@ -447,40 +541,33 @@
 					align-items: center;
 
 					.coinNameBox {
-						width: 212rpx;
 						height: 65rpx;
-						border: 2rpx solid rgba(0, 222, 161, 1);
-						background-color: #000;
 						border-radius: 40rpx;
 						line-height: 65rpx;
 						display: flex;
-						justify-content: center;
 						margin-right: 25rpx;
-
 						.coinSmall {
 							display: flex;
 							align-items: center;
-
 							text {
-								color: #fff;
-								font-size: 30rpx;
-								margin-right: 23rpx;
+								color: #000;
+								font-size: 34rpx;
+								margin-left: 10rpx;
 							}
-
 							.slectIcon {
-								width: 16rpx;
-								height: 21rpx;
+								width: 42rpx;
+								height: 42rpx;
 							}
 						}
 					}
-
+					
 					.coinMax {
 						width: 80rpx;
 						height: 45rpx;
 						line-height: 45rpx;
 						text-align: center;
-						border: 2rpx solid rgba(0, 222, 161, 1);
-						color: rgba(0, 222, 161, 1);
+						border: 2rpx solid #7328E4;
+						color: #7328E4;
 						font-size: 24rpx;
 						font-weight: bold;
 						border-radius: 40rpx;
@@ -491,24 +578,24 @@
 					.blanceTitle {
 						display: flex;
 						justify-content: right;
-						color: rgba(255, 255, 255, .6);
+						color: #000000;
 						font-size: 24rpx;
 						margin-bottom: 11rpx;
 						margin-right: 40rpx;
 					}
-
+					
 					.inputBody {
 						height: 169rpx;
-						background-color: rgba(0, 222, 161, .4);
+						background: rgba(115,40,228,0.1);
 						border-radius: 30rpx;
 						padding-right: 45rpx;
-
+					
 						input {
 							width: 100%;
 							height: 100%;
 							text-align: right;
 							font-size: 42rpx;
-							color: #fff;
+							color: #6929C4;
 						}
 					}
 				}
@@ -569,19 +656,18 @@
 				.centerIcon {
 					display: flex;
 					justify-content: center;
-					margin: 48rpx 0;
-
+					margin: 40rpx 0;
+					
 					.changebox {
-						width: 36rpx;
-						height: 40rpx;
-						line-height: 40rpx;
+						width: 77rpx;
+						height: 77rpx;
+						line-height: 96rpx;
+						background: #6929C4;
+						border-radius: 42rpx;
 						text-align: center;
-						background-image: url('../../static/icon1.png');
-						background-size: 100% 100%;
-
 						image {
-							width: 27rpx;
-							height: 28rpx;
+							width: 42rpx;
+							height: 42rpx;
 						}
 					}
 				}
@@ -636,11 +722,15 @@
 		.title{
 			display: flex;
 			justify-content: space-between;
+			align-items: center;
+			padding: 25rpx;
 			.left{
 				width: 50rpx;
 			}
 			.center{
 				color: #000;
+				font-size: 28rpx;
+				font-weight: bold;
 			}
 			.right{
 				image{
@@ -650,8 +740,7 @@
 			}
 		}
 		.tokenList{
-			margin-top: 40rpx;
-			padding: 20rpx;
+			padding: 18rpx;
 			.coinListTitle{
 				display: flex;
 				justify-content: space-between;
@@ -690,8 +779,8 @@
 					height: 100rpx;
 					line-height: 100rpx;
 					text-align: center;
-					background-color: #00dea1;
-					border-radius: 30rpx;
+					background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
+					border-radius: 42rpx;
 					color: #fff;
 				}
 			}
@@ -704,26 +793,7 @@
 		height: 60rpx;
 	}
 
-	.poolTitle {
-		position: relative;
-		text-align: center;
-		margin-bottom: 30upx;
-
-		.back {
-			position: absolute;
-			left: 0;
-			top: 0;
-
-			image {
-				width: 40upx;
-				height: 40upx;
-			}
-		}
-
-		.title {
-			color: #fff;
-		}
-	}
+	
 
 	.clientText {
 		color: #fff;
@@ -749,48 +819,55 @@
 	}
 
 	.tipMsg {
-		background-color: #00dea1;
-		padding: 15upx;
-		border-radius: 15upx;
-		margin-bottom: 20upx;
-
+		background: rgba(255,24,28,0.1);
+		padding: 28upx;
+		border-radius: 28upx;
+		margin-bottom: 40upx;
+		
 		.text {
-			font-size: 24upx;
+			font-family: Noto Sans SC, Noto Sans SC;
+			font-weight: 400;
+			font-size: 24rpx;
+			color: #DA1E28;
 		}
 	}
 
 	.sharePool {
 		margin-top: 30upx;
-
+		
 		.title {
 			font-size: 26upx;
-			color: #fff;
+			color: #000;
+			font-weight: bold;
 		}
-
+		
 		.shareList {
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			border: 2upx solid #fff;
+			border: 2upx solid #E0E0E0;
 			padding: 30upx 0;
 			border-radius: 15upx;
 			margin-top: 20upx;
-
+		
 			.item {
 				width: 33.3%;
-				color: #fff;
+				color: #000;
 				text-align: center;
 				font-size: 24upx;
+			}
+			.num{
+				font-weight: bold;
 			}
 		}
 	}
 
 	.shareBtn {
-		background-color: #00dea1;
+		background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
 		padding: 30upx;
-		margin-top: 40upx;
-		border-radius: 50upx;
-
+		margin-top: 56upx;
+		border-radius: 42upx;
+		
 		.text {
 			font-size: 30upx;
 			color: #fff;

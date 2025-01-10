@@ -31,6 +31,12 @@
 			}
 		},
 		{
+			"path": "pages/pool/poolRemove",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
 			"path": "pages/stake/stake",
 			"style": {
 				"navigationStyle": "custom"

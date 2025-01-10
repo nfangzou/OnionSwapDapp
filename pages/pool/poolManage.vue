@@ -9,7 +9,7 @@
 					<image src="../../static/back1.png" mode=""></image>
 				</view>
 				<view class="title">
-					Add liquidity
+					{{pageType == 'my'?'Manage liquidity':'View liquidity'}} 
 				</view>
 			</view>
 			<view class="poolInfo">
@@ -19,7 +19,7 @@
 						<image src="/static/tel.png" mode=""></image>
 					</view>
 					<view class="coinNmaeD">
-						TBC/test
+						{{'TBC/'+coinsName}}
 					</view>
 				</view>
 				<view class="infoRight">
@@ -28,15 +28,7 @@
 							池子ID：
 						</view>
 						<view class="bottom">
-							wefwefgwegsdgrgergerger
-						</view>
-					</view>
-					<view class="oneRight">
-						<view class="top">
-							池子ID：
-						</view>
-						<view class="bottom">
-							wefwefgwegsdgrgergerger
+							{{contractID}}
 						</view>
 					</view>
 				</view>
@@ -46,7 +38,7 @@
 					概述
 				</view>
 				<view class="smallTitle">
-					我的流动价值：  0
+					我的流动价值：{{poolData.ft_lp_balance/Math.pow(10, coinDecimal)}}
 				</view>
 				<view class="boxInfo">
 					<view class="infoCoinNum" style="margin-bottom: 20rpx;">
@@ -55,25 +47,28 @@
 							<text>TBC</text>
 						</view>
 						<view class="numRight">
-							0
+							{{poolData.tbc_balance/Math.pow(10, coinDecimal)}}
 						</view>
 					</view>
 					<view class="infoCoinNum">
 						<view class="numLeft">
 							<image src="/static/tel.png" mode=""></image>
-							<text>TBC</text>
+							<text>{{coinsName}}</text>
 						</view>
 						<view class="numRight">
-							0
+							{{poolData.ft_a_balance/Math.pow(10, coinDecimal)}}
 						</view>
 					</view>
 				</view>
-				<view class="btnOne" @tap="clickGo('add')">
-					增加
+				<view class="btnBox" v-if="pageType == 'my'">
+					<view class="btnOne" @tap="clickGo('add')">
+						增加
+					</view>
+					<view class="btnTwo" @tap="clickGo('remove')">
+						移除
+					</view>
 				</view>
-				<view class="btnTwo" @tap="clickGo('remove')">
-					移除
-				</view>
+				
 			</view>
 			<view class="titleEnd">
 				配对讯息
@@ -131,6 +126,11 @@
 		data() {
 			return {
 				myAddress: '',
+				pageType: '',
+				contractID: '',
+				coinsName: '',
+				poolData: [],
+				coinDecimal: 0
 			}
 		},
 		computed: {
@@ -141,8 +141,13 @@
 				this.Init();
 			}
 		},
-		onLoad() {
+		onLoad(option) {
 			this.Init();
+			this.pageType = option.type;
+			this.contractID = option.contractID;
+			this.coinsName = option.coinsName;
+			this.coinDecimal = option.Decimal;
+			this.getPoolInfo(option.contractID);
 		},
 		methods: {
 			Init() {
@@ -150,15 +155,39 @@
 					console.log("Please connect wallet!")
 				} else {
 					this.myAddress = uni.getStorageSync('walletAddress');
-					this.getCoinBalance(this.fromCur,'from')
 				}
 			},
-			clickGo() {
+			clickGo(pageType) {
+				if(pageType == 'add') {
+					uni.navigateTo({
+					   url: './poolAdd'+'?poolContract='+this.contractID+'&coinDecimal='+this.coinDecimal
+					})
+				} else{
+					uni.navigateTo({
+					   url: './poolRemove'+'?poolContract='+this.contractID+'&coinDecimal='+this.coinDecimal
+					})
+				}
 				
 			},
 			backGo() {
 				uni.navigateBack();
 			},
+			getPoolInfo(ID) {
+				uni.request({
+					url: this.urlApi + 'ft/pool/nft/info/contract/id/'+ID,
+					method: 'GET',
+					header: {
+						"Content-Type": "application/json; charset=UTF-8"
+					},
+					data: {
+					},
+					success: (res) => {
+						if(res.statusCode == 200) {
+							this.poolData = res.data;
+						}
+					}
+				});
+			}
 		}
 	}
 </script>
@@ -170,7 +199,6 @@
 		min-height: 100vh;
 		box-sizing: border-box;
 		position: relative;
-		background-color: rgba(242, 229, 213);
 		padding-bottom: 30upx;
 		.centerBox {
 			max-width: 750rpx;
@@ -179,6 +207,7 @@
 			.poolTitle{
 				display: flex;
 				align-items: center;
+				margin: 26rpx 0 56rpx 0;
 				.back{
 					width: 40rpx;
 					height: 40rpx;
@@ -194,8 +223,6 @@
 			}
 			.poolInfo{
 				margin-top: 30rpx;
-				display: flex;
-				justify-content: space-between;
 				.infoLeft{
 					display: flex;
 					align-items: center;
@@ -203,23 +230,32 @@
 						display: flex;
 						align-items: center;
 						image{
-							width: 50rpx;
-							height: 50rpx;
+							width: 70rpx;
+							height: 70rpx;
 							border-radius: 50%;
 							margin-right: 2rpx;
 						}
 					}
 					.coinNmaeD{
-						color: #000;
-						font-size: 40rpx;
+						font-family: Noto Sans SC, Noto Sans SC;
+						font-weight: 600;
+						font-size: 42rpx;
+						color: #161616;
 						margin-left: 20rpx;
 					}
 				}
 				.infoRight{
+					margin-top: 20rpx;
+					padding-left: 20rpx;
 					.oneRight{
-						margin-bottom: 10rpx;
-						color: #000;
-						font-size: 20rpx;
+						margin-top: 20rpx;
+						font-family: Noto Sans SC, Noto Sans SC;
+						font-weight: 400;
+						font-size: 21rpx;
+						color: #525252;
+						.bottom{
+							word-wrap: break-word;
+						}
 					}
 				}
 			}
@@ -246,7 +282,7 @@
 					margin-bottom: 30rpx;
 				}
 				.boxInfo{
-					background-color: rgb(242, 229, 213);
+					background-color: #F5F9FF;
 					border-radius: 20rpx;
 					padding: 30rpx 40rpx;
 					.infoCoinNum{
@@ -265,29 +301,34 @@
 						}
 						.numRight{
 							font-weight: bold;
-							color: rgb(213, 133, 41);
+							color: #3367D6;
 						}
 					}
 				}
-				.btnOne{
-					width: 100%;
-					height: 90rpx;
-					line-height: 90rpx;
-					text-align: center;
-					background: linear-gradient(90deg,#e38453,#d9925a,#db9e56);
-					margin: 30rpx 0;
-					border-radius: 40rpx;
-					color: #fff;
-				}
-				.btnTwo{
-					width: 100%;
-					height: 90rpx;
-					line-height: 90rpx;
-					text-align: center;
-					background: linear-gradient(90deg,#e38453,#d9925a,#db9e56);
-					color: #fff;
-					border-radius: 40rpx;
-					opacity: 0.75;
+				.btnBox{
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					.btnOne{
+						width: 48%;
+						height: 90rpx;
+						line-height: 90rpx;
+						text-align: center;
+						background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
+						margin: 30rpx 0;
+						border-radius: 40rpx;
+						color: #fff;
+					}
+					.btnTwo{
+						width: 48%;
+						height: 90rpx;
+						line-height: 90rpx;
+						text-align: center;
+						background: linear-gradient( 90deg, #8D60FF 0%, #AF6EFF 100%);
+						color: #fff;
+						border-radius: 40rpx;
+						opacity: 0.75;
+					}
 				}
 			}
 		}

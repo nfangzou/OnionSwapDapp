@@ -1,178 +1,140 @@
 <template>
 	<view class="content">
 		<back ref="child" :text="myAddress" :type="1" :classType="true" subheading="true" @getMsg="getMsg"></back>
-		<view class="positions">
-			<view class="left">
-				<view class="item" :class="poolType==1?'poolHovers':''" @click="poolType=1">
-					ALL Pools
+		
+		<view class="poolCenter">
+			<view class="bannerBox">
+				<view class="leftBox">
+					<view class="topText">
+						从LP赚取
+					</view>
+					<view class="bottomText">
+						流动资金池
+					</view>
 				</view>
-				<view class="item" :class="poolType==2?'poolHovers':''" @click="poolType=2">
-					My Positions
-				</view>
+				<image class="rightImg" src="../../static/bannerBoxPic.png" mode=""></image>
 			</view>
-		</view>
-		<view class="positions" v-if="poolType==2">
-			<view class="right">
-				<view class="item" @click="url('/pages/pool/poolCreate')">
-					Import/Create pool
-				</view>
-				<view class="item" @click="url('/pages/pool/poolAdd')">
-					Add Liquidity
-				</view>
-			</view>
-		</view>
-		<view class="allPoll" v-if="poolType==1">
-			<view class="poolBodyList">
-				<view class="item">
-					<view class="navBody">
-						<view class="logoPool">
-							<view class="img">
-								<image src="/static/tel.png" mode=""></image>
-							</view>
-							<view class="img">
-								<image src="/static/tel.png" mode=""></image>
-							</view>
-						</view>
-						<view class="text">
-							TBC/QYZ(ft_a_name: QYZ)
-						</view>
-					</view>
-					<view class="poolName">
-						<view class="left">
-							ft_a_balance
-						</view>
-						<view class="right">
-							{{poolData.ft_a_balance/1000000}}
-						</view>
-					</view>
-					<view class="poolName">
-						<view class="left">
-							ft_a_balance
-						</view>
-						<view class="right">
-							{{poolData.tbc_balance/1000000}}
-						</view>
-					</view>
-					<view class="poolName">
-						<view class="left">
-							ft_a_balance
-						</view>
-						<view class="right">
-							{{poolData.ft_lp_balance/1000000}}
-						</view>
-					</view>
-					<view class="btnList">
-						<view class="btn" @click="urlPool('/pages/pool/poolManage','all')">
-							View
-						</view>
+			<view class="positions">
+				<view class="left">
+					<view class="item" v-for="(item, index) in tabList" :key="index" :class="poolType==index+1?'poolHovers':''" @click="clickTab(index+1)">
+						{{item}}
 					</view>
 				</view>
 			</view>
-		</view>
-		<view class="allPoll" v-if="poolType==2">
-			<view class="poolBodyList">
-				<view class="item">
-					<view class="navBody">
-						<view class="logoPool">
-							<view class="img">
-								<image src="/static/tel.png" mode=""></image>
+			<view class="searchBox" v-if="poolType==1">
+				<image src="../../static/Search.png" mode=""></image>
+				<input type="text" placeholder="all pools" />
+				<image src="../../static/bottomIcon.png" mode=""></image>
+			</view>
+			<view class="positions" v-if="poolType==2">
+				<view class="right">
+					<view class="item" @click="url('/pages/pool/poolCreate')">
+						Import/Create pool
+					</view>
+					<view class="item" @click="url('/pages/pool/poolAdd')">
+						Add Liquidity
+					</view>
+				</view>
+			</view>
+			<view class="allPoll" v-if="poolType==1">
+				<view class="poolBodyList" v-for="(item, index) in poolAllNowData" :key="index">
+					<view class="item">
+						<view class="navBody">
+							<view class="logoPool">
+								<view class="img">
+									<image src="../../static/TBC.png" mode=""></image>
+								</view>
+								<view class="img2">
+									<image src="/static/tel.png" mode=""></image>
+								</view>
 							</view>
-							<view class="img">
-								<image src="/static/tel.png" mode=""></image>
+							<view class="text">
+								TBC/{{item.coinName1}}
 							</view>
 						</view>
-						<view class="text">
-							TBC/QYZ(ft_a_name: QYZ)
+						<view class="poolName">
+							<view class="left">
+								ft_a_balance
+							</view>
+							<view class="right">
+								{{item.ft_a_balance/Math.pow(10, item.coinDecimal)}}
+							</view>
 						</view>
-					</view>
-					<view class="poolName">
-						<view class="left">
-							ft_a_balance
+						<view class="poolName">
+							<view class="left">
+								tbc_balance
+							</view>
+							<view class="right">
+								{{item.tbc_balance/Math.pow(10, 6)}}
+							</view>
 						</view>
-						<view class="right">
-							{{poolData.ft_a_balance/1000000}}
+						<view class="poolName">
+							<view class="left">
+								ft_lp_balance
+							</view>
+							<view class="right">
+								{{item.ft_lp_balance/Math.pow(10, item.coinDecimal)}}
+							</view>
 						</view>
-					</view>
-					<view class="poolName">
-						<view class="left">
-							ft_a_balance
-						</view>
-						<view class="right">
-							{{poolData.tbc_balance/1000000}}
-						</view>
-					</view>
-					<view class="poolName">
-						<view class="left">
-							ft_a_balance
-						</view>
-						<view class="right">
-							{{poolData.ft_lp_balance/1000000}}
-						</view>
-					</view>
-					<view class="btnList" @click="urlPool('/pages/pool/poolManage','my')">
-						<view class="btn">
-							Manage
+						<view class="btnList">
+							<view class="btn" @click="urlPool('/pages/pool/poolManage','all',item.poolContract, item.coinName1, item.coinDecimal)">
+								View
+							</view>
 						</view>
 					</view>
 				</view>
 			</view>
+			<view class="allPoll" v-if="poolType==2">
+				<view class="poolBodyList" v-for="(item, index) in poolUserNowData" :key="index">
+					<view class="item">
+						<view class="navBody">
+							<view class="logoPool">
+								<view class="img">
+									<image src="../../static/TBC.png" mode=""></image>
+								</view>
+								<view class="img2">
+									<image src="/static/tel.png" mode=""></image>
+								</view>
+							</view>
+							<view class="text">
+								TBC/{{item.contractName}}
+							</view>
+						</view>
+						<view class="poolName">
+							<view class="left">
+								ft_a_balance
+							</view>  
+							<view class="right">
+								{{item.ft_a_amount/Math.pow(10,item.ftDecimal)}}
+							</view>
+						</view>
+						<view class="poolName">
+							<view class="left">
+								tbc_balance
+							</view>
+							<view class="right">
+								{{item.tbc_amount/Math.pow(10,6)}}
+							</view>
+						</view>
+						<view class="poolName">
+							<view class="left">
+								ft_lp_balance
+							</view>
+							<view class="right">
+								{{item.ft_lp_amount/Math.pow(10,item.ftDecimal)}}
+							</view>
+						</view>
+						<view class="btnList" @click="urlPool('/pages/pool/poolManage','my',item.poolContract, item.contractName, item.ftDecimal)">
+							<view class="btn">
+								管理
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			
 		</view>
-		<!-- <view class="centerBox">
-			<view class="loadIcon">
-				<image @tap="loadClick" src="../../static/load.png" mode=""></image>
-			</view>
-			<view class="outLP">
-				<view class="titleBox">
-					<view class="one" style="margin-bottom: 10rpx;">
-						流动性
-					</view>
-					<view class="two">
-						{{Math.floor(lpNum*10000)/10000}} $
-					</view>
-				</view>
-				<view class="infoBox">
-					<view class="top1" style="display: flex;justify-content: left;">
-						<text style="margin-right: 40rpx;">撤出份额</text>
-						<text style="font-weight: bold;">{{sliderValue}} %</text>
-					</view>
-					<uv-slider v-model="sliderValue" @input="slideChange" step="5" backgroundColor="rgba(255, 255, 255, 0.4)" min="0" max="100"></uv-slider>
-				</view>
-				<view class="infoBox">
-					<view class="top1">
-						<text>WBNB</text>
-						<text>{{(wbnbLpNum*lpNum*(sliderValue/100) / getTotalSupplyNum).toFixed(6)}}</text>
-					</view>
-					<view class="top1">
-						<text>CPX</text>
-						<text>{{(DawkoinLpNum*lpNum*(sliderValue/100) / getTotalSupplyNum).toFixed(6)}}</text>
-					</view>
-				</view>
-				<view class="endingBox">
-					流动池中的份额：{{Math.floor(lpNum/getTotalSupplyNum*1000000)/10000}}%
-				</view>
-				<view class="SlippageBox2">
-					<view class="boxTitle">
-						设置滑点
-					</view>
-					<view class="slipBox">
-						<view class="list" :class="slipCrrent == index?'listActive':'listNoActive'" v-for="(item, index) in slipData" :key="index" @tap="clickSlip(index)">
-							{{item}}%
-						</view>
-						<view class="list2" :class="slipCrrent == 3?'listActive':'listNoActive'">
-							<input v-model="selfSlip" @input="inputNum" placeholder="自定义" type="text" /><text style="margin-right: 20rpx;">%</text>
-						</view>
-					</view>
-				</view>
-				<view class="btnGo2">
-					<view class="btn" v-if="!ApproveLP" @tap="clickApoveLP">
-						授权LP代币
-					</view>
-					<view class="btn" @tap="closeLP" v-else>
-						移除
-					</view>
-				</view>
-			</view>
-		</view> -->
+		
 		<uni-popup ref="popup" type="center" background-color="#fff">
 			打开弹窗
 		</uni-popup>
@@ -187,6 +149,7 @@
 	import bignumberJS from "bignumber.js"
 	import swal from 'sweetalert';
 	import wLoading from "@/component/w-loading/w-loading.vue";
+	import test from '../../abi/tbc_gethash.js'
 	export default {
 		components:{
 			back,wLoading
@@ -194,7 +157,7 @@
 		data() {
 			return {
 				myAddress: '',
-				tabIndex: 0,
+				poolType: 0,
 				wbnbBalanceNum: 0,
 				DawkoinBalanceNum: 0,
 				slipData: ['0.1', '0.5', '1.0'],
@@ -213,7 +176,11 @@
 				ApproveLP: false,
 				userLpCount: 0,
 				poolData: [],
-				poolType:1
+				tabList: ['ALL Pools', 'My Positions'],
+				poolType:1,
+				myPoolData: [],
+				poolUserNowData: [],
+				poolAllNowData: []
 			}
 		},
 		computed: {
@@ -233,8 +200,7 @@
 					console.log("Please connect wallet!")
 				} else {
 					this.myAddress = uni.getStorageSync('walletAddress');
-					this.getPoolInfo();
-					// this.getenfe();
+					this.getAllPool();
 				}
 			},
 			url(pathVal){
@@ -242,32 +208,57 @@
 				   url: pathVal
 				})
 			},
-			async getenfe() {
-				let ewfe = await this.test("07546166e456bd4a04ab11962c0ba0362277694a7cc7a12d5800276df2f1f31b","1FEy8bVr64u42cFaKH7uAkXzgirDuFvBr7");
-				console.log(ewfe)
+			getUserPool() {
+				uni.request({
+					url: this.localApi+'getMyPool',
+					method: 'POST',
+					header: {
+						"Content-Type": "application/json; charset=UTF-8"
+					},
+					data: {
+						userAddress: this.myAddress,
+						page: 1,
+						limit: 20
+					},
+					success: (res) => {
+						if(res.data.success) {
+							this.nowGetHash(res.data.msg)
+							this.myPoolData = res.data.msg;
+						}
+					}
+				});
 			},
-			urlPool(pathVal, type) {
-				// uni.navigateTo({
-				//    url: pathVal+'?type='+type+'&contractID='+
-				// })
-			},
-			async addPool() {
-				const params = [{
-					flag: "POOLNFT_LP_INCREASE",
-					nft_contract_address: "07546166e456bd4a04ab11962c0ba0362277694a7cc7a12d5800276df2f1f31b",
-					address: this.myAddress,
-					tbc_amount: 1,
-				}];
-				const { txid, rawtx } = await window.Turing.sendTransaction(params);
-				if(txid) {
-					uni.showToast({
-						title: '添加成功',
-						icon: "none"
+			async nowGetHash(valData) {
+				await valData.forEach(item => {
+					let newHash = test(item.poolContract,this.myAddress,item.contractName).then(items => {
+						this.getNowPersonPool(items);
 					})
-				}
-				console.log(txid)
-				console.log(rawtx)
-				this.getPoolInfo()
+				})
+			},
+			getAllPool() {
+				uni.request({
+					url: this.localApi+'getPoolList',
+					method: 'POST',
+					header: {
+						"Content-Type": "application/json; charset=UTF-8"
+					},
+					data: {
+						page: 1,
+						limit: 20
+					},
+					success: (res) => {
+						if(res.data.success) {
+							res.data.msg.forEach(item => {
+								this.getNowPool(item);
+							})
+						}
+					}
+				});
+			},
+			urlPool(pathVal, type, valData, coinsName, Decimal) {
+				uni.navigateTo({
+				   url: pathVal+'?type='+type+'&contractID='+valData+'&coinsName='+coinsName+'&Decimal='+Decimal
+				})
 			},
 			async reducePool() {
 				const params = [{
@@ -285,11 +276,11 @@
 				}
 				console.log(txid)
 				console.log(rawtx)
-				this.getPoolInfo()
 			},
-			getPoolInfo() {
+			getNowPool(IDVal) {
+				let newAllPool = [];
 				uni.request({
-					url: this.urlApi + 'ft/pool/nft/info/contract/id/07546166e456bd4a04ab11962c0ba0362277694a7cc7a12d5800276df2f1f31b',
+					url: this.urlApi + 'ft/pool/nft/info/contract/id/'+IDVal.poolContract,
 					method: 'GET',
 					header: {
 						"Content-Type": "application/json; charset=UTF-8"
@@ -297,9 +288,47 @@
 					data: {
 					},
 					success: (res) => {
-						console.log(res)
+						this.$refs.loading.close();
 						if(res.statusCode == 200) {
-							this.poolData = res.data;
+							newAllPool.push({
+								"ft_lp_balance":res.data.ft_lp_balance,
+								"ft_a_balance":res.data.ft_a_balance,
+								"tbc_balance":res.data.tbc_balance,
+								"coinName1":IDVal.coinName1,
+								"coinDecimal":IDVal.coinDecimal,
+								"poolContract":IDVal.poolContract
+							})
+							this.poolAllNowData = this.poolAllNowData.concat(newAllPool);
+						}
+					}
+				});
+			},
+			getNowPersonPool(valData) {
+				let personNum = 0;
+				let onloadData = [];
+				uni.request({
+					url: this.urlApi + 'ft/lp/unspent/by/script/hash'+valData[0].ftlpCodeHash,
+					method: 'GET',
+					header: {
+						"Content-Type": "application/json; charset=UTF-8"
+					},
+					data: {
+					},
+					success: (res) => {
+						if(res.statusCode == 200) {
+							res.data.ftUtxoList.forEach(item => {
+								personNum += item.ftBalance;
+							})
+							onloadData.push({
+								"ft_lp_amount":personNum,
+								"ft_a_amount":(personNum/valData[0].ft_lp_amount)*valData[0].ft_a_amount,
+								"tbc_amount":(personNum/valData[0].ft_lp_amount)*valData[0].tbc_amount,
+								"contractName":valData[0].contractName,
+								"ftDecimal":valData[0].ftDecimal,
+								"poolContract":valData[0].poolContract
+							})
+							this.poolUserNowData =  this.poolUserNowData.concat(onloadData);
+							this.$refs.loading.close();
 						}
 					}
 				});
@@ -308,7 +337,15 @@
 				this.$refs.popup.open('center')
 			},
 			clickTab(val) {
-				this.tabIndex = val;
+				this.poolType = val;
+				this.$refs.loading.open();
+				if(val == 1) {
+					this.poolAllNowData = [];
+					this.getAllPool();
+				} else{
+					this.poolUserNowData = [];
+					this.getUserPool();
+				}
 			},
 			clickSlip(val) {
 				this.slipCrrent = val;
@@ -379,7 +416,6 @@
 		min-height: 100vh;
 		box-sizing: border-box;
 		position: relative;
-		background-color: rgba(242, 229, 213);
 		.backTitle{
 			margin: 38rpx 44rpx;
 			image{
@@ -388,25 +424,35 @@
 			}
 		}
 		.poolBodyList{
-			margin: 40rpx 30rpx 20rpx 30rpx;
-			border: 2rpx solid #fff;
-			border-radius: 20rpx;
+			padding: 28rpx;
+			border-radius: 39rpx;
 			color: #fff;
 			overflow: hidden;
 			background-color: #fff;
+			margin-bottom: 30rpx;
 			.item{
 				.navBody{
 					padding: 15upx;
 					display: flex;
 					align-items: center;
-					justify-content: space-between;
 					margin-bottom: 10upx;
 					.logoPool{
 						display: flex;
 						align-items: center;
+						margin-right: 28rpx;
 						.img{
 							width: 70upx;
 							height: 70upx;
+							z-index: 9;
+							image{
+								width: 100%;
+								height: 100%;
+							}
+						}
+						.img2{
+							width: 70upx;
+							height: 70upx;
+							margin-left: 0;
 							image{
 								width: 100%;
 								height: 100%;
@@ -414,8 +460,11 @@
 						}
 					}
 					.text{
-						color: #000;
-						font-size: 24upx;
+						font-family: Noto Sans SC, Noto Sans SC;
+						font-weight: 500;
+						font-size: 32rpx;
+						color: #161616;
+						font-weight: bold;
 					}
 				}
 				.poolName{
@@ -428,286 +477,23 @@
 						color: #666;
 					}
 					.right{
-						color:#db9e56;
+						color:#00D085;
 					}
 				}
 				.btnList{
 					display: flex;
 					justify-content: space-around;
 					align-items: center;
-					margin-top: 20rpx;
-					background-color: #db9e56;
+					margin-top: 50rpx;
+					background: linear-gradient( 90deg, #8D60FF 0%, #AF6EFF 100%);
+					border-radius: 39rpx;
 					.btn{
 						padding: 20rpx;
-						border-radius: 20rpx;
 					}
 				}
 			}
 		}
-		.centerBox{
-			margin: 40rpx 30rpx 0 30rpx;
-			border: 2rpx solid #e5e5e5;
-			border-radius: 20rpx;
-			padding: 30rpx;
-			.loadIcon{
-				display: flex;
-				justify-content: right;
-				image{
-					width: 32rpx;
-					height: 32rpx;
-				}
-			}
-			.lpBox{
-				margin-top: 20rpx;
-				padding-bottom: 40rpx;
-				.coinBox{
-					margin-top: 23rpx;
-					display: flex;
-					align-items: center;
-					.coinNameBox{
-						width: 212rpx;
-						height: 65rpx;
-						border: 2rpx solid rgba(0, 222, 161, 1);
-						background-color: #000;
-						border-radius: 40rpx;
-						line-height: 65rpx;
-						display: flex;
-						justify-content: center;
-						margin-right: 25rpx;
-						.coinSmall{
-							display: flex;
-							align-items: center;
-							text{
-								color: #fff;
-								font-size: 36rpx;
-								margin-right: 23rpx;
-							}
-							.slectIcon{
-								width: 16rpx;
-								height: 21rpx;
-							}
-						}
-					}
-					.coinMax{
-						width: 80rpx;
-						height: 45rpx;
-						line-height: 45rpx;
-						text-align: center;
-						border: 2rpx solid rgba(0, 222, 161, 1);
-						color: rgba(0, 222, 161, 1);
-						font-size: 24rpx;
-						font-weight: bold;
-						border-radius: 40rpx;
-					}
-				}
-				.inputToBox{
-					.blanceTitle{
-						display: flex;
-						justify-content: right;
-						color: rgba(255, 255, 255, .6);
-						font-size: 24rpx;
-						margin-bottom: 11rpx;
-						margin-right: 40rpx;
-					}
-					.inputBody{
-						height: 169rpx;
-						background-color: rgba(0, 222, 161, .4);
-						border-radius: 30rpx;
-						padding-right: 45rpx;
-						input{
-							width: 100%;
-							height: 100%;
-							text-align: right;
-							font-size: 42rpx;
-							color: #fff;
-						}
-					}
-				}
-				.SlippageBox{
-					margin-top: 40rpx;
-					.boxTitle{
-						font-size: 38rpx;
-						color: #fff;
-					}
-					.slipBox{
-						display: flex;
-						justify-content: space-between;
-						align-items: center;
-						margin-top: 30rpx;
-						.list{
-							width: 140rpx;
-							height: 65rpx;
-							line-height: 65rpx;
-							text-align: center;
-							border-radius: 40rpx;
-							font-size: 36rpx;
-							font-weight: bold;
-						}
-						.listActive{
-							background-color: rgba(0, 222, 161, 1);
-							color: #000;
-						}
-						.listNoActive{
-							background-color: rgba(0, 222, 161, .4);
-							color: rgba(255, 255, 255, .4);
-						}
-						.list2{
-							width: 140rpx;
-							height: 65rpx;
-							line-height: 65rpx;
-							text-align: center;
-							border-radius: 40rpx;
-							font-size: 36rpx;
-							font-weight: bold;
-							display: flex;
-							align-items: center;
-							input{
-								width: 100%;
-								height: 100%;
-							}
-						}
-					}
-				}
-				.centerIcon{
-					display: flex;
-					justify-content: center;
-					margin: 48rpx 0;
-					.changebox{
-						width: 36rpx;
-						height: 40rpx;
-						line-height: 40rpx;
-						text-align: center;
-						background-image: url('../../static/icon1.png');
-						background-size: 100% 100%;
-						image{
-							width: 27rpx;
-							height: 28rpx;
-						}
-					}
-				}
-				.btnGoAppove{
-					display: flex;
-					justify-content: center;
-					margin-top: 80rpx;
-					.btn{
-						width: 300rpx;
-						height: 90rpx;
-						line-height: 90rpx;
-						text-align: center;
-						color: #000;
-						font-size: 34rpx;
-						font-weight: bold;
-						background-color: #00DEA1;
-						border-radius: 60rpx;
-					}
-				}
-				.btnGo{
-					display: flex;
-					justify-content: center;
-					margin-top: 80rpx;
-					.btn{
-						width: 300rpx;
-						height: 90rpx;
-						line-height: 90rpx;
-						text-align: center;
-						color: #000;
-						font-weight: bold;
-						font-size: 34rpx;
-						background-color: #00DEA1;
-						border-radius: 60rpx;
-					}
-				}
-			}
-			.outLP{
-				margin-top: 27rpx;
-				.titleBox{
-					color: #fff;
-					font-weight: bold;
-					font-size: 36rpx;
-				}
-				.infoBox{
-					margin-top: 30rpx;
-					padding: 25rpx 16rpx;
-					background-color: rgba(0, 222, 161, .4);
-					border-radius: 10rpx;
-					.top1{
-						display: flex;
-						justify-content: space-between;
-						margin-bottom: 31rpx;
-						color: #fff;
-						font-size: 28rpx;
-						font-weight: bold;
-					}
-				}
-				.endingBox{
-					margin: 34rpx 0;
-					color: #fff;
-					font-size: 30rpx;
-				}
-				.SlippageBox2{
-					margin-top: 40rpx;
-					.boxTitle{
-						font-size: 38rpx;
-						color: #fff;
-					}
-					.slipBox{
-						display: flex;
-						justify-content: space-between;
-						align-items: center;
-						margin-top: 30rpx;
-						.list{
-							width: 140rpx;
-							height: 65rpx;
-							line-height: 65rpx;
-							text-align: center;
-							border-radius: 40rpx;
-							font-size: 36rpx;
-							font-weight: bold;
-						}
-						.listActive{
-							background-color: rgba(0, 222, 161, 1);
-							color: #000;
-						}
-						.listNoActive{
-							background-color: rgba(0, 222, 161, .4);
-							color: rgba(255, 255, 255, .4);
-						}
-						.list2{
-							width: 140rpx;
-							height: 65rpx;
-							line-height: 65rpx;
-							text-align: center;
-							border-radius: 40rpx;
-							font-size: 36rpx;
-							font-weight: bold;
-							display: flex;
-							align-items: center;
-							input{
-								width: 100%;
-								height: 100%;
-							}
-						}
-					}
-				}
-				.btnGo2{
-					display: flex;
-					justify-content: center;
-					margin-top: 80rpx;
-					margin-bottom: 40rpx;
-					.btn{
-						width: 357rpx;
-						height: 90rpx;
-						line-height: 90rpx;
-						text-align: center;
-						color: #000;
-						font-size: 36rpx;
-						font-weight: bold;
-						background-color: rgba(0, 222, 161, 1);
-						border-radius: 50rpx;
-					}
-				}
-			}
-		}
+		
 	}
 	.slideStyle{
 		background-image: url('../../static/logo.png');
@@ -715,57 +501,102 @@
 		width: 60rpx;
 		height: 60rpx;
 	}
-	.positions{
-		box-sizing: border-box;
-		margin: 0 30upx;
-		border-radius: 30upx;
-		// border: 2upx solid #fff;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		color: #fff;
-		.left{
-			width: 50%;
+	.poolCenter{
+		padding: 30rpx;
+		.bannerBox{
+			padding: 0 28rpx;
 			display: flex;
+			justify-content: space-between;
+			background-image: url('/static/BannerBG.png');
+			background-size: 100% 100%;
 			align-items: center;
-			box-sizing: border-box;
-			.item{
-				display: flex;
-				align-items: center;
-				font-size: 24upx;
-				color: #000;
-				padding: 15upx;
-				background-color: #fff;
-				border-radius: 30upx;
-				margin-right: 30upx;
+			.leftBox{
+				.topText{
+					font-family: Noto Sans SC, Noto Sans SC;
+					font-weight: 500;
+					font-size: 56rpx;
+					color: #FFFFFF;
+				}
+				.bottomText{
+					margin-top: 24rpx;
+					font-family: Noto Sans SC, Noto Sans SC;
+					font-weight: 500;
+					font-size: 35rpx;
+					color: #FFFFFF;
+				}
 			}
-			.item:nth-child{
-				margin-right: 0upx;
-			}
-			.poolHovers{
-				background-color: #db9e56;
-				color: #fff;
+			.rightImg{
+				width: 315rpx;
+				height: 315rpx;
 			}
 		}
-		.right{
-			margin-top: 30upx;
-			width: 100%;
+		.positions{
+			box-sizing: border-box;
+			border-radius: 30upx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			box-sizing: border-box;
-			.item{
-				box-sizing: border-box;
-				width: 50%;
-				margin: 0 20upx;
+			color: #fff;
+			margin: 30rpx 0;
+			.left{
 				display: flex;
 				align-items: center;
-				font-size: 24upx;
-				color: #000;
-				padding: 30upx;
-				background-color: #fff;
-				border-radius: 15upx;
+				box-sizing: border-box;
+				.item{
+					display: flex;
+					align-items: center;
+					font-size: 30upx;
+					color: #525252;
+					padding: 28rpx;
+					border-radius: 30upx;
+					margin-right: 30upx;
+				}
+				.item:nth-child{
+					margin-right: 0upx;
+				}
+				.poolHovers{
+					background-color: #fff;
+					color: #161616;
+				}
+			}
+			.right{
+				width: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				box-sizing: border-box;
+				.item{
+					box-sizing: border-box;
+					width: 50%;
+					margin: 0 20upx;
+					display: flex;
+					align-items: center;
+					font-size: 24upx;
+					color: #fff;
+					padding: 30upx;
+					background: linear-gradient(90deg, #AF6EFF 0%, #8D60FF 100%);
+					border-radius: 15upx;
+				}
+			}
+		}
+		.searchBox{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			height: 86rpx;
+			background-color: #fff;
+			margin: 28rpx 0;
+			padding: 0 28rpx;
+			border-radius: 56rpx;
+			image{
+				width: 42rpx;
+				height: 42rpx;
+			}
+			input{
+				height: 100%;
+				width: 80%;
 			}
 		}
 	}
+	
 </style>

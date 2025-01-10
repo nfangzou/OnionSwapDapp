@@ -2,9 +2,9 @@
   "dependencies": {
     "aes-js": "^3.1.2",
     "sweetalert": "^2.1.2",
-    "tbc-contract": "^1.1.7",
+    "tbc-contract": "^1.1.9",
     "tbc-lib-js": "^1.0.21",
     "ts-loader": "^9.5.1",
-    "typescript": "^5.7.2"
+    "typescript": "^5.0.4"
   }
 }
