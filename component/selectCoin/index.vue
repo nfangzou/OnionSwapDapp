@@ -14,9 +14,25 @@
 			<view class="inputBox">
 				<image src="../../static/Search.png" mode=""></image>
 				<input v-model="newAddress" @input="getProCoinList" placeholder="请输入代币地址" type="text" />
-				<image src="../../static/delIcon.png" mode=""></image>
+				<image src="../../static/delIcon.png" @tap="clickCloseInput" mode=""></image>
 			</view>
 			<view class="tokenList">
+				<view class="titleList" v-if="nowTokenList.length != 0">
+					最近添加
+				</view>
+				<view class="list" v-if="nowTokenList.length != 0">
+					<view class="listOne" v-for="(item, index) in nowTokenList" :key="index" @tap="clickNowCoin(item)">
+						<image src="../../static/tel.png" mode=""></image>
+						<view class="coinName">
+							<view class="topCoin">
+								{{item.name}}
+							</view>
+							<view class="bottomCoin">
+								{{item.symbol}}
+							</view>
+						</view>
+					</view>
+				</view>
 				<view class="titleList">
 					Tokens
 				</view>
@@ -66,15 +82,6 @@
 						logoURI: 'https://raw.githubusercontent.com/Sexy-J/JieSwap/main/src/assets/img/bnb.png',
 					},
 					{
-						name: 'YM',
-						symbol: 'test_coin',
-						address: '1333e38f8c4bb05a96f823f14feefe30d3b34b82d0f66a5e4fcb31761dadf14d',
-						chainId: 1,
-						decimals: 6,
-						balance: '',
-						logoURI: 'https://raw.githubusercontent.com/Sexy-J/JieSwap/main/src/assets/img/bnb.png',
-					},
-					{
 						name: 'ONI',
 						symbol: 'Onion',
 						address: '53129030dfed4779b914af8962319b549230aa017103bbf660d940c6b7f20b66',
@@ -83,12 +90,25 @@
 						balance: '',
 						logoURI: 'https://raw.githubusercontent.com/Sexy-J/JieSwap/main/src/assets/img/bnb.png',
 					}
-				]
+				],
+				nowTokenList: []
 			};
+		},
+		created() {
+			let newListToken = uni.getStorageSync('stoTokenList');
+			if(newListToken == null || newListToken == '') {
+				this.nowTokenList = []
+			} else{
+				this.nowTokenList.push(newListToken);
+				console.log(this.nowTokenList)
+			}
 		},
 		methods: {
 			clickClose() {
 				this.$emit('clickClose', 0);
+			},
+			clickCloseInput() {
+				this.newAddress = '';
 			},
 			clickNowCoin(val) {
 				this.$emit('clickBackInfo',val)
@@ -104,7 +124,7 @@
 					data: {
 					},
 					success: (res) => {
-						this.tokenList.push({
+						let nowlist = {
 							name: res.data.ftName,
 							symbol: res.data.ftSymbol,
 							address: res.data.ftContractId,
@@ -112,7 +132,12 @@
 							decimals: res.data.ftDecimal,
 							balance: 0,
 							logoURI: res.data.ftIconUrl,
-						})
+						}
+						this.tokenList.push(nowlist)
+						if(this.nowTokenList.length != 0) {
+							this.nowTokenList.push(nowlist)
+						}
+						uni.setStorageSync('stoTokenList', nowlist);
 					}
 				});
 			}
@@ -172,6 +197,8 @@
 				.tokenList{
 					margin-top: 40rpx;
 					padding-left: 20rpx;
+					overflow-y: scroll;
+					height: 510rpx;
 					.titleList{
 						font-family: Noto Sans SC, Noto Sans SC;
 						font-weight: 500;
@@ -261,6 +288,8 @@
 				.tokenList{
 					margin-top: 40rpx;
 					padding-left: 20rpx;
+					overflow-y: scroll;
+					height: 510rpx;
 					.titleList{
 						font-family: Noto Sans SC, Noto Sans SC;
 						font-weight: 500;
