@@ -474,414 +474,832 @@
 </script>
 
 <style lang="less" scoped>
-	.content {
-		width: 100%;
-		height: auto;
-		min-height: 100vh;
-		box-sizing: border-box;
-		position: relative;
-		padding-bottom: 30upx;
-
-		.backTitle {
-			margin: 38rpx 44rpx;
-
-			image {
-				width: 60rpx;
-				height: 54rpx;
-			}
-		}
-
-		.centerBox {
-			max-width: 750rpx;
-			margin: 40rpx 30rpx 0 30rpx;
-			border: 2rpx solid #e5e5e5;
-			border-radius: 20rpx;
-			.bodyList{
-				padding: 0 28rpx;
-			}
-			.poolTitle {
-				position: relative;
-				text-align: center;
-				margin-bottom: 30upx;
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				margin-bottom: 30upx;
-				padding: 0 28rpx;
-				height: 112rpx;
-				background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
-				border-radius: 30rpx 30rpx 0 0;
-				.back {
-					image {
-						width: 56upx;
-						height: 56upx;
-					}
+	@media all and (min-width: 700px) and (max-width: 2880px){
+		.content {
+			width: 100%;
+			height: auto;
+			// min-height: 100vh;
+			box-sizing: border-box;
+			position: relative;
+			padding-bottom: 30upx;
+			background-color: #F5F9FF;
+			.backTitle {
+				margin: 38rpx 44rpx;
+		
+				image {
+					width: 60rpx;
+					height: 54rpx;
 				}
-				.title {
-					color: #fff;
+			}
+		
+			.centerBox {
+				width: 70%;
+				margin: 40rpx auto;
+				box-sizing: border-box;
+				background-color: #fff;
+			// margin: 40rpx 30rpx 0 30rpx;
+				border: 2rpx solid #e5e5e5;
+				border-radius: 20rpx;
+				.bodyList{
+					padding: 0 28rpx;
 				}
-				.rightN{
-					width: 56rpx;
+				.poolTitle {
+					position: relative;
+					text-align: center;
+					margin-bottom: 30upx;
 					display: flex;
-					justify-content: right;
-					image {
-						width: 32rpx;
-						height: 32rpx;
-					}
-				}
-			}
-
-			.lpBox {
-				margin-top: 20rpx;
-				padding-bottom: 40rpx;
-
-				.coinBox {
-					margin-top: 23rpx;
-					display: flex;
+					justify-content: space-between;
 					align-items: center;
-
-					.coinNameBox {
-						height: 65rpx;
-						border-radius: 40rpx;
-						line-height: 65rpx;
+					margin-bottom: 30upx;
+					padding: 0 28rpx;
+					height: 112rpx;
+					background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
+					border-radius: 30rpx 30rpx 0 0;
+					.back {
+						image {
+							width: 56upx;
+							height: 56upx;
+						}
+					}
+					.title {
+						color: #fff;
+					}
+					.rightN{
+						width: 56rpx;
 						display: flex;
-						margin-right: 25rpx;
-						.coinSmall {
+						justify-content: right;
+						image {
+							width: 32rpx;
+							height: 32rpx;
+						}
+					}
+				}
+		
+				.lpBox {
+					margin-top: 20rpx;
+					padding-bottom: 40rpx;
+		
+					.coinBox {
+						margin-top: 23rpx;
+						display: flex;
+						align-items: center;
+		
+						.coinNameBox {
+							height: 65rpx;
+							border-radius: 40rpx;
+							line-height: 65rpx;
+							display: flex;
+							margin-right: 25rpx;
+							.coinSmall {
+								display: flex;
+								align-items: center;
+								text {
+									color: #000;
+									font-size: 34rpx;
+									margin-left: 10rpx;
+								}
+								.slectIcon {
+									width: 42rpx;
+									height: 42rpx;
+								}
+							}
+						}
+						
+						.coinMax {
+							width: 80rpx;
+							height: 45rpx;
+							line-height: 45rpx;
+							text-align: center;
+							border: 2rpx solid #7328E4;
+							color: #7328E4;
+							font-size: 24rpx;
+							font-weight: bold;
+							border-radius: 40rpx;
+						}
+					}
+		
+					.inputToBox {
+						.blanceTitle {
+							display: flex;
+							justify-content: right;
+							color: #000000;
+							font-size: 24rpx;
+							margin-bottom: 11rpx;
+							margin-right: 40rpx;
+						}
+						
+						.inputBody {
+							height: 169rpx;
+							background: rgba(115,40,228,0.1);
+							border-radius: 30rpx;
+							padding-right: 45rpx;
+						
+							input {
+								width: 100%;
+								height: 100%;
+								text-align: right;
+								font-size: 42rpx;
+								color: #6929C4;
+							}
+						}
+					}
+		
+					.SlippageBox {
+						margin-top: 40rpx;
+		
+						.boxTitle {
+							font-size: 38rpx;
+							color: #fff;
+						}
+		
+						.slipBox {
 							display: flex;
 							align-items: center;
-							text {
-								color: #000;
-								font-size: 34rpx;
-								margin-left: 10rpx;
+							margin-top: 30rpx;
+		
+							.list {
+								width: 140rpx;
+								height: 65rpx;
+								line-height: 65rpx;
+								text-align: center;
+								border-radius: 40rpx;
+								font-size: 36rpx;
+								font-weight: bold;
+								margin-right: 40rpx;
 							}
-							.slectIcon {
+		
+							.listActive {
+								background-color: rgba(0, 222, 161, 1);
+								color: #000;
+							}
+		
+							.listNoActive {
+								background-color: rgba(0, 222, 161, .4);
+								color: rgba(255, 255, 255, .4);
+							}
+		
+							.list2 {
+								width: 140rpx;
+								height: 65rpx;
+								line-height: 65rpx;
+								text-align: center;
+								border-radius: 40rpx;
+								font-size: 36rpx;
+								font-weight: bold;
+								display: flex;
+								align-items: center;
+		
+								input {
+									width: 100%;
+									height: 100%;
+								}
+							}
+						}
+					}
+		
+					.centerIcon {
+						display: flex;
+						justify-content: center;
+						margin: 40rpx 0;
+						
+						.changebox {
+							width: 77rpx;
+							height: 77rpx;
+							line-height: 96rpx;
+							background: #6929C4;
+							border-radius: 42rpx;
+							text-align: center;
+							image {
 								width: 42rpx;
 								height: 42rpx;
 							}
 						}
 					}
-					
-					.coinMax {
-						width: 80rpx;
-						height: 45rpx;
-						line-height: 45rpx;
-						text-align: center;
-						border: 2rpx solid #7328E4;
-						color: #7328E4;
-						font-size: 24rpx;
-						font-weight: bold;
-						border-radius: 40rpx;
-					}
-				}
-
-				.inputToBox {
-					.blanceTitle {
+		
+					.btnGoAppove {
 						display: flex;
-						justify-content: right;
-						color: #000000;
-						font-size: 24rpx;
-						margin-bottom: 11rpx;
-						margin-right: 40rpx;
-					}
-					
-					.inputBody {
-						height: 169rpx;
-						background: rgba(115,40,228,0.1);
-						border-radius: 30rpx;
-						padding-right: 45rpx;
-					
-						input {
-							width: 100%;
-							height: 100%;
-							text-align: right;
-							font-size: 42rpx;
-							color: #6929C4;
-						}
-					}
-				}
-
-				.SlippageBox {
-					margin-top: 40rpx;
-
-					.boxTitle {
-						font-size: 38rpx;
-						color: #fff;
-					}
-
-					.slipBox {
-						display: flex;
-						align-items: center;
-						margin-top: 30rpx;
-
-						.list {
-							width: 140rpx;
-							height: 65rpx;
-							line-height: 65rpx;
+						justify-content: center;
+						margin-top: 80rpx;
+		
+						.btn {
+							width: 300rpx;
+							height: 90rpx;
+							line-height: 90rpx;
 							text-align: center;
-							border-radius: 40rpx;
-							font-size: 36rpx;
-							font-weight: bold;
-							margin-right: 40rpx;
-						}
-
-						.listActive {
-							background-color: rgba(0, 222, 161, 1);
 							color: #000;
-						}
-
-						.listNoActive {
-							background-color: rgba(0, 222, 161, .4);
-							color: rgba(255, 255, 255, .4);
-						}
-
-						.list2 {
-							width: 140rpx;
-							height: 65rpx;
-							line-height: 65rpx;
-							text-align: center;
-							border-radius: 40rpx;
-							font-size: 36rpx;
+							font-size: 34rpx;
 							font-weight: bold;
-							display: flex;
-							align-items: center;
-
-							input {
-								width: 100%;
-								height: 100%;
-							}
+							background-color: #00DEA1;
+							border-radius: 60rpx;
+						}
+					}
+		
+					.btnGo {
+						display: flex;
+						justify-content: center;
+						margin-top: 80rpx;
+		
+						.btn {
+							width: 300rpx;
+							height: 90rpx;
+							line-height: 90rpx;
+							text-align: center;
+							color: #000;
+							font-weight: bold;
+							font-size: 34rpx;
+							background-color: #00DEA1;
+							border-radius: 60rpx;
 						}
 					}
 				}
-
-				.centerIcon {
-					display: flex;
-					justify-content: center;
-					margin: 40rpx 0;
-					
-					.changebox {
-						width: 77rpx;
-						height: 77rpx;
-						line-height: 96rpx;
-						background: #6929C4;
-						border-radius: 42rpx;
-						text-align: center;
-						image {
-							width: 42rpx;
-							height: 42rpx;
-						}
-					}
-				}
-
-				.btnGoAppove {
-					display: flex;
-					justify-content: center;
-					margin-top: 80rpx;
-
-					.btn {
-						width: 300rpx;
-						height: 90rpx;
-						line-height: 90rpx;
-						text-align: center;
-						color: #000;
-						font-size: 34rpx;
-						font-weight: bold;
-						background-color: #00DEA1;
-						border-radius: 60rpx;
-					}
-				}
-
-				.btnGo {
-					display: flex;
-					justify-content: center;
-					margin-top: 80rpx;
-
-					.btn {
-						width: 300rpx;
-						height: 90rpx;
-						line-height: 90rpx;
-						text-align: center;
-						color: #000;
-						font-weight: bold;
-						font-size: 34rpx;
-						background-color: #00DEA1;
-						border-radius: 60rpx;
-					}
-				}
-			}
-
-
-		}
-	}
-	
-	.maskRe {
-		width: 550rpx;
-		padding: 20rpx;
-		border-radius: 20rpx;
-		border: 2rpx solid #000;
-		background-color: #fff;
-		.title{
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			padding: 25rpx;
-			.left{
-				width: 50rpx;
-			}
-			.center{
-				color: #000;
-				font-size: 28rpx;
-				font-weight: bold;
-			}
-			.right{
-				image{
-					width: 50rpx;
-					height: 50rpx;
-				}
+		
+		
 			}
 		}
-		.tokenList{
-			padding: 18rpx;
-			.coinListTitle{
+		
+		.maskRe {
+			width: 550rpx;
+			padding: 20rpx;
+			border-radius: 20rpx;
+			border: 2rpx solid #000;
+			background-color: #fff;
+			.title{
 				display: flex;
 				justify-content: space-between;
-				border-bottom: 2px solid #e5e5e5;
-				padding: 20rpx 0;
+				align-items: center;
+				padding: 25rpx;
 				.left{
-					font-size: 30rpx;
+					width: 50rpx;
+				}
+				.center{
 					color: #000;
+					font-size: 28rpx;
+					font-weight: bold;
 				}
 				.right{
 					image{
-						width: 60rpx;
-						height: 60rpx;
-						margin-right: 5rpx;
-						border-radius: 50%;
+						width: 50rpx;
+						height: 50rpx;
 					}
 				}
 			}
-			.listOne{
-				margin-top: 20rpx;
-				display: flex;
-				justify-content: space-between;
-				.oneLeft{
-					color: gray;
+			.tokenList{
+				padding: 18rpx;
+				.coinListTitle{
+					display: flex;
+					justify-content: space-between;
+					border-bottom: 2px solid #e5e5e5;
+					padding: 20rpx 0;
+					.left{
+						font-size: 30rpx;
+						color: #000;
+					}
+					.right{
+						image{
+							width: 60rpx;
+							height: 60rpx;
+							margin-right: 5rpx;
+							border-radius: 50%;
+						}
+					}
 				}
-				.oneRight{
-					color: #00dea1;
+				.listOne{
+					margin-top: 20rpx;
+					display: flex;
+					justify-content: space-between;
+					.oneLeft{
+						color: gray;
+					}
+					.oneRight{
+						color: #00dea1;
+					}
 				}
-			}
-			.btnBootom{
-				display: flex;
-				justify-content: center;
-				margin-top: 50rpx;
-				.btn{
-					width: 100%;
-					height: 100rpx;
-					line-height: 100rpx;
-					text-align: center;
-					background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
-					border-radius: 42rpx;
-					color: #fff;
+				.btnBootom{
+					display: flex;
+					justify-content: center;
+					margin-top: 50rpx;
+					.btn{
+						width: 100%;
+						height: 100rpx;
+						line-height: 100rpx;
+						text-align: center;
+						background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
+						border-radius: 42rpx;
+						color: #fff;
+					}
 				}
 			}
 		}
-	}
-	.slideStyle {
-		background-image: url('../../static/logo.png');
-		background-size: 100% 100%;
-		width: 60rpx;
-		height: 60rpx;
-	}
-
-	
-
-	.clientText {
-		color: #fff;
-		text-align: center;
-		font-size: 24upx;
-		margin-top: 20upx;
-	}
-
-	.client {
-		.samll {
+		.slideStyle {
+			background-image: url('../../static/logo.png');
+			background-size: 100% 100%;
+			width: 60rpx;
+			height: 60rpx;
+		}
+		
+		
+		
+		.clientText {
 			color: #fff;
 			text-align: center;
 			font-size: 24upx;
 			margin-top: 20upx;
 		}
-
-		.text {
-			color: #00DEA1;
-			text-align: center;
-			font-size: 24upx;
-			margin-top: 20upx;
-		}
-	}
-
-	.tipMsg {
-		background: rgba(255,24,28,0.1);
-		padding: 28upx;
-		border-radius: 28upx;
-		margin-bottom: 40upx;
 		
-		.text {
-			font-family: Noto Sans SC, Noto Sans SC;
-			font-weight: 400;
-			font-size: 24rpx;
-			color: #DA1E28;
-		}
-	}
-
-	.sharePool {
-		margin-top: 30upx;
-		
-		.title {
-			font-size: 26upx;
-			color: #000;
-			font-weight: bold;
-		}
-		
-		.shareList {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			border: 2upx solid #E0E0E0;
-			padding: 30upx 0;
-			border-radius: 15upx;
-			margin-top: 20upx;
-		
-			.item {
-				width: 33.3%;
-				color: #000;
+		.client {
+			.samll {
+				color: #fff;
 				text-align: center;
 				font-size: 24upx;
+				margin-top: 20upx;
 			}
-			.num{
+		
+			.text {
+				color: #00DEA1;
+				text-align: center;
+				font-size: 24upx;
+				margin-top: 20upx;
+			}
+		}
+		
+		.tipMsg {
+			background: rgba(255,24,28,0.1);
+			padding: 28upx;
+			border-radius: 28upx;
+			margin-bottom: 40upx;
+			
+			.text {
+				font-family: Noto Sans SC, Noto Sans SC;
+				font-weight: 400;
+				font-size: 24rpx;
+				color: #DA1E28;
+			}
+		}
+		
+		.sharePool {
+			margin-top: 30upx;
+			
+			.title {
+				font-size: 26upx;
+				color: #000;
 				font-weight: bold;
 			}
+			
+			.shareList {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border: 2upx solid #E0E0E0;
+				padding: 30upx 0;
+				border-radius: 15upx;
+				margin-top: 20upx;
+			
+				.item {
+					width: 33.3%;
+					color: #000;
+					text-align: center;
+					font-size: 24upx;
+				}
+				.num{
+					font-weight: bold;
+				}
+			}
+		}
+		
+		.shareBtn {
+			background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
+			padding: 30upx;
+			margin-top: 56upx;
+			border-radius: 42upx;
+			
+			.text {
+				font-size: 30upx;
+				color: #fff;
+				text-align: center;
+			}
+		}
+		.tip{
+			background-color: rgb(247 220 222);
+			margin: 30upx;
+			padding: 15upx;
+			border-radius: 15upx;
+			.text{
+				font-size: 28upx;
+				color:rgb(234 53 53);
+			}
 		}
 	}
-
-	.shareBtn {
-		background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
-		padding: 30upx;
-		margin-top: 56upx;
-		border-radius: 42upx;
+	@media all and (min-width: 320px) and (max-width: 700px){
+		.content {
+			width: 100%;
+			height: auto;
+			min-height: 100vh;
+			box-sizing: border-box;
+			position: relative;
+			padding-bottom: 30upx;
 		
-		.text {
-			font-size: 30upx;
+			.backTitle {
+				margin: 38rpx 44rpx;
+		
+				image {
+					width: 60rpx;
+					height: 54rpx;
+				}
+			}
+		
+			.centerBox {
+				max-width: 750rpx;
+				margin: 40rpx 30rpx 0 30rpx;
+				border: 2rpx solid #e5e5e5;
+				border-radius: 20rpx;
+				.bodyList{
+					padding: 0 28rpx;
+				}
+				.poolTitle {
+					position: relative;
+					text-align: center;
+					margin-bottom: 30upx;
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					margin-bottom: 30upx;
+					padding: 0 28rpx;
+					height: 112rpx;
+					background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
+					border-radius: 30rpx 30rpx 0 0;
+					.back {
+						image {
+							width: 56upx;
+							height: 56upx;
+						}
+					}
+					.title {
+						color: #fff;
+					}
+					.rightN{
+						width: 56rpx;
+						display: flex;
+						justify-content: right;
+						image {
+							width: 32rpx;
+							height: 32rpx;
+						}
+					}
+				}
+		
+				.lpBox {
+					margin-top: 20rpx;
+					padding-bottom: 40rpx;
+		
+					.coinBox {
+						margin-top: 23rpx;
+						display: flex;
+						align-items: center;
+		
+						.coinNameBox {
+							height: 65rpx;
+							border-radius: 40rpx;
+							line-height: 65rpx;
+							display: flex;
+							margin-right: 25rpx;
+							.coinSmall {
+								display: flex;
+								align-items: center;
+								text {
+									color: #000;
+									font-size: 34rpx;
+									margin-left: 10rpx;
+								}
+								.slectIcon {
+									width: 42rpx;
+									height: 42rpx;
+								}
+							}
+						}
+						
+						.coinMax {
+							width: 80rpx;
+							height: 45rpx;
+							line-height: 45rpx;
+							text-align: center;
+							border: 2rpx solid #7328E4;
+							color: #7328E4;
+							font-size: 24rpx;
+							font-weight: bold;
+							border-radius: 40rpx;
+						}
+					}
+		
+					.inputToBox {
+						.blanceTitle {
+							display: flex;
+							justify-content: right;
+							color: #000000;
+							font-size: 24rpx;
+							margin-bottom: 11rpx;
+							margin-right: 40rpx;
+						}
+						
+						.inputBody {
+							height: 169rpx;
+							background: rgba(115,40,228,0.1);
+							border-radius: 30rpx;
+							padding-right: 45rpx;
+						
+							input {
+								width: 100%;
+								height: 100%;
+								text-align: right;
+								font-size: 42rpx;
+								color: #6929C4;
+							}
+						}
+					}
+		
+					.SlippageBox {
+						margin-top: 40rpx;
+		
+						.boxTitle {
+							font-size: 38rpx;
+							color: #fff;
+						}
+		
+						.slipBox {
+							display: flex;
+							align-items: center;
+							margin-top: 30rpx;
+		
+							.list {
+								width: 140rpx;
+								height: 65rpx;
+								line-height: 65rpx;
+								text-align: center;
+								border-radius: 40rpx;
+								font-size: 36rpx;
+								font-weight: bold;
+								margin-right: 40rpx;
+							}
+		
+							.listActive {
+								background-color: rgba(0, 222, 161, 1);
+								color: #000;
+							}
+		
+							.listNoActive {
+								background-color: rgba(0, 222, 161, .4);
+								color: rgba(255, 255, 255, .4);
+							}
+		
+							.list2 {
+								width: 140rpx;
+								height: 65rpx;
+								line-height: 65rpx;
+								text-align: center;
+								border-radius: 40rpx;
+								font-size: 36rpx;
+								font-weight: bold;
+								display: flex;
+								align-items: center;
+		
+								input {
+									width: 100%;
+									height: 100%;
+								}
+							}
+						}
+					}
+		
+					.centerIcon {
+						display: flex;
+						justify-content: center;
+						margin: 40rpx 0;
+						
+						.changebox {
+							width: 77rpx;
+							height: 77rpx;
+							line-height: 96rpx;
+							background: #6929C4;
+							border-radius: 42rpx;
+							text-align: center;
+							image {
+								width: 42rpx;
+								height: 42rpx;
+							}
+						}
+					}
+		
+					.btnGoAppove {
+						display: flex;
+						justify-content: center;
+						margin-top: 80rpx;
+		
+						.btn {
+							width: 300rpx;
+							height: 90rpx;
+							line-height: 90rpx;
+							text-align: center;
+							color: #000;
+							font-size: 34rpx;
+							font-weight: bold;
+							background-color: #00DEA1;
+							border-radius: 60rpx;
+						}
+					}
+		
+					.btnGo {
+						display: flex;
+						justify-content: center;
+						margin-top: 80rpx;
+		
+						.btn {
+							width: 300rpx;
+							height: 90rpx;
+							line-height: 90rpx;
+							text-align: center;
+							color: #000;
+							font-weight: bold;
+							font-size: 34rpx;
+							background-color: #00DEA1;
+							border-radius: 60rpx;
+						}
+					}
+				}
+		
+		
+			}
+		}
+		
+		.maskRe {
+			width: 550rpx;
+			padding: 20rpx;
+			border-radius: 20rpx;
+			border: 2rpx solid #000;
+			background-color: #fff;
+			.title{
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 25rpx;
+				.left{
+					width: 50rpx;
+				}
+				.center{
+					color: #000;
+					font-size: 28rpx;
+					font-weight: bold;
+				}
+				.right{
+					image{
+						width: 50rpx;
+						height: 50rpx;
+					}
+				}
+			}
+			.tokenList{
+				padding: 18rpx;
+				.coinListTitle{
+					display: flex;
+					justify-content: space-between;
+					border-bottom: 2px solid #e5e5e5;
+					padding: 20rpx 0;
+					.left{
+						font-size: 30rpx;
+						color: #000;
+					}
+					.right{
+						image{
+							width: 60rpx;
+							height: 60rpx;
+							margin-right: 5rpx;
+							border-radius: 50%;
+						}
+					}
+				}
+				.listOne{
+					margin-top: 20rpx;
+					display: flex;
+					justify-content: space-between;
+					.oneLeft{
+						color: gray;
+					}
+					.oneRight{
+						color: #00dea1;
+					}
+				}
+				.btnBootom{
+					display: flex;
+					justify-content: center;
+					margin-top: 50rpx;
+					.btn{
+						width: 100%;
+						height: 100rpx;
+						line-height: 100rpx;
+						text-align: center;
+						background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
+						border-radius: 42rpx;
+						color: #fff;
+					}
+				}
+			}
+		}
+		.slideStyle {
+			background-image: url('../../static/logo.png');
+			background-size: 100% 100%;
+			width: 60rpx;
+			height: 60rpx;
+		}
+		
+		
+		
+		.clientText {
 			color: #fff;
 			text-align: center;
+			font-size: 24upx;
+			margin-top: 20upx;
+		}
+		
+		.client {
+			.samll {
+				color: #fff;
+				text-align: center;
+				font-size: 24upx;
+				margin-top: 20upx;
+			}
+		
+			.text {
+				color: #00DEA1;
+				text-align: center;
+				font-size: 24upx;
+				margin-top: 20upx;
+			}
+		}
+		
+		.tipMsg {
+			background: rgba(255,24,28,0.1);
+			padding: 28upx;
+			border-radius: 28upx;
+			margin-bottom: 40upx;
+			
+			.text {
+				font-family: Noto Sans SC, Noto Sans SC;
+				font-weight: 400;
+				font-size: 24rpx;
+				color: #DA1E28;
+			}
+		}
+		
+		.sharePool {
+			margin-top: 30upx;
+			
+			.title {
+				font-size: 26upx;
+				color: #000;
+				font-weight: bold;
+			}
+			
+			.shareList {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border: 2upx solid #E0E0E0;
+				padding: 30upx 0;
+				border-radius: 15upx;
+				margin-top: 20upx;
+			
+				.item {
+					width: 33.3%;
+					color: #000;
+					text-align: center;
+					font-size: 24upx;
+				}
+				.num{
+					font-weight: bold;
+				}
+			}
+		}
+		
+		.shareBtn {
+			background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
+			padding: 30upx;
+			margin-top: 56upx;
+			border-radius: 42upx;
+			
+			.text {
+				font-size: 30upx;
+				color: #fff;
+				text-align: center;
+			}
+		}
+		.tip{
+			background-color: rgb(247 220 222);
+			margin: 30upx;
+			padding: 15upx;
+			border-radius: 15upx;
+			.text{
+				font-size: 28upx;
+				color:rgb(234 53 53);
+			}
 		}
 	}
-	.tip{
-		background-color: rgb(247 220 222);
-		margin: 30upx;
-		padding: 15upx;
-		border-radius: 15upx;
-		.text{
-			font-size: 28upx;
-			color:rgb(234 53 53);
-		}
-	}
+	
 </style>

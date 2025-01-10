@@ -80,8 +80,8 @@
 								{{item.ft_lp_balance/Math.pow(10, item.ftDecimal)}}
 							</view>
 						</view>
-						<view class="btnList">
-							<view class="btn" @click="urlPool('/pages/pool/poolManage','all',item)">
+						<view class="btnList" @click="urlPool('/pages/pool/poolManage','all',item)">
+							<view class="btn">
 								View
 							</view>
 						</view>

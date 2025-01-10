@@ -183,7 +183,7 @@
 			padding-bottom: 50upx;
 			.centerBox {
 				width: 70%;
-				margin: 0 auto;
+				margin: 40rpx auto;
 				box-sizing: border-box;
 				border-radius: 20rpx;
 				padding: 30rpx;
