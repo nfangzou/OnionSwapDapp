@@ -53,7 +53,7 @@
 								</view>
 							</view>
 							<view class="text">
-								TBC/{{item.coinName1}}
+								TBC/{{item.contractName}}
 							</view>
 						</view>
 						<view class="poolName">
@@ -61,7 +61,7 @@
 								ft_a_balance
 							</view>
 							<view class="right">
-								{{item.ft_a_balance/Math.pow(10, item.coinDecimal)}}
+								{{item.ft_a_balance/Math.pow(10, item.ftDecimal)}}
 							</view>
 						</view>
 						<view class="poolName">
@@ -77,11 +77,11 @@
 								ft_lp_balance
 							</view>
 							<view class="right">
-								{{item.ft_lp_balance/Math.pow(10, item.coinDecimal)}}
+								{{item.ft_lp_balance/Math.pow(10, item.ftDecimal)}}
 							</view>
 						</view>
 						<view class="btnList">
-							<view class="btn" @click="urlPool('/pages/pool/poolManage','all',item.poolContract, item.coinName1, item.coinDecimal)">
+							<view class="btn" @click="urlPool('/pages/pool/poolManage','all',item)">
 								View
 							</view>
 						</view>
@@ -109,7 +109,7 @@
 								ft_a_balance
 							</view>  
 							<view class="right">
-								{{item.ft_a_amount/Math.pow(10,item.ftDecimal)}}
+								{{item.ft_a_balance/Math.pow(10,item.ftDecimal)}}
 							</view>
 						</view>
 						<view class="poolName">
@@ -117,7 +117,7 @@
 								tbc_balance
 							</view>
 							<view class="right">
-								{{item.tbc_amount/Math.pow(10,6)}}
+								{{item.tbc_balance/Math.pow(10,6)}}
 							</view>
 						</view>
 						<view class="poolName">
@@ -125,10 +125,10 @@
 								ft_lp_balance
 							</view>
 							<view class="right">
-								{{item.ft_lp_amount/Math.pow(10,item.ftDecimal)}}
+								{{item.ft_lp_balance/Math.pow(10,item.ftDecimal)}}
 							</view>
 						</view>
-						<view class="btnList" @click="urlPool('/pages/pool/poolManage','my',item.poolContract, item.contractName, item.ftDecimal)">
+						<view class="btnList" @click="urlPool('/pages/pool/poolManage','my',item)">
 							<view class="btn">
 								管理
 							</view>
@@ -259,9 +259,10 @@
 					}
 				});
 			},
-			urlPool(pathVal, type, valData, coinsName, Decimal) {
+			urlPool(pathVal, type, poolData) {
+				let arrayString = JSON.stringify(poolData);
 				uni.navigateTo({
-				   url: pathVal+'?type='+type+'&contractID='+valData+'&coinsName='+coinsName+'&Decimal='+Decimal
+				   url: pathVal+'?pageType='+type+'&poolInfo='+encodeURIComponent(arrayString)
 				})
 			},
 			getNowPool(IDVal) {
@@ -281,8 +282,8 @@
 								"ft_lp_balance":res.data.ft_lp_balance,
 								"ft_a_balance":res.data.ft_a_balance,
 								"tbc_balance":res.data.tbc_balance,
-								"coinName1":IDVal.coinName1,
-								"coinDecimal":IDVal.coinDecimal,
+								"contractName":IDVal.coinName1,
+								"ftDecimal":IDVal.coinDecimal,
 								"poolContract":IDVal.poolContract
 							})
 							this.poolAllNowData = this.poolAllNowData.concat(newAllPool);
@@ -307,9 +308,9 @@
 								personNum += item.ftBalance;
 							})
 							onloadData.push({
-								"ft_lp_amount":personNum,
-								"ft_a_amount":(personNum/valData[0].ft_lp_amount)*valData[0].ft_a_amount,
-								"tbc_amount":(personNum/valData[0].ft_lp_amount)*valData[0].tbc_amount,
+								"ft_lp_balance":personNum,
+								"ft_a_balance":(personNum/valData[0].ft_lp_amount)*valData[0].ft_a_amount,
+								"tbc_balance":(personNum/valData[0].ft_lp_amount)*valData[0].tbc_amount,
 								"contractName":valData[0].contractName,
 								"ftDecimal":valData[0].ftDecimal,
 								"poolContract":valData[0].poolContract
