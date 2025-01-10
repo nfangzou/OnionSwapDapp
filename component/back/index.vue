@@ -8,6 +8,7 @@
 			<view class="listTab staus2">
 				<view class="tabOne" :style="{color: type == index?'#fff':''}" v-for="(item, index) in tabData" :key="index" @tap="clickTap(item.path)">
 					{{item.text}}
+					<view class="pcTabOne" v-if="type==index"></view>
 				</view>
 			</view>
 		</view>
@@ -20,7 +21,6 @@
 				<image @tap="clickLeftShow" src="/static/nav.png" mode=""></image>
 			</view>
 		</view>
-		
 		<uni-popup ref="popup2" type="right" :mask-click="true">
 			<view class="insureBoxTwo">
 				<view class="closeStyle">
@@ -178,12 +178,15 @@
 				align-items: center;
 				width: 80%;
 				.logoHead{
-					width: 83rpx;
-					height: 83rpx;
+					display: flex;
+					align-items: center;
 					margin-right: 100rpx;
 					image{
-						width: 100%;
-						height: 100%;
+						width: 83rpx;
+						height: 83rpx;
+					}
+					text{
+						margin-left: 30upx;
 					}
 				}
 				
@@ -191,9 +194,21 @@
 					display: flex;
 					justify-content: space-between;
 					.tabOne{
-						color: gray;
+						color: #fff;
 						margin-right: 100rpx;
+						position: relative;
+						.pcTabOne{
+							position: absolute;
+							left: 0;
+							right: 0;
+							bottom: -20upx;
+							box-sizing: border-box;
+							border-bottom: 5upx solid #fff;
+							border-radius: 30upx;
+							// color: red !important;
+						}
 					}
+					
 				}
 			}
 			
@@ -342,6 +357,9 @@
 					.tabOne{
 						color: gray;
 						margin-right: 100rpx;
+						.pcTabOne{
+							display: none;
+						}
 					}
 				}
 			}

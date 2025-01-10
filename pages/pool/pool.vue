@@ -14,31 +14,35 @@
 				</view>
 				<image class="rightImg" src="../../static/bannerBoxPic.png" mode=""></image>
 			</view>
-			<view class="positions">
-				<view class="left">
-					<view class="item" v-for="(item, index) in tabList" :key="index" :class="poolType==index+1?'poolHovers':''" @click="clickTab(index+1)">
-						{{item}}
+			<view class="positionsItem">
+				<view class="positions">
+					<view class="left">
+						<view class="item" v-for="(item, index) in tabList" :key="index" :class="poolType==index+1?'poolHovers':''" @click="clickTab(index+1)">
+							{{item}}
+						</view>
 					</view>
 				</view>
-			</view>
-			<view class="searchBox" v-if="poolType==1">
-				<image src="../../static/Search.png" mode=""></image>
-				<input type="text" placeholder="all pools" />
-				<image src="../../static/bottomIcon.png" mode=""></image>
-			</view>
-			<view class="positions" v-if="poolType==2">
-				<view class="right">
-					<view class="item" @click="url('/pages/pool/poolCreate')">
-						Import/Create pool
+				<view class="positions">
+					<view class="searchBox" v-if="poolType==1">
+						<image src="../../static/Search.png" mode=""></image>
+						<input type="text" placeholder="all pools" />
+						<image src="../../static/bottomIcon.png" mode=""></image>
 					</view>
-					<view class="item" @click="url('/pages/pool/poolAdd')">
-						Add Liquidity
+				</view>
+				<view class="positions" v-if="poolType==2">
+					<view class="right">
+						<view class="item" @click="url('/pages/pool/poolCreate')">
+							Import/Create pool
+						</view>
+						<view class="item" @click="url('/pages/pool/poolAdd')">
+							Add Liquidity
+						</view>
 					</view>
 				</view>
 			</view>
 			<view class="allPoll" v-if="poolType==1">
-				<view class="poolBodyList" v-for="(item, index) in poolAllNowData" :key="index">
-					<view class="item">
+				<view class="poolBodyList">
+					<view class="item" v-for="(item, index) in poolAllNowData" :key="index">
 						<view class="navBody">
 							<view class="logoPool">
 								<view class="img">
@@ -85,8 +89,8 @@
 				</view>
 			</view>
 			<view class="allPoll" v-if="poolType==2">
-				<view class="poolBodyList" v-for="(item, index) in poolUserNowData" :key="index">
-					<view class="item">
+				<view class="poolBodyList">
+					<view class="item" v-for="(item, index) in poolUserNowData" :key="index">
 						<view class="navBody">
 							<view class="logoPool">
 								<view class="img">
@@ -392,192 +396,413 @@
 </script>
 
 <style lang="less" scoped>
-	.content {
-		width: 100%;
-		box-sizing: border-box;
-		height: 1700rpx;
-		min-height: 100vh;
-		box-sizing: border-box;
-		position: relative;
-		.backTitle{
-			margin: 38rpx 44rpx;
-			image{
-				width: 60rpx;
-				height: 54rpx;
-			}
-		}
-		.poolBodyList{
-			padding: 28rpx;
-			border-radius: 39rpx;
-			color: #fff;
-			overflow: hidden;
-			background-color: #fff;
-			margin-bottom: 30rpx;
-			.item{
-				.navBody{
-					padding: 15upx;
-					display: flex;
-					align-items: center;
-					margin-bottom: 10upx;
-					.logoPool{
-						display: flex;
-						align-items: center;
-						margin-right: 28rpx;
-						.img{
-							width: 70upx;
-							height: 70upx;
-							z-index: 9;
-							image{
-								width: 100%;
-								height: 100%;
-							}
-						}
-						.img2{
-							width: 70upx;
-							height: 70upx;
-							margin-left: 0;
-							image{
-								width: 100%;
-								height: 100%;
-							}
-						}
-					}
-					.text{
-						font-family: Noto Sans SC, Noto Sans SC;
-						font-weight: 500;
-						font-size: 32rpx;
-						color: #161616;
-						font-weight: bold;
-					}
-				}
-				.poolName{
-					padding: 0 15upx;
-					display: flex;
-					align-items: center;
-					justify-content: space-between;
-					margin-bottom: 20upx;
-					.left{
-						color: #666;
-					}
-					.right{
-						color:#00D085;
-					}
-				}
-				.btnList{
-					display: flex;
-					justify-content: space-around;
-					align-items: center;
-					margin-top: 50rpx;
-					background: linear-gradient( 90deg, #8D60FF 0%, #AF6EFF 100%);
-					border-radius: 39rpx;
-					.btn{
-						padding: 20rpx;
-					}
-				}
-			}
-		}
-		
-	}
-	.slideStyle{
-		background-image: url('../../static/logo.png');
-		background-size: 100% 100%;
-		width: 60rpx;
-		height: 60rpx;
-	}
-	.poolCenter{
-		padding: 30rpx;
-		.bannerBox{
-			padding: 0 28rpx;
-			display: flex;
-			justify-content: space-between;
-			background-image: url('/static/BannerBG.png');
-			background-size: 100% 100%;
-			align-items: center;
-			.leftBox{
-				.topText{
-					font-family: Noto Sans SC, Noto Sans SC;
-					font-weight: 500;
-					font-size: 56rpx;
-					color: #FFFFFF;
-				}
-				.bottomText{
-					margin-top: 24rpx;
-					font-family: Noto Sans SC, Noto Sans SC;
-					font-weight: 500;
-					font-size: 35rpx;
-					color: #FFFFFF;
-				}
-			}
-			.rightImg{
-				width: 315rpx;
-				height: 315rpx;
-			}
-		}
-		.positions{
+	@media all and (min-width: 700px) and (max-width: 2880px){
+		.content {
+			width: 100%;
+			height: auto;
+			// min-height: 100vh;
 			box-sizing: border-box;
-			border-radius: 30upx;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			color: #fff;
-			margin: 30rpx 0;
-			.left{
-				display: flex;
-				align-items: center;
-				box-sizing: border-box;
-				.item{
-					display: flex;
-					align-items: center;
-					font-size: 30upx;
-					color: #525252;
-					padding: 28rpx;
-					border-radius: 30upx;
-					margin-right: 30upx;
-				}
-				.item:nth-child{
-					margin-right: 0upx;
-				}
-				.poolHovers{
-					background-color: #fff;
-					color: #161616;
+			position: relative;
+			padding-bottom: 50upx;
+			.backTitle{
+				margin: 38rpx 44rpx;
+				image{
+					width: 60rpx;
+					height: 54rpx;
 				}
 			}
-			.right{
-				width: 100%;
+			.poolBodyList{
+				box-sizing: border-box;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
-				box-sizing: border-box;
+				flex-wrap: wrap;
+				overflow: hidden;
 				.item{
 					box-sizing: border-box;
-					width: 50%;
-					margin: 0 20upx;
-					display: flex;
-					align-items: center;
-					font-size: 24upx;
+					width: 49%;
+					padding: 28rpx;
+					// margin:40rpx 0;
+					display: inline-block;
+					background-color: #fff;
+					border-radius: 39rpx;
 					color: #fff;
-					padding: 30upx;
-					background: linear-gradient(90deg, #AF6EFF 0%, #8D60FF 100%);
-					border-radius: 15upx;
+					margin-bottom: 30rpx;
+					.navBody{
+						padding: 15upx;
+						display: flex;
+						align-items: center;
+						margin-bottom: 10upx;
+						.logoPool{
+							display: flex;
+							align-items: center;
+							margin-right: 28rpx;
+							.img{
+								width: 70upx;
+								height: 70upx;
+								z-index: 9;
+								image{
+									width: 100%;
+									height: 100%;
+								}
+							}
+							.img2{
+								width: 70upx;
+								height: 70upx;
+								margin-left: 0;
+								image{
+									width: 100%;
+									height: 100%;
+								}
+							}
+						}
+						.text{
+							font-family: Noto Sans SC, Noto Sans SC;
+							font-weight: 500;
+							font-size: 32rpx;
+							color: #161616;
+							font-weight: bold;
+						}
+					}
+					.poolName{
+						padding: 0 15upx;
+						display: flex;
+						align-items: center;
+						justify-content: space-between;
+						margin-bottom: 20upx;
+						.left{
+							color: #666;
+						}
+						.right{
+							color:#00D085;
+						}
+					}
+					.btnList{
+						display: flex;
+						justify-content: space-around;
+						align-items: center;
+						margin-top: 50rpx;
+						background: linear-gradient( 90deg, #8D60FF 0%, #AF6EFF 100%);
+						border-radius: 39rpx;
+						.btn{
+							padding: 20rpx;
+						}
+					}
 				}
 			}
+			
 		}
-		.searchBox{
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			height: 86rpx;
-			background-color: #fff;
-			margin: 28rpx 0;
-			padding: 0 28rpx;
-			border-radius: 56rpx;
-			image{
-				width: 42rpx;
-				height: 42rpx;
+		.slideStyle{
+			background-image: url('../../static/logo.png');
+			background-size: 100% 100%;
+			width: 60rpx;
+			height: 60rpx;
+		}
+		.poolCenter{
+			width: 70%;
+			margin: 0 auto;
+			padding: 30rpx;
+			position: relative;
+			.bannerBox{
+				padding: 0 28rpx;
+				display: flex;
+				justify-content: space-between;
+				background-image: url('/static/BannerBG.png');
+				background-size: 100% 100%;
+				align-items: center;
+				.leftBox{
+					.topText{
+						font-family: Noto Sans SC, Noto Sans SC;
+						font-weight: 500;
+						font-size: 56rpx;
+						color: #FFFFFF;
+					}
+					.bottomText{
+						margin-top: 24rpx;
+						font-family: Noto Sans SC, Noto Sans SC;
+						font-weight: 500;
+						font-size: 35rpx;
+						color: #FFFFFF;
+					}
+				}
+				.rightImg{
+					width: 315rpx;
+					height: 315rpx;
+				}
 			}
-			input{
-				height: 100%;
-				width: 80%;
+			.positionsItem{
+				box-sizing: border-box;
+				position: relative;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				.positions{
+					width: 50%;
+					box-sizing: border-box;
+					border-radius: 30upx;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					color: #fff;
+					margin: 30rpx 0;
+					.left{
+						display: flex;
+						align-items: center;
+						box-sizing: border-box;
+						.item{
+							display: flex;
+							align-items: center;
+							font-size: 30upx;
+							color: #525252;
+							padding: 28rpx;
+							border-radius: 30upx;
+							margin-right: 30upx;
+						}
+						.item:nth-child{
+							margin-right: 0upx;
+						}
+						.poolHovers{
+							background-color: #fff;
+							color: #161616;
+						}
+					}
+					.right{
+						position: absolute;
+						top: 0;
+						right: 0;
+						display: flex;
+						align-items: center;
+						justify-content: space-between;
+						box-sizing: border-box;
+						.item{
+							box-sizing: border-box;
+							margin: 30rpx 20upx;
+							display: flex;
+							align-items: center;
+							font-size: 24upx;
+							color: #fff;
+							padding: 30upx;
+							background: linear-gradient(90deg, #AF6EFF 0%, #8D60FF 100%);
+							border-radius: 15upx;
+						}
+					}
+					.searchBox{
+						position: absolute;
+						top: 0;
+						right: 0;
+						width: 500upx;
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
+						height: 86rpx;
+						background-color: #fff;
+						margin: 28rpx 0;
+						padding: 0 28rpx;
+						border-radius: 56rpx;
+						image{
+							width: 42rpx;
+							height: 42rpx;
+						}
+						input{
+							padding:0 15upx;
+							height: 100%;
+							width: 100%;
+						}
+					}
+				}
+			}
+			
+		}
+	}
+	@media all and (min-width: 320px) and (max-width: 700px){
+		.content {
+			width: 100%;
+			box-sizing: border-box;
+			height: 1700rpx;
+			min-height: 100vh;
+			box-sizing: border-box;
+			position: relative;
+			.backTitle{
+				margin: 38rpx 44rpx;
+				image{
+					width: 60rpx;
+					height: 54rpx;
+				}
+			}
+			.poolBodyList{
+				box-sizing: border-box;
+				.item{
+					padding: 28rpx;
+					border-radius: 39rpx;
+					color: #fff;
+					overflow: hidden;
+					background-color: #fff;
+					margin-bottom: 30rpx;
+					.navBody{
+						padding: 15upx;
+						display: flex;
+						align-items: center;
+						margin-bottom: 10upx;
+						.logoPool{
+							display: flex;
+							align-items: center;
+							margin-right: 28rpx;
+							.img{
+								width: 70upx;
+								height: 70upx;
+								z-index: 9;
+								image{
+									width: 100%;
+									height: 100%;
+								}
+							}
+							.img2{
+								width: 70upx;
+								height: 70upx;
+								margin-left: 0;
+								image{
+									width: 100%;
+									height: 100%;
+								}
+							}
+						}
+						.text{
+							font-family: Noto Sans SC, Noto Sans SC;
+							font-weight: 500;
+							font-size: 32rpx;
+							color: #161616;
+							font-weight: bold;
+						}
+					}
+					.poolName{
+						padding: 0 15upx;
+						display: flex;
+						align-items: center;
+						justify-content: space-between;
+						margin-bottom: 20upx;
+						.left{
+							color: #666;
+						}
+						.right{
+							color:#00D085;
+						}
+					}
+					.btnList{
+						display: flex;
+						justify-content: space-around;
+						align-items: center;
+						margin-top: 50rpx;
+						background: linear-gradient( 90deg, #8D60FF 0%, #AF6EFF 100%);
+						border-radius: 39rpx;
+						.btn{
+							padding: 20rpx;
+						}
+					}
+				}
+			}
+			
+		}
+		.slideStyle{
+			background-image: url('../../static/logo.png');
+			background-size: 100% 100%;
+			width: 60rpx;
+			height: 60rpx;
+		}
+		.poolCenter{
+			padding: 30rpx;
+			.bannerBox{
+				padding: 0 28rpx;
+				display: flex;
+				justify-content: space-between;
+				background-image: url('/static/BannerBG.png');
+				background-size: 100% 100%;
+				align-items: center;
+				.leftBox{
+					.topText{
+						font-family: Noto Sans SC, Noto Sans SC;
+						font-weight: 500;
+						font-size: 56rpx;
+						color: #FFFFFF;
+					}
+					.bottomText{
+						margin-top: 24rpx;
+						font-family: Noto Sans SC, Noto Sans SC;
+						font-weight: 500;
+						font-size: 35rpx;
+						color: #FFFFFF;
+					}
+				}
+				.rightImg{
+					width: 315rpx;
+					height: 315rpx;
+				}
+			}
+			.positions{
+				box-sizing: border-box;
+				border-radius: 30upx;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				color: #fff;
+				.left{
+					display: flex;
+					align-items: center;
+					box-sizing: border-box;
+					margin: 30rpx 0;
+					.item{
+						display: flex;
+						align-items: center;
+						font-size: 30upx;
+						color: #525252;
+						padding: 28rpx;
+						border-radius: 30upx;
+						margin-right: 30upx;
+					}
+					.item:nth-child{
+						margin-right: 0upx;
+					}
+					.poolHovers{
+						background-color: #fff;
+						color: #161616;
+					}
+				}
+				.right{
+					width: 100%;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					box-sizing: border-box;
+					.item{
+						box-sizing: border-box;
+						width: 50%;
+						margin: 0 20upx;
+						display: flex;
+						align-items: center;
+						font-size: 24upx;
+						color: #fff;
+						padding: 30upx;
+						background: linear-gradient(90deg, #AF6EFF 0%, #8D60FF 100%);
+						border-radius: 15upx;
+					}
+				}
+			}
+			.searchBox{
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				height: 86rpx;
+				background-color: #fff;
+				margin: 28rpx 0;
+				padding: 0 28rpx;
+				border-radius: 56rpx;
+				image{
+					width: 42rpx;
+					height: 42rpx;
+				}
+				input{
+					height: 100%;
+					width: 80%;
+				}
 			}
 		}
 	}

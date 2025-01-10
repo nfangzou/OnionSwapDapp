@@ -517,332 +517,666 @@
 </script>
 
 <style lang="less" scoped>
-	.content {
-		width: 100%;
-		height: 1700rpx;
-		min-height: 100vh;
-		box-sizing: border-box;
-		position: relative;
-		.backTitle {
-			margin: 38rpx 44rpx;
-
-			image {
-				width: 60rpx;
-				height: 54rpx;
-			}
-		}
-
-		.centerBox {
-			max-width: 750rpx;
-			margin: 40rpx 30rpx 0 30rpx;
-			border-radius: 20rpx;
-			padding: 30rpx;
-			background-color: #fff;
-
-			.loadIcon {
-				display: flex;
-				justify-content: right;
-
+	@media all and (min-width: 700px) and (max-width: 2880px){
+		.content {
+			width: 100%;
+			height: auto;
+			// min-height: 100vh;
+			box-sizing: border-box;
+			position: relative;
+			padding-bottom: 50upx;
+			.backTitle {
+				margin: 38rpx 44rpx;
 				image {
-					width: 32rpx;
-					height: 32rpx;
+					width: 60rpx;
+					height: 54rpx;
 				}
 			}
-
-			.lpBox {
-				margin-top: 20rpx;
-				padding-bottom: 40rpx;
-
-				.coinBox {
+		
+			.centerBox {
+				width: 60%;
+				margin: 40rpx auto 0;
+				// max-width: 750rpx;
+				// margin: 40rpx 30rpx 0 30rpx;
+				border-radius: 20rpx;
+				padding: 30rpx;
+				background-color: #fff;
+		
+				.loadIcon {
 					display: flex;
-					align-items: center;
-
-					.coinNameBox {
-						border-radius: 40rpx;
-						line-height: 65rpx;
-						display: flex;
-						justify-content: center;
-						margin-right: 25rpx;
-
-						.coinSmall {
-							display: flex;
-							align-items: center;
-
-							text {
-								color: #000;
-								font-size: 30rpx;
-								margin-right: 23rpx;
-								margin-right: 10rpx;
-							}
-							
-							.slectIcon {
-								width: 42rpx;
-								height: 42rpx;
-							}
-						}
-					}
-
-					.coinMax {
-						width: 80rpx;
-						height: 45rpx;
-						line-height: 45rpx;
-						text-align: center;
-						border: 2rpx solid #3367D6;
-						color: #3367D6;
-						font-size: 24rpx;
-						font-weight: bold;
-						border-radius: 40rpx;
+					justify-content: right;
+		
+					image {
+						width: 32rpx;
+						height: 32rpx;
 					}
 				}
-
-				.inputToBox {
-					.blanceTitle {
-						display: flex;
-						justify-content: right;
-						color: #161616;
-						font-size: 24rpx;
-						margin-bottom: 11rpx;
-						margin-right: 40rpx;
-					}
-
-					.inputBody {
-						height: 169rpx;
-						background-color: rgba(80,135,252,0.1);
-						border: 2rpx solid #3367D6;
-						border-radius: 30rpx;
-						padding-right: 45rpx;
-
-						input {
-							width: 100%;
-							height: 100%;
-							text-align: right;
-							font-size: 42rpx;
-							color: #3367D6;
-						}
-					}
-				}
-				.tipsText{
-					margin: 30rpx 0;
-					padding-bottom: 60rpx;
-					font-family: Noto Sans SC, Noto Sans SC;
-					font-weight: 500;
-					font-size: 28rpx;
-					color: #6929C4;
-					border-bottom: 2rpx solid #3367D6;
-				}
-				.SlippageBox {
-					margin-top: 40rpx;
-
-					.boxTitle {
-						font-family: Noto Sans SC, Noto Sans SC;
-						font-weight: 500;
-						font-size: 28rpx;
-						color: #161616;
-					}
-
-					.slipBox {
+		
+				.lpBox {
+					margin-top: 20rpx;
+					padding-bottom: 40rpx;
+		
+					.coinBox {
 						display: flex;
 						align-items: center;
-						margin-top: 30rpx;
-
-						.list {
-							width: 140rpx;
-							height: 65rpx;
-							line-height: 65rpx;
-							text-align: center;
+						.coinNameBox {
 							border-radius: 40rpx;
-							font-size: 36rpx;
+							line-height: 65rpx;
+							display: flex;
+							justify-content: center;
+							margin-right: 25rpx;
+		
+							.coinSmall {
+								display: flex;
+								align-items: center;
+		
+								text {
+									color: #000;
+									font-size: 30rpx;
+									margin-right: 23rpx;
+									margin-right: 10rpx;
+								}
+								
+								.slectIcon {
+									width: 42rpx;
+									height: 42rpx;
+								}
+							}
+						}
+		
+						.coinMax {
+							width: 80rpx;
+							height: 45rpx;
+							line-height: 45rpx;
+							text-align: center;
+							border: 2rpx solid #3367D6;
+							color: #3367D6;
+							font-size: 24rpx;
 							font-weight: bold;
+							border-radius: 40rpx;
+						}
+					}
+		
+					.inputToBox {
+						.blanceTitle {
+							display: flex;
+							justify-content: right;
+							color: #161616;
+							font-size: 24rpx;
+							margin-bottom: 11rpx;
 							margin-right: 40rpx;
 						}
-
-						.listActive {
-							background-color: rgba(51,103,214,0.4);
-							color: #3367D6;
-						}
-
-						.listNoActive {
-							background-color: rgba(51,103,214,0.4);
-							color: rgba(51, 103, 214, .3);
-						}
-
-						.list2 {
-							width: 140rpx;
-							height: 65rpx;
-							line-height: 65rpx;
-							text-align: center;
-							border-radius: 40rpx;
-							font-size: 36rpx;
-							font-weight: bold;
-							display: flex;
-							align-items: center;
-
+		
+						.inputBody {
+							height: 169rpx;
+							background-color: rgba(80,135,252,0.1);
+							border: 2rpx solid #3367D6;
+							border-radius: 30rpx;
+							padding-right: 45rpx;
+		
 							input {
 								width: 100%;
 								height: 100%;
+								text-align: right;
+								font-size: 42rpx;
 								color: #3367D6;
 							}
 						}
 					}
-				}
-				.routerBox{
-					display: flex;
-					justify-content: space-between;
-					align-items: center;
-					margin-top: 50rpx;
-					.leftRou{
+					.tipsText{
+						margin: 30rpx 0;
+						padding-bottom: 60rpx;
 						font-family: Noto Sans SC, Noto Sans SC;
 						font-weight: 500;
 						font-size: 28rpx;
-						color: #161616;
+						color: #6929C4;
+						border-bottom: 2rpx solid #3367D6;
 					}
-					.rightRou{
-						display: flex;
-						align-items: center;
-						text{
+					.SlippageBox {
+						margin-top: 40rpx;
+		
+						.boxTitle {
 							font-family: Noto Sans SC, Noto Sans SC;
 							font-weight: 500;
 							font-size: 28rpx;
-							color: #3367D6;
+							color: #161616;
 						}
-						image{
-							width: 35rpx;
-							height: 35rpx;
+		
+						.slipBox {
+							display: flex;
+							align-items: center;
+							margin-top: 30rpx;
+		
+							.list {
+								width: 140rpx;
+								height: 65rpx;
+								line-height: 65rpx;
+								text-align: center;
+								border-radius: 40rpx;
+								font-size: 36rpx;
+								font-weight: bold;
+								margin-right: 40rpx;
+							}
+		
+							.listActive {
+								background-color: rgba(51,103,214,0.4);
+								color: #3367D6;
+							}
+		
+							.listNoActive {
+								background-color: rgba(51,103,214,0.4);
+								color: rgba(51, 103, 214, .3);
+							}
+		
+							.list2 {
+								width: 140rpx;
+								height: 65rpx;
+								line-height: 65rpx;
+								text-align: center;
+								border-radius: 40rpx;
+								font-size: 36rpx;
+								font-weight: bold;
+								display: flex;
+								align-items: center;
+		
+								input {
+									width: 100%;
+									height: 100%;
+									color: #3367D6;
+								}
+							}
+						}
+					}
+					.routerBox{
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
+						margin-top: 50rpx;
+						.leftRou{
+							font-family: Noto Sans SC, Noto Sans SC;
+							font-weight: 500;
+							font-size: 28rpx;
+							color: #161616;
+						}
+						.rightRou{
+							display: flex;
+							align-items: center;
+							text{
+								font-family: Noto Sans SC, Noto Sans SC;
+								font-weight: 500;
+								font-size: 28rpx;
+								color: #3367D6;
+							}
+							image{
+								width: 35rpx;
+								height: 35rpx;
+							}
+						}
+					}
+					.centerIcon {
+						display: flex;
+						justify-content: center;
+						margin: 48rpx 0;
+		
+						.changebox {
+							width: 36rpx;
+							height: 40rpx;
+							line-height: 40rpx;
+							text-align: center;
+							background-image: url('../../static/icon1.png');
+							background-size: 100% 100%;
+		
+							image {
+								width: 27rpx;
+								height: 28rpx;
+							}
+						}
+					}
+		
+					.btnGo {
+						display: flex;
+						justify-content: center;
+						margin-top: 80rpx;
+		
+						.btn {
+							width: 638rpx;
+							height: 112rpx;
+							line-height: 112rpx;
+							text-align: center;
+							font-family: Noto Sans SC, Noto Sans SC;
+							font-weight: 600;
+							font-size: 28rpx;
+							background: rgba(115,40,228,0.1);
+							color: #6433D6;
+							border-radius: 56rpx;
 						}
 					}
 				}
-				.centerIcon {
-					display: flex;
-					justify-content: center;
-					margin: 48rpx 0;
-
-					.changebox {
-						width: 36rpx;
-						height: 40rpx;
-						line-height: 40rpx;
-						text-align: center;
-						background-image: url('../../static/icon1.png');
-						background-size: 100% 100%;
-
-						image {
-							width: 27rpx;
-							height: 28rpx;
-						}
-					}
-				}
-
-				.btnGo {
-					display: flex;
-					justify-content: center;
-					margin-top: 80rpx;
-
-					.btn {
-						width: 638rpx;
-						height: 112rpx;
-						line-height: 112rpx;
-						text-align: center;
-						font-family: Noto Sans SC, Noto Sans SC;
-						font-weight: 600;
-						font-size: 28rpx;
-						background: rgba(115,40,228,0.1);
-						color: #6433D6;
-						border-radius: 56rpx;
-					}
-				}
+		
+		
 			}
-
-
 		}
-	}
-	.maskRe {
-		width: 550rpx;
-		padding: 20rpx;
-		border-radius: 20rpx;
-		border: 2rpx solid #000;
-		background-color: #fff;
-		.title{
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			padding: 0 25rpx 25rpx 25rpx;
-			.left{
-				width: 50rpx;
-			}
-			.center{
-				color: #000;
-				font-size: 28rpx;
-				font-weight: bold;
-			}
-			.right{
-				image{
-					width: 50rpx;
-					height: 50rpx;
-				}
-			}
-		}
-		.tokenList{
-			padding: 18rpx;
-			.listOne{
+		.maskRe {
+			width: 550rpx;
+			padding: 20rpx;
+			border-radius: 20rpx;
+			border: 2rpx solid #000;
+			background-color: #fff;
+			.title{
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				margin-bottom: 60rpx;
-				.leftOne{
-					border-bottom: 2rpx solid #e5e5e5;
-					padding-bottom: 40rpx;
+				padding: 0 25rpx 25rpx 25rpx;
+				.left{
+					width: 50rpx;
+				}
+				.center{
+					color: #000;
+					font-size: 28rpx;
+					font-weight: bold;
+				}
+				.right{
+					image{
+						width: 50rpx;
+						height: 50rpx;
+					}
+				}
+			}
+			.tokenList{
+				padding: 18rpx;
+				.listOne{
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					margin-bottom: 60rpx;
+					.leftOne{
+						border-bottom: 2rpx solid #e5e5e5;
+						padding-bottom: 40rpx;
+						.oneLeft{
+							color: #000;
+						}
+						.oneRight{
+							color: #6929C4;
+							font-size: 40rpx;
+							font-weight: bold;
+							margin-top: 20rpx;
+						}
+					}
+					.rightImg{
+						width: 70rpx;
+						height: 70rpx;
+						image{
+							width: 100%;
+							height: 100%;
+						}
+					}
+				}
+				.listOne2{
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
 					.oneLeft{
 						color: #000;
 					}
 					.oneRight{
-						color: #6929C4;
-						font-size: 40rpx;
+						color: #00dea1;
+						font-size: 30rpx;
 						font-weight: bold;
 						margin-top: 20rpx;
 					}
 				}
-				.rightImg{
-					width: 70rpx;
-					height: 70rpx;
-					image{
+				.btnBootom{
+					display: flex;
+					justify-content: center;
+					margin-top: 50rpx;
+					.btn{
 						width: 100%;
-						height: 100%;
+						height: 100rpx;
+						line-height: 100rpx;
+						text-align: center;
+						background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
+						border-radius: 42rpx;
+						color: #fff;
 					}
 				}
 			}
-			.listOne2{
+		}
+		.slideStyle {
+			background-image: url('../../static/logo.png');
+			background-size: 100% 100%;
+			width: 60rpx;
+			height: 60rpx;
+		}
+	}
+	@media all and (min-width: 320px) and (max-width: 700px){
+		.content {
+			width: 100%;
+			height: 1700rpx;
+			min-height: 100vh;
+			box-sizing: border-box;
+			position: relative;
+			.backTitle {
+				margin: 38rpx 44rpx;
+		
+				image {
+					width: 60rpx;
+					height: 54rpx;
+				}
+			}
+		
+			.centerBox {
+				max-width: 750rpx;
+				margin: 40rpx 30rpx 0 30rpx;
+				border-radius: 20rpx;
+				padding: 30rpx;
+				background-color: #fff;
+		
+				.loadIcon {
+					display: flex;
+					justify-content: right;
+		
+					image {
+						width: 32rpx;
+						height: 32rpx;
+					}
+				}
+		
+				.lpBox {
+					margin-top: 20rpx;
+					padding-bottom: 40rpx;
+		
+					.coinBox {
+						display: flex;
+						align-items: center;
+		
+						.coinNameBox {
+							border-radius: 40rpx;
+							line-height: 65rpx;
+							display: flex;
+							justify-content: center;
+							margin-right: 25rpx;
+		
+							.coinSmall {
+								display: flex;
+								align-items: center;
+		
+								text {
+									color: #000;
+									font-size: 30rpx;
+									margin-right: 23rpx;
+									margin-right: 10rpx;
+								}
+								
+								.slectIcon {
+									width: 42rpx;
+									height: 42rpx;
+								}
+							}
+						}
+		
+						.coinMax {
+							width: 80rpx;
+							height: 45rpx;
+							line-height: 45rpx;
+							text-align: center;
+							border: 2rpx solid #3367D6;
+							color: #3367D6;
+							font-size: 24rpx;
+							font-weight: bold;
+							border-radius: 40rpx;
+						}
+					}
+		
+					.inputToBox {
+						.blanceTitle {
+							display: flex;
+							justify-content: right;
+							color: #161616;
+							font-size: 24rpx;
+							margin-bottom: 11rpx;
+							margin-right: 40rpx;
+						}
+		
+						.inputBody {
+							height: 169rpx;
+							background-color: rgba(80,135,252,0.1);
+							border: 2rpx solid #3367D6;
+							border-radius: 30rpx;
+							padding-right: 45rpx;
+		
+							input {
+								width: 100%;
+								height: 100%;
+								text-align: right;
+								font-size: 42rpx;
+								color: #3367D6;
+							}
+						}
+					}
+					.tipsText{
+						margin: 30rpx 0;
+						padding-bottom: 60rpx;
+						font-family: Noto Sans SC, Noto Sans SC;
+						font-weight: 500;
+						font-size: 28rpx;
+						color: #6929C4;
+						border-bottom: 2rpx solid #3367D6;
+					}
+					.SlippageBox {
+						margin-top: 40rpx;
+		
+						.boxTitle {
+							font-family: Noto Sans SC, Noto Sans SC;
+							font-weight: 500;
+							font-size: 28rpx;
+							color: #161616;
+						}
+		
+						.slipBox {
+							display: flex;
+							align-items: center;
+							margin-top: 30rpx;
+		
+							.list {
+								width: 140rpx;
+								height: 65rpx;
+								line-height: 65rpx;
+								text-align: center;
+								border-radius: 40rpx;
+								font-size: 36rpx;
+								font-weight: bold;
+								margin-right: 40rpx;
+							}
+		
+							.listActive {
+								background-color: rgba(51,103,214,0.4);
+								color: #3367D6;
+							}
+		
+							.listNoActive {
+								background-color: rgba(51,103,214,0.4);
+								color: rgba(51, 103, 214, .3);
+							}
+		
+							.list2 {
+								width: 140rpx;
+								height: 65rpx;
+								line-height: 65rpx;
+								text-align: center;
+								border-radius: 40rpx;
+								font-size: 36rpx;
+								font-weight: bold;
+								display: flex;
+								align-items: center;
+		
+								input {
+									width: 100%;
+									height: 100%;
+									color: #3367D6;
+								}
+							}
+						}
+					}
+					.routerBox{
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
+						margin-top: 50rpx;
+						.leftRou{
+							font-family: Noto Sans SC, Noto Sans SC;
+							font-weight: 500;
+							font-size: 28rpx;
+							color: #161616;
+						}
+						.rightRou{
+							display: flex;
+							align-items: center;
+							text{
+								font-family: Noto Sans SC, Noto Sans SC;
+								font-weight: 500;
+								font-size: 28rpx;
+								color: #3367D6;
+							}
+							image{
+								width: 35rpx;
+								height: 35rpx;
+							}
+						}
+					}
+					.centerIcon {
+						display: flex;
+						justify-content: center;
+						margin: 48rpx 0;
+		
+						.changebox {
+							width: 36rpx;
+							height: 40rpx;
+							line-height: 40rpx;
+							text-align: center;
+							background-image: url('../../static/icon1.png');
+							background-size: 100% 100%;
+		
+							image {
+								width: 27rpx;
+								height: 28rpx;
+							}
+						}
+					}
+		
+					.btnGo {
+						display: flex;
+						justify-content: center;
+						margin-top: 80rpx;
+		
+						.btn {
+							width: 638rpx;
+							height: 112rpx;
+							line-height: 112rpx;
+							text-align: center;
+							font-family: Noto Sans SC, Noto Sans SC;
+							font-weight: 600;
+							font-size: 28rpx;
+							background: rgba(115,40,228,0.1);
+							color: #6433D6;
+							border-radius: 56rpx;
+						}
+					}
+				}
+		
+		
+			}
+		}
+		.maskRe {
+			width: 550rpx;
+			padding: 20rpx;
+			border-radius: 20rpx;
+			border: 2rpx solid #000;
+			background-color: #fff;
+			.title{
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				.oneLeft{
-					color: #000;
+				padding: 0 25rpx 25rpx 25rpx;
+				.left{
+					width: 50rpx;
 				}
-				.oneRight{
-					color: #00dea1;
-					font-size: 30rpx;
+				.center{
+					color: #000;
+					font-size: 28rpx;
 					font-weight: bold;
-					margin-top: 20rpx;
+				}
+				.right{
+					image{
+						width: 50rpx;
+						height: 50rpx;
+					}
 				}
 			}
-			.btnBootom{
-				display: flex;
-				justify-content: center;
-				margin-top: 50rpx;
-				.btn{
-					width: 100%;
-					height: 100rpx;
-					line-height: 100rpx;
-					text-align: center;
-					background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
-					border-radius: 42rpx;
-					color: #fff;
+			.tokenList{
+				padding: 18rpx;
+				.listOne{
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					margin-bottom: 60rpx;
+					.leftOne{
+						border-bottom: 2rpx solid #e5e5e5;
+						padding-bottom: 40rpx;
+						.oneLeft{
+							color: #000;
+						}
+						.oneRight{
+							color: #6929C4;
+							font-size: 40rpx;
+							font-weight: bold;
+							margin-top: 20rpx;
+						}
+					}
+					.rightImg{
+						width: 70rpx;
+						height: 70rpx;
+						image{
+							width: 100%;
+							height: 100%;
+						}
+					}
+				}
+				.listOne2{
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					.oneLeft{
+						color: #000;
+					}
+					.oneRight{
+						color: #00dea1;
+						font-size: 30rpx;
+						font-weight: bold;
+						margin-top: 20rpx;
+					}
+				}
+				.btnBootom{
+					display: flex;
+					justify-content: center;
+					margin-top: 50rpx;
+					.btn{
+						width: 100%;
+						height: 100rpx;
+						line-height: 100rpx;
+						text-align: center;
+						background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
+						border-radius: 42rpx;
+						color: #fff;
+					}
 				}
 			}
 		}
+		.slideStyle {
+			background-image: url('../../static/logo.png');
+			background-size: 100% 100%;
+			width: 60rpx;
+			height: 60rpx;
+		}
 	}
-	.slideStyle {
-		background-image: url('../../static/logo.png');
-		background-size: 100% 100%;
-		width: 60rpx;
-		height: 60rpx;
-	}
+	
 </style>

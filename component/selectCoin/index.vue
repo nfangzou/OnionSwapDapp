@@ -121,91 +121,183 @@
 </script>
 
 <style lang="less" scoped>
-	.mask {
-		width: 610rpx;
-		height: 818rpx;
-		border-radius: 20rpx;
-		background-color: #fff;
-		.title{
-			display: flex;
-			justify-content: space-between;
-			background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
-			padding: 30rpx 28rpx;
-			border-radius: 20rpx 20rpx 0 0;
-			align-items: center;
-			.left{
-				width: 50rpx;
-			}
-			.center{
-				font-family: Noto Sans SC, Noto Sans SC;
-				font-weight: 500;
-				font-size: 30rpx;
-				color: #FFFFFF;
-			}
-			.right{
-				image{
-					width: 56rpx;
-					height: 56rpx;
-				}
-			}
-		}
-		.coinListBox{
-			padding: 28rpx;
-			.inputBox{
-				height: 84rpx;
-				border-radius: 56px 56px 56px 56px;
-				background: rgba(115,40,228,0.1);
+	@media all and (min-width: 700px) and (max-width: 2880px){
+		.mask {
+			width: 1200rpx;
+			height: 868rpx;
+			border-radius: 20rpx;
+			background-color: #fff;
+			.title{
 				display: flex;
 				justify-content: space-between;
+				background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
+				padding: 30rpx 28rpx;
+				border-radius: 20rpx 20rpx 0 0;
 				align-items: center;
-				padding: 0 28rpx;
-				input{
-					width: 80%;
-					height: 100%;
+				.left{
+					width: 50rpx;
 				}
-				image{
-					width: 42rpx;
-					height: 42rpx;
-				}
-			}
-			.tokenList{
-				margin-top: 40rpx;
-				padding-left: 20rpx;
-				.titleList{
+				.center{
 					font-family: Noto Sans SC, Noto Sans SC;
 					font-weight: 500;
-					font-size: 28rpx;
-					color: #161616;
+					font-size: 30rpx;
+					color: #FFFFFF;
 				}
-				.list{
-					margin-top: 28rpx;
-					.listOne{
-						margin-bottom: 28rpx;
-						display: flex;
-						align-items: center;
-						image{
-							width: 70rpx;
-							height: 70rpx;
-						}
-						.coinName{
-							margin-left: 20rpx;
-							.topCoin{
-								font-family: Noto Sans SC, Noto Sans SC;
-								font-weight: 500;
-								font-size: 30rpx;
-								color: #525252;
+				.right{
+					image{
+						width: 56rpx;
+						height: 56rpx;
+					}
+				}
+			}
+			.coinListBox{
+				padding: 28rpx;
+				.inputBox{
+					height: 84rpx;
+					border-radius: 56px 56px 56px 56px;
+					background: rgba(115,40,228,0.1);
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					padding: 0 28rpx;
+					input{
+						width: 80%;
+						height: 100%;
+					}
+					image{
+						width: 42rpx;
+						height: 42rpx;
+					}
+				}
+				.tokenList{
+					margin-top: 40rpx;
+					padding-left: 20rpx;
+					.titleList{
+						font-family: Noto Sans SC, Noto Sans SC;
+						font-weight: 500;
+						font-size: 28rpx;
+						color: #161616;
+					}
+					.list{
+						margin-top: 28rpx;
+						.listOne{
+							margin-bottom: 28rpx;
+							display: flex;
+							align-items: center;
+							image{
+								width: 70rpx;
+								height: 70rpx;
 							}
-							.bottomCoin{
-								font-family: Noto Sans SC, Noto Sans SC;
-								font-weight: 500;
-								font-size: 24rpx;
-								color: #A8A8A8;
+							.coinName{
+								margin-left: 20rpx;
+								.topCoin{
+									font-family: Noto Sans SC, Noto Sans SC;
+									font-weight: 500;
+									font-size: 30rpx;
+									color: #525252;
+								}
+								.bottomCoin{
+									font-family: Noto Sans SC, Noto Sans SC;
+									font-weight: 500;
+									font-size: 24rpx;
+									color: #A8A8A8;
+								}
 							}
 						}
 					}
 				}
 			}
+			
 		}
-		
 	}
+	@media all and (min-width: 320px) and (max-width: 700px){
+		.mask {
+			width: 610rpx;
+			height: 818rpx;
+			border-radius: 20rpx;
+			background-color: #fff;
+			.title{
+				display: flex;
+				justify-content: space-between;
+				background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
+				padding: 30rpx 28rpx;
+				border-radius: 20rpx 20rpx 0 0;
+				align-items: center;
+				.left{
+					width: 50rpx;
+				}
+				.center{
+					font-family: Noto Sans SC, Noto Sans SC;
+					font-weight: 500;
+					font-size: 30rpx;
+					color: #FFFFFF;
+				}
+				.right{
+					image{
+						width: 56rpx;
+						height: 56rpx;
+					}
+				}
+			}
+			.coinListBox{
+				padding: 28rpx;
+				.inputBox{
+					height: 84rpx;
+					border-radius: 56px 56px 56px 56px;
+					background: rgba(115,40,228,0.1);
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					padding: 0 28rpx;
+					input{
+						width: 80%;
+						height: 100%;
+					}
+					image{
+						width: 42rpx;
+						height: 42rpx;
+					}
+				}
+				.tokenList{
+					margin-top: 40rpx;
+					padding-left: 20rpx;
+					.titleList{
+						font-family: Noto Sans SC, Noto Sans SC;
+						font-weight: 500;
+						font-size: 28rpx;
+						color: #161616;
+					}
+					.list{
+						margin-top: 28rpx;
+						.listOne{
+							margin-bottom: 28rpx;
+							display: flex;
+							align-items: center;
+							image{
+								width: 70rpx;
+								height: 70rpx;
+							}
+							.coinName{
+								margin-left: 20rpx;
+								.topCoin{
+									font-family: Noto Sans SC, Noto Sans SC;
+									font-weight: 500;
+									font-size: 30rpx;
+									color: #525252;
+								}
+								.bottomCoin{
+									font-family: Noto Sans SC, Noto Sans SC;
+									font-weight: 500;
+									font-size: 24rpx;
+									color: #A8A8A8;
+								}
+							}
+						}
+					}
+				}
+			}
+			
+		}
+	}
+	
 </style>
