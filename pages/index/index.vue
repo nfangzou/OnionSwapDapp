@@ -412,32 +412,43 @@
 			async clickChange() {
 				this.$refs.loading.open();
 				if(this.fromCur.name == 'TBC') {
-					const paramsEnd = [{
-						flag: "P2PKH",
-						satoshis: JSON.parse(this.fromCoinNum)*1000000,
-						address: this.nowPoolAddress.recAddress
-					}];
-					const {txid,rawtx} = await window.Turing.sendTransaction(paramsEnd);
-					console.log(txid)
-					console.log(rawtx)
-					if(txid) {
-						this.swapEndClick(txid);
+					try {
+						const paramsEnd = [{
+							flag: "P2PKH",
+							satoshis: JSON.parse(this.fromCoinNum)*1000000,
+							address: this.nowPoolAddress.recAddress
+						}];
+						const {txid,rawtx} = await window.Turing.sendTransaction(paramsEnd);
+						console.log(txid)
+						console.log(rawtx)
+						if(txid) {
+							this.swapEndClick(txid);
+						}
+					} catch(err) {
+						this.$refs.popup2.close();
+						console.log(err)
 					}
 					
 				} else {
-					const params = [{
-						flag: "FT_TRANSFER",
-						ft_contract_address: this.fromCur.address,
-						ft_amount: JSON.parse(this.fromCoinNum),
-						address: this.nowPoolAddress.recAddress
-					}];
-					console.log(params)
-					const {txid,rawtx} = await window.Turing.sendTransaction(params);
-					console.log(txid)
-					console.log(rawtx)
-					if(txid) {
-						this.swapEndClick(txid);
+					try{
+						const params = [{
+							flag: "FT_TRANSFER",
+							ft_contract_address: this.fromCur.address,
+							ft_amount: JSON.parse(this.fromCoinNum),
+							address: this.nowPoolAddress.recAddress
+						}];
+						console.log(params)
+						const {txid,rawtx} = await window.Turing.sendTransaction(params);
+						console.log(txid)
+						console.log(rawtx)
+						if(txid) {
+							this.swapEndClick(txid);
+						}
+					} catch(err) {
+						this.$refs.popup2.close();
+						console.log(err)
 					}
+					
 				}
 			},
 			async inClick() {
