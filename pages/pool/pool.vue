@@ -204,7 +204,12 @@
 					console.log("Please connect wallet!")
 				} else {
 					this.myAddress = uni.getStorageSync('walletAddress');
+					// let time = setInterval(() => {
+					// 	this.getAllPool();
+					// 	this.getUserPool();
+					// }, 20000)
 					this.getAllPool();
+					this.getUserPool();
 				}
 			},
 			url(pathVal){

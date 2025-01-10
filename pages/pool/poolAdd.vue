@@ -338,34 +338,41 @@
 						this.unloadCoinID();
 					}
 				} catch (error) {
+					this.$refs.loading.close();
 					console.log(error)
 				}
 			},
 			unloadCoinID() {
-				uni.request({
-					url: this.localApi+'newPool',
-					method: 'POST',
-					header: {
-						"Content-Type": "application/json; charset=UTF-8"
-					},
-					data: {
-						coinContract1: this.toCur.address,
-						poolContract: this.nowPoolAddress.poolContract,
-						coinName1: this.toCur.name,
-						userAddress: this.myAddress,
-						coinDecimal: this.toCur.decimals
-					},
-					success: (res) => {
-						if(res.data.success) {
-							this.$refs.popup2.close();
-							this.$refs.loading.close();
-							swal({
-								title: '添加成功',
-								icon: "success",
-							})
+				try {
+					uni.request({
+						url: this.localApi+'newPool',
+						method: 'POST',
+						header: {
+							"Content-Type": "application/json; charset=UTF-8"
+						},
+						data: {
+							coinContract1: this.toCur.address,
+							poolContract: this.nowPoolAddress.poolContract,
+							coinName1: this.toCur.name,
+							userAddress: this.myAddress,
+							coinDecimal: this.toCur.decimals
+						},
+						success: (res) => {
+							if(res.data.success) {
+								this.$refs.popup2.close();
+								this.$refs.loading.close();
+								swal({
+									title: '添加成功',
+									icon: "success",
+								})
+							}
 						}
-					}
-				});
+					});
+				} catch(err){
+					this.$refs.loading.close();
+					console.log(err)
+				}
+				
 			},
 			backInfo(e) {
 				if (this.goType == 'from') {
