@@ -61,7 +61,7 @@
 								ft_a_balance
 							</view>
 							<view class="right">
-								{{item.ft_a_balance/Math.pow(10, item.ftDecimal)}}
+								{{item.ft_a_balance/Math.pow(10, item.ftDecimal) | numStr}}
 							</view>
 						</view>
 						<view class="poolName">
@@ -69,7 +69,7 @@
 								tbc_balance
 							</view>
 							<view class="right">
-								{{item.tbc_balance/Math.pow(10, 6)}}
+								{{item.tbc_balance/Math.pow(10, 6) | numStr}}
 							</view>
 						</view>
 						<view class="poolName">
@@ -77,7 +77,7 @@
 								ft_lp_balance
 							</view>
 							<view class="right">
-								{{item.ft_lp_balance/Math.pow(10, item.ftDecimal)}}
+								{{item.ft_lp_balance/Math.pow(10, item.ftDecimal) | numStr}}
 							</view>
 						</view>
 						<view class="btnList" @click="urlPool('/pages/pool/poolManage','all',item)">
@@ -109,7 +109,7 @@
 								ft_a_balance
 							</view>  
 							<view class="right">
-								{{item.ft_a_balance/Math.pow(10,item.ftDecimal)}}
+								{{item.ft_a_balance/Math.pow(10,item.ftDecimal) | numStr}}
 							</view>
 						</view>
 						<view class="poolName">
@@ -117,7 +117,7 @@
 								tbc_balance
 							</view>
 							<view class="right">
-								{{item.tbc_balance/Math.pow(10,6)}}
+								{{item.tbc_balance/Math.pow(10,6) | numStr}}
 							</view>
 						</view>
 						<view class="poolName">
@@ -125,7 +125,7 @@
 								ft_lp_balance
 							</view>
 							<view class="right">
-								{{item.ft_lp_balance/Math.pow(10,item.ftDecimal)}}
+								{{item.ft_lp_balance/Math.pow(10,item.ftDecimal) | numStr}}
 							</view>
 						</view>
 						<view class="btnList" @click="urlPool('/pages/pool/poolManage','my',item)">
@@ -193,6 +193,17 @@
 		watch: {
 			getWallet(val, oldVal){
 				this.Init();
+			}
+		},
+		filters: {
+			numStr(num) {
+			   // let inNumber = str.toString();
+			   // let num=ethers.utils.formatUnits(inNumber);
+			   if(parseInt(num) === parseFloat(num)){
+					return parseInt(num)
+			   }else{
+					return Number(num).toFixed(6)
+			   }
 			}
 		},
 		onLoad() {
@@ -619,6 +630,7 @@
 							height: 42rpx;
 						}
 						input{
+							color: #000;
 							padding:0 15upx;
 							height: 100%;
 							width: 100%;
@@ -754,6 +766,7 @@
 				}
 			}
 			.positions{
+				width: 100%;
 				box-sizing: border-box;
 				border-radius: 30upx;
 				display: flex;
@@ -804,6 +817,7 @@
 				}
 			}
 			.searchBox{
+				width: 100%;
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
@@ -817,6 +831,7 @@
 					height: 42rpx;
 				}
 				input{
+					color: #000;
 					height: 100%;
 					width: 80%;
 				}
