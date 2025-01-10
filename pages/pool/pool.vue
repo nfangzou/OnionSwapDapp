@@ -226,8 +226,14 @@
 					},
 					success: (res) => {
 						if(res.data.success) {
-							this.nowGetHash(res.data.msg)
-							this.myPoolData = res.data.msg;
+							console.log(res.data.msg.length)
+							if(res.data.msg.length!=0){
+								this.nowGetHash(res.data.msg)
+								this.myPoolData = res.data.msg;
+							}else{
+								this.$refs.loading.close();
+							}
+							
 						}
 					}
 				});

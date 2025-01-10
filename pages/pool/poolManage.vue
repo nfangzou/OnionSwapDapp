@@ -173,144 +173,292 @@
 </script>
 
 <style lang="less" scoped>
-	.content {
-		width: 100%;
-		height: auto;
-		min-height: 100vh;
-		box-sizing: border-box;
-		position: relative;
-		padding-bottom: 30upx;
-		.centerBox {
-			max-width: 750rpx;
-			border-radius: 20rpx;
-			padding: 30rpx;
-			.poolTitle{
-				display: flex;
-				align-items: center;
-				margin: 26rpx 0 56rpx 0;
-				.back{
-					width: 40rpx;
-					height: 40rpx;
-					image{
-						width: 100%;
-						height: 100%;
-					}
-				}
-				.title{
-					margin-left: 20rpx;
-					color: 35rpx;
-				}
-			}
-			.poolInfo{
-				margin-top: 30rpx;
-				.infoLeft{
+	@media all and (min-width: 700px) and (max-width: 2880px){
+		.content {
+			width: 100%;
+			height: auto;
+			// min-height: 100vh;
+			box-sizing: border-box;
+			position: relative;
+			padding-bottom: 50upx;
+			.centerBox {
+				width: 70%;
+				margin: 0 auto;
+				box-sizing: border-box;
+				border-radius: 20rpx;
+				padding: 30rpx;
+				.poolTitle{
 					display: flex;
 					align-items: center;
-					.coinD{
+					margin: 26rpx 0 56rpx 0;
+					.back{
+						width: 40rpx;
+						height: 40rpx;
+						image{
+							width: 100%;
+							height: 100%;
+						}
+					}
+					.title{
+						margin-left: 20rpx;
+						color: 35rpx;
+					}
+				}
+				.poolInfo{
+					margin-top: 30rpx;
+					.infoLeft{
 						display: flex;
 						align-items: center;
-						image{
-							width: 70rpx;
-							height: 70rpx;
-							border-radius: 50%;
-							margin-right: 2rpx;
-						}
-					}
-					.coinNmaeD{
-						font-family: Noto Sans SC, Noto Sans SC;
-						font-weight: 600;
-						font-size: 42rpx;
-						color: #161616;
-						margin-left: 20rpx;
-					}
-				}
-				.infoRight{
-					margin-top: 20rpx;
-					padding-left: 20rpx;
-					.oneRight{
-						margin-top: 20rpx;
-						font-family: Noto Sans SC, Noto Sans SC;
-						font-weight: 400;
-						font-size: 21rpx;
-						color: #525252;
-						.bottom{
-							word-wrap: break-word;
-						}
-					}
-				}
-			}
-			.titleEnd{
-				font-size: 30rpx;
-				color: #000;
-				font-weight: bold;
-				margin-top: 50rpx;
-			}
-			.coinSetBody{
-				background-color: #fff;
-				border-radius: 20rpx;
-				padding: 40rpx 30rpx;
-				margin-top: 20rpx;
-				.bigTilte{
-					color: #000;
-					font-size: 30rpx;
-					margin-bottom: 30rpx;
-					font-weight: bold;
-				}
-				.smallTitle{
-					color: gray;
-					font-size: 30rpx;
-					margin-bottom: 30rpx;
-				}
-				.boxInfo{
-					background-color: #F5F9FF;
-					border-radius: 20rpx;
-					padding: 30rpx 40rpx;
-					.infoCoinNum{
-						display: flex;
-						justify-content: space-between;
-						.numLeft{
+						.coinD{
 							display: flex;
 							align-items: center;
-							color: #000;
-							font-weight: bold;
 							image{
-								width: 40rpx;
-								height: 40rpx;
-								margin-right: 10rpx;
+								width: 70rpx;
+								height: 70rpx;
+								border-radius: 50%;
+								margin-right: 2rpx;
 							}
 						}
-						.numRight{
-							font-weight: bold;
-							color: #3367D6;
+						.coinNmaeD{
+							font-family: Noto Sans SC, Noto Sans SC;
+							font-weight: 600;
+							font-size: 42rpx;
+							color: #161616;
+							margin-left: 20rpx;
+						}
+					}
+					.infoRight{
+						margin-top: 20rpx;
+						padding-left: 20rpx;
+						.oneRight{
+							margin-top: 20rpx;
+							font-family: Noto Sans SC, Noto Sans SC;
+							font-weight: 400;
+							font-size: 21rpx;
+							color: #525252;
+							.bottom{
+								word-wrap: break-word;
+							}
 						}
 					}
 				}
-				.btnBox{
-					display: flex;
-					justify-content: space-between;
-					align-items: center;
-					.btnOne{
-						width: 48%;
-						height: 90rpx;
-						line-height: 90rpx;
-						text-align: center;
-						background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
-						margin: 30rpx 0;
-						border-radius: 40rpx;
-						color: #fff;
+				.titleEnd{
+					font-size: 30rpx;
+					color: #000;
+					font-weight: bold;
+					margin-top: 50rpx;
+				}
+				.coinSetBody{
+					background-color: #fff;
+					border-radius: 20rpx;
+					padding: 40rpx 30rpx;
+					margin-top: 20rpx;
+					.bigTilte{
+						color: #000;
+						font-size: 30rpx;
+						margin-bottom: 30rpx;
+						font-weight: bold;
 					}
-					.btnTwo{
-						width: 48%;
-						height: 90rpx;
-						line-height: 90rpx;
-						text-align: center;
-						background: linear-gradient( 90deg, #8D60FF 0%, #AF6EFF 100%);
-						color: #fff;
-						border-radius: 40rpx;
-						opacity: 0.75;
+					.smallTitle{
+						color: gray;
+						font-size: 30rpx;
+						margin-bottom: 30rpx;
+					}
+					.boxInfo{
+						background-color: #F5F9FF;
+						border-radius: 20rpx;
+						padding: 30rpx 40rpx;
+						.infoCoinNum{
+							display: flex;
+							justify-content: space-between;
+							.numLeft{
+								display: flex;
+								align-items: center;
+								color: #000;
+								font-weight: bold;
+								image{
+									width: 40rpx;
+									height: 40rpx;
+									margin-right: 10rpx;
+								}
+							}
+							.numRight{
+								font-weight: bold;
+								color: #3367D6;
+							}
+						}
+					}
+					.btnBox{
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
+						.btnOne{
+							width: 48%;
+							height: 90rpx;
+							line-height: 90rpx;
+							text-align: center;
+							background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
+							margin: 30rpx 0;
+							border-radius: 40rpx;
+							color: #fff;
+						}
+						.btnTwo{
+							width: 48%;
+							height: 90rpx;
+							line-height: 90rpx;
+							text-align: center;
+							background: linear-gradient( 90deg, #8D60FF 0%, #AF6EFF 100%);
+							color: #fff;
+							border-radius: 40rpx;
+							opacity: 0.75;
+						}
 					}
 				}
 			}
 		}
 	}
+	
+	@media all and (min-width: 320px) and (max-width: 700px){
+		.content {
+			width: 100%;
+			height: auto;
+			min-height: 100vh;
+			box-sizing: border-box;
+			position: relative;
+			padding-bottom: 30upx;
+			.centerBox {
+				max-width: 750rpx;
+				border-radius: 20rpx;
+				padding: 30rpx;
+				.poolTitle{
+					display: flex;
+					align-items: center;
+					margin: 26rpx 0 56rpx 0;
+					.back{
+						width: 40rpx;
+						height: 40rpx;
+						image{
+							width: 100%;
+							height: 100%;
+						}
+					}
+					.title{
+						margin-left: 20rpx;
+						color: 35rpx;
+					}
+				}
+				.poolInfo{
+					margin-top: 30rpx;
+					.infoLeft{
+						display: flex;
+						align-items: center;
+						.coinD{
+							display: flex;
+							align-items: center;
+							image{
+								width: 70rpx;
+								height: 70rpx;
+								border-radius: 50%;
+								margin-right: 2rpx;
+							}
+						}
+						.coinNmaeD{
+							font-family: Noto Sans SC, Noto Sans SC;
+							font-weight: 600;
+							font-size: 42rpx;
+							color: #161616;
+							margin-left: 20rpx;
+						}
+					}
+					.infoRight{
+						margin-top: 20rpx;
+						padding-left: 20rpx;
+						.oneRight{
+							margin-top: 20rpx;
+							font-family: Noto Sans SC, Noto Sans SC;
+							font-weight: 400;
+							font-size: 21rpx;
+							color: #525252;
+							.bottom{
+								word-wrap: break-word;
+							}
+						}
+					}
+				}
+				.titleEnd{
+					font-size: 30rpx;
+					color: #000;
+					font-weight: bold;
+					margin-top: 50rpx;
+				}
+				.coinSetBody{
+					background-color: #fff;
+					border-radius: 20rpx;
+					padding: 40rpx 30rpx;
+					margin-top: 20rpx;
+					.bigTilte{
+						color: #000;
+						font-size: 30rpx;
+						margin-bottom: 30rpx;
+						font-weight: bold;
+					}
+					.smallTitle{
+						color: gray;
+						font-size: 30rpx;
+						margin-bottom: 30rpx;
+					}
+					.boxInfo{
+						background-color: #F5F9FF;
+						border-radius: 20rpx;
+						padding: 30rpx 40rpx;
+						.infoCoinNum{
+							display: flex;
+							justify-content: space-between;
+							.numLeft{
+								display: flex;
+								align-items: center;
+								color: #000;
+								font-weight: bold;
+								image{
+									width: 40rpx;
+									height: 40rpx;
+									margin-right: 10rpx;
+								}
+							}
+							.numRight{
+								font-weight: bold;
+								color: #3367D6;
+							}
+						}
+					}
+					.btnBox{
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
+						.btnOne{
+							width: 48%;
+							height: 90rpx;
+							line-height: 90rpx;
+							text-align: center;
+							background: linear-gradient( 90deg, #AF6EFF 0%, #8D60FF 100%);
+							margin: 30rpx 0;
+							border-radius: 40rpx;
+							color: #fff;
+						}
+						.btnTwo{
+							width: 48%;
+							height: 90rpx;
+							line-height: 90rpx;
+							text-align: center;
+							background: linear-gradient( 90deg, #8D60FF 0%, #AF6EFF 100%);
+							color: #fff;
+							border-radius: 40rpx;
+							opacity: 0.75;
+						}
+					}
+				}
+			}
+		}
+	}
+	
 </style>

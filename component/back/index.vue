@@ -141,6 +141,7 @@
 				await window.Turing.connect();
 				let wert = await window.Turing.getAddress();
 				this.myAddress = wert.tbcAddress;
+				console.log(111111,wert.tbcAddress)
 				this.$store.commit('setWallet', wert.tbcAddress);
 				uni.setStorageSync('walletAddress',wert.tbcAddress);
 			},
